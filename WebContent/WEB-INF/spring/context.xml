@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/tx
+   http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- needed for certain annotations like @PostConstruct -->
+	<context:annotation-config />
+	<tx:annotation-driven />
+	<!-- Our service layer components -->
+	<context:component-scan
+		base-package="com.swap.common, com.swap.service, com.swap.dao, com.swap.transformer, com.swap.validator, com.swap.db.listeners, com.swap.client" />
+
+
+	<bean id="resourceBundle"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/resources/locale/error_messages" />
+		<property name="cacheSeconds" value="5" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="useCodeAsDefaultMessage" value="true" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="mySessionFactory" />
+	</bean>
+	
+	<bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors"
+		factory-method="noOpText" />
+
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<!-- <property name="url"
+			value="jdbc:postgresql://swapdb.cqxock9b8dxe.us-west-2.rds.amazonaws.com:5432/swapdb" /> -->
+		<property name="url"
+			value="jdbc:postgresql://localhost:5432/shanganesh" />
+		<property name="username" value="csvswap" />
+		<property name="password" value="Csvswap1" />
+	</bean>
+	
+	<bean id="connectionFactoryLocator" 
+      class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+    <property name="connectionFactories">
+        <list>
+            <bean class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
+                <constructor-arg value="1349995671730953" />
+                <constructor-arg value="52e714a35dc167259b385e5d8a62c0a0" />				
+            </bean>
+        </list>
+    </property>
+</bean>
+
+	<bean id="mySessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.swap.entity</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+		<props>
+		<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL81Dialect</prop>
+		<prop key="hibernate.show_sql">true</prop>
+		</props>
+		</property>
+		<!-- Adding Interceptor here -->
+		<!-- <property name="entityInterceptor">
+			<bean class="com.swap.entity.listing.ListingEntityInterceptor"></bean>
+		</property> -->
+	</bean>
+
+</beans>

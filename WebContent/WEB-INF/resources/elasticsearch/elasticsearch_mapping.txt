@@ -1,0 +1,62 @@
+##### item create index #################
+POST
+http://54.202.10.115:9200/swap
+##### end item create index #################
+
+
+#### item mapping #############################################################
+
+PUT
+http://54.202.10.115:9200/swap/item/_mapping
+{
+	"properties": {
+		"categoryName": {
+			"type": "string"
+		},
+		"condition": {
+			"type": "string"
+		},
+		"description": {
+			"type": "string"
+		},
+		"itemId": {
+			"type": "long"
+		},
+		"itemStage": {
+			"type": "string"
+		},
+		"numOfInterests": {
+			"type": "long"
+		},
+		"numOfReviews": {
+			"type": "long"
+		},
+		"quantity": {
+			"type": "long"
+		},
+		"story": {
+			"type": "string"
+		},
+		"title": {
+			"type": "string",
+			"index":"not_analyzed"
+		},
+		"userName": {
+			"type": "string",
+			"index":"not_analyzed"
+		},
+		"zipCode": {
+			"type": "long"
+		 },
+		 "city": {
+			"type": "string",
+			"index":"not_analyzed"
+		 },
+		 "titleSuggest": {
+			"type": "completion"
+		 }
+		 
+	}
+}
+
+#### end item mapping #############################################################

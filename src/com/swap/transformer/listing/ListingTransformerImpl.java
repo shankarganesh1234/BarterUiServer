@@ -1,0 +1,96 @@
+package com.swap.transformer.listing;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+import com.swap.common.enums.ItemConditionEnum;
+import com.swap.common.enums.ItemStageEnum;
+import com.swap.entity.category.CategoryEntity;
+import com.swap.entity.common.UserEntity;
+import com.swap.entity.listing.ListingEntity;
+import com.swap.entity.location.LocationEntity;
+import com.swap.models.listing.Item;
+import com.swap.models.listing.ListingRequest;
+
+@Service
+public class ListingTransformerImpl implements ListingTransformer {
+
+	@Override
+	public ListingEntity createListingEntity(Item item) {
+		ListingEntity listingEntity = new ListingEntity();
+		BeanUtils.copyProperties(item, listingEntity);
+		if (item.getCondition() != null) {
+			listingEntity.setCondition(item.getCondition().name());
+		}
+		if (item.getItemStage() != null) {
+			listingEntity.setItemStage(item.getItemStage().name());
+		}
+		return listingEntity;
+	}
+
+	@Override
+	public Item createaListingModel(ListingEntity entity) {
+		Item item = new Item();
+		BeanUtils.copyProperties(entity, item);
+		item.setCondition(entity.getCondition() != null ? ItemConditionEnum.fromValue(entity.getCondition().trim()) : null);
+		item.setItemStage(entity.getItemStage() != null ? ItemStageEnum.fromValue(entity.getItemStage().trim()) : null);
+		return item;
+	}
+
+	@Override
+	public ListingEntity createListingEntityFromId(Long id, boolean isItemId) {
+		ListingEntity entity = new ListingEntity();
+		if (isItemId) {
+			entity.setItemId(id);
+		} else {
+			UserEntity user = new UserEntity();
+			user.setUserId(id);
+			entity.setUserId(user);
+		}
+		return entity;
+	}
+
+	@Override
+	public List<Item> convertFromEntitiesToItemList(List<ListingEntity> listingEntities) {
+		List<Item> items = new ArrayList<>(listingEntities.size());
+		for (ListingEntity entity : listingEntities) {
+			items.add(createaListingModel(entity));
+		}
+		return items;
+	}
+
+	@Override
+	public Item convertRequestToItem(ListingRequest listingRequest, String call) {
+		Item item = new Item();
+		if ("POST".equals(call)) {
+			item.setItemStage(ItemStageEnum.INITIALIZED);
+		} else if ("PUT".equals(call)) {
+			item.setItemId(listingRequest.getItemId());
+		}
+
+		item.setTitle(listingRequest.getTitle());
+		item.setDescription(listingRequest.getDescription());
+
+		CategoryEntity category = new CategoryEntity();
+		category.setCategoryId(listingRequest.getCategoryId());
+		item.setCategoryId(category);
+
+		LocationEntity entity = new LocationEntity();
+		entity.setZipCode(listingRequest.getZipCode());
+		item.setZipCode(entity);
+
+		UserEntity user = new UserEntity();
+		user.setUserId(listingRequest.getUserId());
+		item.setUserId(user);
+
+		item.setQuantity(listingRequest.getQuantity());
+		item.setCondition(ItemConditionEnum.fromValue(listingRequest.getCondition()));
+		item.setStory(listingRequest.getStory() != null ? listingRequest.getStory() : null);
+		item.setNumOfInterests(listingRequest.getNumOfInterests());
+		item.setNumOfReviews(listingRequest.getNumOfReviews());
+		return item;
+	}
+}
