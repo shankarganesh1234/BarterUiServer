@@ -31,9 +31,9 @@ public class Constants {
 
 	// Cloudinary
 	public static final String CLOUD_NAME = "cloud_name";
-	public static final String MY_CLOUD_NAME = "swapimage";
+	public static final String MY_CLOUD_NAME = "damwv9ygo";
 	public static final String API_KEY = "api_key";
-	public static final String MY_API_KEY = "522425139524674";
+	public static final String MY_API_KEY = "165899739553247";
 	public static final String API_SECRET = "api_secret";
-	public static final String MY_API_SECRET = "yHvoLV44z0M6AMWn4Z54VQlFlIY";
+	public static final String MY_API_SECRET = "9GxNEKNAbmPp7Wj7f3kpvm5UW7w";
 }

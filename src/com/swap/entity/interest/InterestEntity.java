@@ -19,7 +19,7 @@ import org.hibernate.annotations.OptimisticLocking;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.swap.entity.common.UserEntity;
-import com.swap.entity.listing.ListingEntity;
+import com.swap.entity.item.ItemEntity;
 
 @Entity
 @Table(name = "interest")
@@ -42,11 +42,11 @@ public class InterestEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "original_item_id")
-	private ListingEntity originalItemId;
+	private ItemEntity originalItemId;
 
 	@ManyToOne
 	@JoinColumn(name = "swappable_item_id")
-	private ListingEntity swappableItemId;
+	private ItemEntity swappableItemId;
 
 	@Column(name = "transaction_id")
 	private String transactionId;
@@ -92,19 +92,19 @@ public class InterestEntity {
 		this.interestedUser = interestedUser;
 	}
 
-	public ListingEntity getOriginalItemId() {
+	public ItemEntity getOriginalItemId() {
 		return originalItemId;
 	}
 
-	public void setOriginalItemId(ListingEntity originalItemId) {
+	public void setOriginalItemId(ItemEntity originalItemId) {
 		this.originalItemId = originalItemId;
 	}
 
-	public ListingEntity getSwappableItemId() {
+	public ItemEntity getSwappableItemId() {
 		return swappableItemId;
 	}
 
-	public void setSwappableItemId(ListingEntity swappableItemId) {
+	public void setSwappableItemId(ItemEntity swappableItemId) {
 		this.swappableItemId = swappableItemId;
 	}
 

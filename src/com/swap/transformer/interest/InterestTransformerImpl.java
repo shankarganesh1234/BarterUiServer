@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.swap.common.cache.UniqueIdGenerator;
 import com.swap.entity.common.UserEntity;
 import com.swap.entity.interest.InterestEntity;
-import com.swap.entity.listing.ListingEntity;
+import com.swap.entity.item.ItemEntity;
 import com.swap.models.interest.InterestRequest;
 import com.swap.models.interest.InterestResponse;
 
@@ -90,12 +90,12 @@ public class InterestTransformerImpl implements InterestTransformer {
 	 * @param itemId
 	 * @return
 	 */
-	private ListingEntity createListingEntityFromItemId(Long itemId) {
+	private ItemEntity createListingEntityFromItemId(Long itemId) {
 		
 		if(itemId == null)
 			return null;
 		
-		ListingEntity listingEntity = new ListingEntity();
+		ItemEntity listingEntity = new ItemEntity();
 		listingEntity.setItemId(itemId);
 		return listingEntity;
 	}

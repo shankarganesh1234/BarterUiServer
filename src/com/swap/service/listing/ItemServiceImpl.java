@@ -11,33 +11,33 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.swap.common.error.ErrorEnum;
 import com.swap.common.exceptions.SwapException;
-import com.swap.dao.listing.ListingDao;
-import com.swap.entity.listing.ListingEntity;
+import com.swap.dao.item.ItemDao;
+import com.swap.entity.item.ItemEntity;
 import com.swap.models.listing.Item;
-import com.swap.models.listing.ListingRequest;
-import com.swap.transformer.listing.ListingTransformer;
-import com.swap.validator.listing.ListingValidator;
+import com.swap.models.listing.ItemRequest;
+import com.swap.transformer.listing.ItemTransformer;
+import com.swap.validator.listing.ItemValidator;
 
 @Service
-public class ListingServiceImpl implements ListingService {
+public class ItemServiceImpl implements ItemService {
 
-	private static final Logger logger = Logger.getLogger(ListingServiceImpl.class);
-
-	@Inject
-	private ListingDao listingDao;
+	private static final Logger logger = Logger.getLogger(ItemServiceImpl.class);
 
 	@Inject
-	private ListingTransformer listingTransformer;
+	private ItemDao listingDao;
 
 	@Inject
-	private ListingValidator listingValidator;
+	private ItemTransformer listingTransformer;
+
+	@Inject
+	private ItemValidator listingValidator;
 
 	@Transactional
 	@Override
 	public Item getListingByItemId(Long itemId) {
 		try {
 			listingValidator.validateItemId(itemId);
-			ListingEntity entity = listingTransformer.createListingEntityFromId(itemId, true);
+			ItemEntity entity = listingTransformer.createListingEntityFromId(itemId, true);
 			entity = listingDao.getListingByItemId(entity);
 			listingValidator.validateResponse(entity);
 			return listingTransformer.createaListingModel(entity);
@@ -58,8 +58,8 @@ public class ListingServiceImpl implements ListingService {
 	public List<Item> getListingsByUserId(Long userId) {
 		try {
 			listingValidator.validateUserId(userId);
-			ListingEntity entity = listingTransformer.createListingEntityFromId(userId, false);
-			List<ListingEntity> ListingEntities = listingDao.getListingsByUserId(entity);
+			ItemEntity entity = listingTransformer.createListingEntityFromId(userId, false);
+			List<ItemEntity> ListingEntities = listingDao.getListingsByUserId(entity);
 			return listingTransformer.convertFromEntitiesToItemList(ListingEntities);
 		} catch (SwapException ex) {
 			logger.error(ex);
@@ -75,11 +75,11 @@ public class ListingServiceImpl implements ListingService {
 
 	@Transactional
 	@Override
-	public void listing(ListingRequest listingRequest) {
+	public void listing(ItemRequest listingRequest) {
 		try {
 			listingValidator.validateListingRequest(listingRequest);
 			Item item = listingTransformer.convertRequestToItem(listingRequest, "POST");
-			ListingEntity entity = listingTransformer.createListingEntity(item);
+			ItemEntity entity = listingTransformer.createListingEntity(item);
 			listingDao.createListing(entity);
 		} catch (SwapException ex) {
 			logger.error(ex);
@@ -95,11 +95,11 @@ public class ListingServiceImpl implements ListingService {
 
 	@Transactional
 	@Override
-	public void updateListing(ListingRequest listingRequest) {
+	public void updateListing(ItemRequest listingRequest) {
 		try {
 			listingValidator.validateUpdateRequest(listingRequest);
 			Item item = listingTransformer.convertRequestToItem(listingRequest, "PUT");
-			ListingEntity entity = listingTransformer.createListingEntity(item);
+			ItemEntity entity = listingTransformer.createListingEntity(item);
 			listingDao.updateListing(entity);
 		} catch (SwapException ex) {
 			logger.error(ex);
@@ -118,7 +118,7 @@ public class ListingServiceImpl implements ListingService {
 	public void deleteListing(Long itemId) {
 		try {
 			listingValidator.validateItemId(itemId);
-			ListingEntity entity = listingTransformer.createListingEntityFromId(itemId, true);
+			ItemEntity entity = listingTransformer.createListingEntityFromId(itemId, true);
 			listingDao.deleteListing(entity);
 		} catch (SwapException ex) {
 			logger.error(ex);

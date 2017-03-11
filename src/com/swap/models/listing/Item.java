@@ -9,7 +9,7 @@ import com.swap.common.enums.ItemConditionEnum;
 import com.swap.common.enums.ItemStageEnum;
 import com.swap.entity.category.CategoryEntity;
 import com.swap.entity.common.UserEntity;
-import com.swap.entity.listing.ImageEntity;
+import com.swap.entity.item.ImageEntity;
 import com.swap.entity.location.LocationEntity;
 
 @JsonSerialize(include = Inclusion.NON_NULL)

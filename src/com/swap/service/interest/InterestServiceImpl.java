@@ -16,7 +16,7 @@ import com.swap.entity.interest.InterestEntity;
 import com.swap.models.interest.InterestRequest;
 import com.swap.models.interest.InterestResponse;
 import com.swap.models.interest.InterestsResponse;
-import com.swap.service.listing.ListingService;
+import com.swap.service.listing.ItemService;
 import com.swap.transformer.interest.InterestTransformer;
 import com.swap.validator.interest.InterestValidator;
 
@@ -32,7 +32,7 @@ public class InterestServiceImpl implements InterestService {
 	private InterestDao interestDao;
 	
 	@Inject
-	private ListingService listingService;
+	private ItemService listingService;
 
 	@Inject
 	private InterestTransformer interestTransformer;

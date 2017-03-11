@@ -8,7 +8,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 @JsonSerialize(include = Inclusion.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ListingResponse {
+public class ItemResponse {
 	private Item item;
 	private List<Item> items;
 

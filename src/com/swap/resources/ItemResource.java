@@ -14,16 +14,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.swap.models.listing.Item;
-import com.swap.models.listing.ListingRequest;
-import com.swap.service.listing.ListingService;
+import com.swap.models.listing.ItemRequest;
+import com.swap.service.listing.ItemService;
 
 @Path("listing")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ListingResource {
+public class ItemResource {
 
 	@Inject
-	ListingService listingService;
+	ItemService listingService;
 
 	@Path("{itemId}")
 	@GET
@@ -38,12 +38,12 @@ public class ListingResource {
 	}
 
 	@POST
-	public void listing(ListingRequest listingRequest) {
+	public void listing(ItemRequest listingRequest) {
 		listingService.listing(listingRequest);
 	}
 
 	@PUT
-	public void updateListing(ListingRequest listingRequest) {
+	public void updateListing(ItemRequest listingRequest) {
 		listingService.updateListing(listingRequest);
 	}
 

@@ -1,4 +1,4 @@
-package com.swap.dao.listing;
+package com.swap.dao.item;
 
 import java.util.List;
 
@@ -14,13 +14,13 @@ import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.event.spi.EventType;
 import org.springframework.stereotype.Service;
 
-import com.swap.db.listeners.ListingEntityInterceptor;
+import com.swap.db.listeners.ItemEntityInterceptor;
 import com.swap.entity.interest.InterestEntity;
-import com.swap.entity.listing.ImageEntity;
-import com.swap.entity.listing.ListingEntity;
+import com.swap.entity.item.ImageEntity;
+import com.swap.entity.item.ItemEntity;
 
 @Service
-public class ListingDaoImpl implements ListingDao {
+public class ItemDaoImpl implements ItemDao {
 
 	@Inject
 	private SessionFactory sessionFactory;
@@ -30,7 +30,7 @@ public class ListingDaoImpl implements ListingDao {
 	}
 
 	@Inject
-	private ListingEntityInterceptor listener;
+	private ItemEntityInterceptor listener;
 
 	@PostConstruct
 	public void init() {
@@ -42,32 +42,32 @@ public class ListingDaoImpl implements ListingDao {
 	}
 
 	@Override
-	public ListingEntity getListingByItemId(ListingEntity listingEntity) {
-		return sessionFactory.getCurrentSession().get(ListingEntity.class, listingEntity.getItemId());
+	public ItemEntity getListingByItemId(ItemEntity listingEntity) {
+		return sessionFactory.getCurrentSession().get(ItemEntity.class, listingEntity.getItemId());
 	}
 
 	@Override
-	public List<ListingEntity> getListingsByUserId(ListingEntity listingEntity) {
+	public List<ItemEntity> getListingsByUserId(ItemEntity listingEntity) {
 		@SuppressWarnings("unchecked")
-		TypedQuery<ListingEntity> query = sessionFactory.getCurrentSession()
+		TypedQuery<ItemEntity> query = sessionFactory.getCurrentSession()
 				.createQuery("FROM ListingEntity where user_id = :userId");
 		query.setParameter("userId", listingEntity.getUserId());
-		List<ListingEntity> result = query.getResultList();
+		List<ItemEntity> result = query.getResultList();
 		return result;
 	}
 
 	@Override
-	public void createListing(ListingEntity listingEntity) {
+	public void createListing(ItemEntity listingEntity) {
 		sessionFactory.getCurrentSession().save(listingEntity);
 	}
 
 	@Override
-	public void updateListing(ListingEntity listingEntity) {
+	public void updateListing(ItemEntity listingEntity) {
 		sessionFactory.getCurrentSession().update(listingEntity);
 	}
 
 	@Override
-	public void deleteListing(ListingEntity listingEntity) {
+	public void deleteListing(ItemEntity listingEntity) {
 		sessionFactory.getCurrentSession().delete(listingEntity);
 	}
 
@@ -79,7 +79,7 @@ public class ListingDaoImpl implements ListingDao {
 		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
 
 		// Add conditions
-		Root<ListingEntity> listingEntityRoot = criteriaQuery.from(ListingEntity.class);
+		Root<ItemEntity> listingEntityRoot = criteriaQuery.from(ItemEntity.class);
 		criteriaQuery.select(listingEntityRoot.get("itemId"));
 		criteriaQuery.where(builder.equal(listingEntityRoot.get("userId"), userId));
 		// execute
@@ -89,7 +89,7 @@ public class ListingDaoImpl implements ListingDao {
 
 	@Override
 	public void updateListingForImage(Long itemId, ImageEntity imageEntity) {
-		ListingEntity dbRecord = sessionFactory.getCurrentSession().load(ListingEntity.class, itemId);
+		ItemEntity dbRecord = sessionFactory.getCurrentSession().load(ItemEntity.class, itemId);
 		dbRecord.setImage_id(imageEntity);
 		sessionFactory.getCurrentSession().update(dbRecord);
 	}

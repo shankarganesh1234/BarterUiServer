@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 
 import com.swap.common.constants.Constants;
 import com.swap.common.httpclient.SwapHttpClientFactory;
-import com.swap.entity.listing.ListingEntity;
+import com.swap.entity.item.ItemEntity;
 import com.swap.models.elasticsearch.ItemDocument;
 
 /**
@@ -34,9 +34,9 @@ import com.swap.models.elasticsearch.ItemDocument;
  *
  */
 @Component
-public class ListingEntityInterceptor implements  PostInsertEventListener, PostUpdateEventListener, PostDeleteEventListener {
+public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpdateEventListener, PostDeleteEventListener {
 
-	private static final Logger logger = Logger.getLogger(ListingEntityInterceptor.class);
+	private static final Logger logger = Logger.getLogger(ItemEntityInterceptor.class);
 
 	@Inject
 	private SwapHttpClientFactory httpClientFactory;
@@ -53,7 +53,7 @@ public class ListingEntityInterceptor implements  PostInsertEventListener, PostU
 	 * @param type
 	 * @param item
 	 */
-	private void indexDocument(String baseUrl, String indexName, String type, ListingEntity item) {
+	private void indexDocument(String baseUrl, String indexName, String type, ItemEntity item) {
 		
 		if(item == null) {
 			logger.debug("Item instance was null. Nothing to index in elasticsearch");
@@ -103,7 +103,7 @@ public class ListingEntityInterceptor implements  PostInsertEventListener, PostU
 	 * @param type
 	 * @param item
 	 */
-	private void deleteDocument(String baseUrl, String indexName, String type, ListingEntity item) {
+	private void deleteDocument(String baseUrl, String indexName, String type, ItemEntity item) {
 		
 		if(item == null) {
 			logger.debug("Item instance was null. Nothing to index in elasticsearch");
@@ -146,7 +146,7 @@ public class ListingEntityInterceptor implements  PostInsertEventListener, PostU
 	 * @param item
 	 * @return
 	 */
-	private ItemDocument createItemDocument(ListingEntity item) {
+	private ItemDocument createItemDocument(ItemEntity item) {
 		ItemDocument document = new ItemDocument();
 		document.setActiveInterests(item.getActiveInterests());
 		document.setCategoryName(item.getCategoryId() != null ? item.getCategoryId().getCategoryName() : null);
@@ -183,9 +183,9 @@ public class ListingEntityInterceptor implements  PostInsertEventListener, PostU
 		if(obj == null)
 			return;
 		
-		if(obj instanceof ListingEntity) {
+		if(obj instanceof ItemEntity) {
 			logger.debug("Entered within post update listener. Begin indexing document");
-			indexDocument(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, (ListingEntity) obj);
+			indexDocument(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, (ItemEntity) obj);
 		}
 	}
 
@@ -197,9 +197,9 @@ public class ListingEntityInterceptor implements  PostInsertEventListener, PostU
 		if(obj == null)
 			return;
 		
-		if(obj instanceof ListingEntity) {
+		if(obj instanceof ItemEntity) {
 			logger.debug("Entered within post insert listener. Begin indexing document");
-			indexDocument(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, (ListingEntity) obj);
+			indexDocument(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, (ItemEntity) obj);
 		}
 		
 	}
@@ -218,9 +218,9 @@ public class ListingEntityInterceptor implements  PostInsertEventListener, PostU
 		if(obj == null)
 			return;
 		
-		if(obj instanceof ListingEntity) {
+		if(obj instanceof ItemEntity) {
 			logger.debug("Entered within post refresh listener. Begin indexing document");
-			deleteDocument(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, (ListingEntity) obj);
+			deleteDocument(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, (ItemEntity) obj);
 		}
 		
 	}

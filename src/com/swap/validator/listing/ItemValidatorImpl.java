@@ -4,14 +4,14 @@ import org.springframework.stereotype.Service;
 
 import com.swap.common.error.ErrorEnum;
 import com.swap.common.exceptions.SwapException;
-import com.swap.entity.listing.ListingEntity;
-import com.swap.models.listing.ListingRequest;
+import com.swap.entity.item.ItemEntity;
+import com.swap.models.listing.ItemRequest;
 
 @Service
-public class ListingValidatorImpl implements ListingValidator {
+public class ItemValidatorImpl implements ItemValidator {
 
 	@Override
-	public void validateListingRequest(ListingRequest listingRequest) {
+	public void validateListingRequest(ItemRequest listingRequest) {
 		if (listingRequest == null)
 			throw new SwapException(ErrorEnum.INVALID_LISTING_REQUEST);
 		if(validateNotNullFields(listingRequest)){
@@ -34,14 +34,14 @@ public class ListingValidatorImpl implements ListingValidator {
 	}
 
 	@Override
-	public void validateResponse(ListingEntity entity) throws SwapException {
+	public void validateResponse(ItemEntity entity) throws SwapException {
 		if (entity == null) {
 			throw new SwapException(ErrorEnum.LISTING_DAO_ERROR);
 		}
 	}
 
 	@Override
-	public void validateUpdateRequest(ListingRequest listingRequest) {
+	public void validateUpdateRequest(ItemRequest listingRequest) {
 		if (listingRequest == null || listingRequest.getItemId() == null)
 			throw new SwapException(ErrorEnum.INVALID_LISTING_REQUEST);
 		if(validateNotNullFields(listingRequest)){
@@ -49,7 +49,7 @@ public class ListingValidatorImpl implements ListingValidator {
 		}
 	}
 
-	private boolean validateNotNullFields(ListingRequest listingRequest) {
+	private boolean validateNotNullFields(ItemRequest listingRequest) {
 		return listingRequest.getDescription() == null || listingRequest.getTitle() == null
 				|| listingRequest.getCategoryId() == null || listingRequest.getUserId() == null;
 	}
