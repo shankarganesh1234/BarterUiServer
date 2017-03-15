@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import com.swap.common.constants.Constants;
 import com.swap.models.elasticsearch.ItemDocument;
 import com.swap.models.search.SearchResponse;
 
@@ -70,9 +71,9 @@ public class SearchElasticTransformerImpl implements SearchElasticTransformer {
 	 */
 	private ItemDocument createItem(JSONObject obj) {
 		ItemDocument item = new ItemDocument();
-		item.setTitle(obj.getString("title"));
-		item.setDescription(obj.getString("description"));
-		item.setImageUrl(obj.getString("imageUrl"));
+		item.setTitle(obj.getString("title") != null ? obj.getString("title") : null);
+		item.setDescription(obj.getString("description") != null ? obj.getString("description") : null);
+		item.setImageUrl(obj.optString("imageUrl"));
 		return item;
 	}
 
@@ -117,5 +118,19 @@ public class SearchElasticTransformerImpl implements SearchElasticTransformer {
 			items.add(item);
 		}
 		return items;
+	}
+
+	@Override
+	public String convertToSearchRequest(String searchQuery, Long zip) {
+		
+		String query = new String(Constants.SEARCH_ZIP_TITLE_QUERY);
+		query = query.replace(Constants.WILDCARD_KEY, Constants.TITLE);
+		query = query.replace(Constants.WILDCARD_VALUE, "*"+searchQuery.trim()+"*");
+		
+		query = query.replace(Constants.FILTER_KEY, Constants.ZIP);
+		
+		JSONObject obj = new JSONObject(query);
+		obj.getJSONObject("query").getJSONObject("bool").getJSONObject("filter").getJSONObject("term").put(Constants.ZIP, zip);
+		return obj.toString();
 	}
 }

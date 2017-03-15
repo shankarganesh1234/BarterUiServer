@@ -14,4 +14,5 @@ public interface SearchElasticTransformer {
 	SearchResponse convertToSearchResponse(JSONObject object) throws JsonParseException, JsonMappingException, IOException;
 	JSONObject createItemAutoCompleteRequest(String term);
 	List<ItemDocument> convertoToAutocompleteResponse(JSONObject object) throws JsonParseException, JsonMappingException, IOException;
+	String convertToSearchRequest(String searchQuery, Long zip);
 }

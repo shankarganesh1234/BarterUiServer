@@ -24,7 +24,7 @@ public class Constants {
 	public static final String ELASTICSEARCH_INDEX_TYPE_ITEM = "item/";
 	public static final String ACCEPT_HEADER = "Accept";
 	public static final String CONTENT_TYPE_HEADER = "Content-type";
-	public static final String ELASTICSEARCH_SEARCH_QUERY_KEY = "_search?q=";
+	public static final String ELASTICSEARCH_SEARCH_QUERY_KEY = "_search";
 
 	// ERROR CODES
 	public static final Integer INTERNAL_SERVER_ERROR = 500;
@@ -36,4 +36,14 @@ public class Constants {
 	public static final String MY_API_KEY = "165899739553247";
 	public static final String API_SECRET = "api_secret";
 	public static final String MY_API_SECRET = "9GxNEKNAbmPp7Wj7f3kpvm5UW7w";
+	
+	// DSL
+	public static final String WILDCARD_KEY = "_wildcardKey";
+	public static final String WILDCARD_VALUE = "_wildcardValue";
+
+	public static final String FILTER_KEY = "_filterKey";
+	public static final String FILTER_VALUE = "_filterValue";
+	public static final String SEARCH_ZIP_TITLE_QUERY = "{ \"query\": { \"bool\": { \"must\": {  \"wildcard\":{ \"" + WILDCARD_KEY + "\":\""+WILDCARD_VALUE+"\" } }, \"filter\": { \"term\": { \""+ FILTER_KEY +"\": \"" + FILTER_VALUE + "\" } } } } }";
+	public static final String TITLE = "title";
+	public static final String ZIP = "zipCode";
 }

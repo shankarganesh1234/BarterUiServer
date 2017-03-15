@@ -2,7 +2,9 @@ package com.swap.models.search;
 
 public class SearchRequest {
 
-	private String query;
+	private String search;
+	private Long zip;
+	
 	private int start = 0;
 	private int limit = 10;
 	 
@@ -21,12 +23,20 @@ public class SearchRequest {
 	public void setLimit(int limit) {
 		this.limit = limit;
 	}
-
-	public String getQuery() {
-		return query;
+	
+	public String getSearch() {
+		return search;
 	}
 
-	public void setQuery(String query) {
-		this.query = query;
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	public Long getZip() {
+		return zip;
+	}
+
+	public void setZip(Long zip) {
+		this.zip = zip;
 	}
 }

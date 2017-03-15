@@ -31,8 +31,8 @@ public class SearchElasticDaoImpl implements SearchElasticDao {
 	private SwapHttpClientFactory swapHttpClientFactory;
 
 	@Override
-	public JSONObject searchItems(String query) {
-		return invokeSearch(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, query);
+	public JSONObject searchItems(String query, Long zip) {
+		return invokeSearch(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, query, zip);
 
 	}
 
@@ -45,7 +45,7 @@ public class SearchElasticDaoImpl implements SearchElasticDao {
 	 * @param query
 	 * @return
 	 */
-	private JSONObject invokeSearch(String baseUrl, String indexName, String type, String query) {
+	private JSONObject invokeSearch(String baseUrl, String indexName, String type, String query, Long zip) {
 
 		CloseableHttpResponse response = null;
 		JSONObject result = null;
@@ -123,6 +123,46 @@ public class SearchElasticDaoImpl implements SearchElasticDao {
 		return result;
 	}
 
+	@Override
+	public JSONObject searchItems(String query) {
+		return invokeSearchWithQuery(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, query);
+	}
 	
+	private JSONObject invokeSearchWithQuery(String baseUrl, String indexName, String type, String query) {
+		CloseableHttpResponse response = null;
+		JSONObject result = null;
+		try {
+
+			CloseableHttpClient closeableHttpClient = swapHttpClientFactory.getHttpClient();
+			HttpPost post = new HttpPost(baseUrl + indexName + type + Constants.ELASTICSEARCH_SEARCH_QUERY_KEY);
+			post.setHeader(Constants.ACCEPT_HEADER, MediaType.APPLICATION_JSON);
+			post.setHeader(Constants.CONTENT_TYPE_HEADER, MediaType.APPLICATION_JSON);
+			StringEntity requestEntity = new StringEntity(query, ContentType.APPLICATION_JSON);
+			post.setEntity(requestEntity);
+			response = closeableHttpClient.execute(post);
+
+			if (response != null && response.getStatusLine().getStatusCode() == 200) {
+				
+				HttpEntity entity = response.getEntity();
+				result = new JSONObject(IOUtils.toString(entity.getContent(), "UTF-8"));
+				EntityUtils.consume(entity);
+				
+			} else {
+				logger.debug("An error occurred while searching for items in elastic search");
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			if (response != null)
+				try {
+					response.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
+	}	
 
 }

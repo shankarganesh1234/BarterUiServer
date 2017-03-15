@@ -14,7 +14,7 @@ public class SearchElasticValidatorImpl implements SearchElasticValidator {
 	@Override
 	public void validateSearchElasticRequest(SearchRequest searchRequest) {
 		
-		if(searchRequest == null || StringUtils.isBlank(searchRequest.getQuery())) {
+		if(searchRequest == null || StringUtils.isBlank(searchRequest.getSearch())) {
 			throw new SwapException(ErrorEnum.INVALID_SEARCH_QUERY);
 		}
 	}

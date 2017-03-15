@@ -43,8 +43,11 @@ public class SearchServiceImpl implements SearchService {
 			// validate request
 			searchValidator.validateSearchElasticRequest(searchRequest);
 
+			// get final query
+			String query = searchElasticTransformer.convertToSearchRequest(searchRequest.getSearch(),  searchRequest.getZip());
+			
 			// call DAO and get response
-			JSONObject result = searchElasticDao.searchItems(searchRequest.getQuery());
+			JSONObject result = searchElasticDao.searchItems(query);
 
 			// validate response
 			searchResponse = searchElasticTransformer.convertToSearchResponse(result);
