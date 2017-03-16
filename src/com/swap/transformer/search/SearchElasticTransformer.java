@@ -8,11 +8,12 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONObject;
 
 import com.swap.models.elasticsearch.ItemDocument;
+import com.swap.models.search.SearchRequest;
 import com.swap.models.search.SearchResponse;
 
 public interface SearchElasticTransformer {
 	SearchResponse convertToSearchResponse(JSONObject object) throws JsonParseException, JsonMappingException, IOException;
 	JSONObject createItemAutoCompleteRequest(String term);
 	List<ItemDocument> convertoToAutocompleteResponse(JSONObject object) throws JsonParseException, JsonMappingException, IOException;
-	String convertToSearchRequest(String searchQuery, Long zip);
+	String convertToSearchRequest(SearchRequest request);
 }

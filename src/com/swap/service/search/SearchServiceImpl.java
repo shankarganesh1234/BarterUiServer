@@ -44,7 +44,7 @@ public class SearchServiceImpl implements SearchService {
 			searchValidator.validateSearchElasticRequest(searchRequest);
 
 			// get final query
-			String query = searchElasticTransformer.convertToSearchRequest(searchRequest.getSearch(),  searchRequest.getZip());
+			String query = searchElasticTransformer.convertToSearchRequest(searchRequest);
 			
 			// call DAO and get response
 			JSONObject result = searchElasticDao.searchItems(query);
@@ -52,6 +52,13 @@ public class SearchServiceImpl implements SearchService {
 			// validate response
 			searchResponse = searchElasticTransformer.convertToSearchResponse(result);
 
+			// set query and zip back in response
+			searchResponse.setSearch(searchRequest.getSearch());
+			searchResponse.setZip(searchRequest.getZip());
+			searchResponse.setLimit(searchRequest.getLimit());
+			searchResponse.setStart(searchRequest.getStart());
+			searchResponse.setPage(searchRequest.getPage());
+			
 		} catch (SwapException ex) {
 			logger.error(ex);
 			throw ex;

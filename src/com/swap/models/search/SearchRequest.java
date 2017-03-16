@@ -4,10 +4,18 @@ public class SearchRequest {
 
 	private String search;
 	private Long zip;
-	
 	private int start = 0;
 	private int limit = 10;
-	 
+	private int page = 1;
+	
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
 	public int getStart() {
 		return start;
 	}

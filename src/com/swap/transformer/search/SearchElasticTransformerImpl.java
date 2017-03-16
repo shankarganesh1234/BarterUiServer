@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.swap.common.constants.Constants;
 import com.swap.models.elasticsearch.ItemDocument;
+import com.swap.models.search.SearchRequest;
 import com.swap.models.search.SearchResponse;
 
 @Component
@@ -121,16 +122,18 @@ public class SearchElasticTransformerImpl implements SearchElasticTransformer {
 	}
 
 	@Override
-	public String convertToSearchRequest(String searchQuery, Long zip) {
+	public String convertToSearchRequest(SearchRequest request) {
 		
 		String query = new String(Constants.SEARCH_ZIP_TITLE_QUERY);
 		query = query.replace(Constants.WILDCARD_KEY, Constants.TITLE);
-		query = query.replace(Constants.WILDCARD_VALUE, "*"+searchQuery.trim()+"*");
+		query = query.replace(Constants.WILDCARD_VALUE, "*"+request.getSearch().trim()+"*");
 		
 		query = query.replace(Constants.FILTER_KEY, Constants.ZIP);
 		
 		JSONObject obj = new JSONObject(query);
-		obj.getJSONObject("query").getJSONObject("bool").getJSONObject("filter").getJSONObject("term").put(Constants.ZIP, zip);
+		obj.getJSONObject("query").getJSONObject("bool").getJSONObject("filter").getJSONObject("term").put(Constants.ZIP, request.getZip());
+		obj.put("size", request.getLimit());
+		obj.put("from", request.getStart());
 		return obj.toString();
 	}
 }
