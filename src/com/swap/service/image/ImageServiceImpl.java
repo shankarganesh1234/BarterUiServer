@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.hibernate.HibernateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.swap.common.error.ErrorEnum;
 import com.swap.common.exceptions.SwapException;
 import com.swap.dao.image.ImageDao;
-import com.swap.dao.listing.ListingDao;
-import com.swap.entity.listing.ImageEntity;
+import com.swap.dao.item.ItemDao;
+import com.swap.entity.item.ImageEntity;
 import com.swap.transformer.image.ImageTransformer;
-import com.swap.transformer.listing.ListingTransformer;
+import com.swap.transformer.listing.ItemTransformer;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -26,16 +27,15 @@ public class ImageServiceImpl implements ImageService {
 	ImageTransformer imageTransformer;
 
 	@Inject
-	ListingTransformer listingTransformer;
+	ItemTransformer listingTransformer;
 
 	@Inject
-	private ListingDao listingDao;
+	private ItemDao listingDao;
 
 	@Inject
 	private ImageDao imageDao;
 
 	@Override
-	@Transactional
 	public ImageEntity uploadImage(InputStream uploadedInputStream, String uploadedFileLocation, Long itemId) {
 		ImageEntity imageEntity = null;
 		try {
@@ -64,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	@Transactional
+	
 	public void updateItemTableWithImage(Long itemId, ImageEntity imageEntity) {
 		try {
 			// update image_id in item table with item id
@@ -79,5 +79,13 @@ public class ImageServiceImpl implements ImageService {
 			logger.error(ex);
 			throw new SwapException(ErrorEnum.GET_IMAGE_FAILURE);
 		}
+	}
+
+	@Override
+	@Transactional
+	public void createImage(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, Long itemId) {
+		String uploadedFileLocation = "/Users/shanganesh/Documents/image_copy/" + fileDetail.getFileName();
+		ImageEntity imageEntity = uploadImage(uploadedInputStream, uploadedFileLocation, itemId);
+		updateItemTableWithImage(itemId, imageEntity);
 	}
 }

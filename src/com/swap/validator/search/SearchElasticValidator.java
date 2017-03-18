@@ -2,10 +2,10 @@ package com.swap.validator.search;
 
 import org.json.JSONObject;
 
-import com.swap.models.search.SearchRequest;
+import com.swap.models.search.BarterySearchRequest;
 
 public interface SearchElasticValidator {
 
-	void validateSearchElasticRequest(SearchRequest searchRequest);
+	void validateSearchElasticRequest(BarterySearchRequest searchRequest);
 	void validateSearchElasticResponse(JSONObject searchElasticResponse);
 }

@@ -3,15 +3,15 @@ package com.swap.models.interest;
 import java.util.Date;
 
 import com.swap.entity.common.UserEntity;
-import com.swap.entity.listing.ListingEntity;
+import com.swap.entity.item.ItemEntity;
 
 public class InterestResponse {
 
 	private Long interestId;
 	private UserEntity originalUser;
 	private UserEntity interestedUser;
-	private ListingEntity originalItemId;
-	private ListingEntity swappableItemId;
+	private ItemEntity originalItemId;
+	private ItemEntity swappableItemId;
 	private String transactionId;
 	private Boolean oneSidedInterestFlag;
 	private Boolean twoSidedInterestFlag;
@@ -37,16 +37,16 @@ public class InterestResponse {
 		this.interestedUser = interestedUser;
 	}
 	
-	public ListingEntity getOriginalItemId() {
+	public ItemEntity getOriginalItemId() {
 		return originalItemId;
 	}
-	public void setOriginalItemId(ListingEntity originalItemId) {
+	public void setOriginalItemId(ItemEntity originalItemId) {
 		this.originalItemId = originalItemId;
 	}
-	public ListingEntity getSwappableItemId() {
+	public ItemEntity getSwappableItemId() {
 		return swappableItemId;
 	}
-	public void setSwappableItemId(ListingEntity swappableItemId) {
+	public void setSwappableItemId(ItemEntity swappableItemId) {
 		this.swappableItemId = swappableItemId;
 	}
 	public String getTransactionId() {

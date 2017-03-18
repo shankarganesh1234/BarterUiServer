@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.swap.client.CloudinaryClient;
-import com.swap.entity.listing.ImageEntity;
+import com.swap.entity.item.ImageEntity;
 
 @Service
 public class ImageTransformerImpl implements ImageTransformer {

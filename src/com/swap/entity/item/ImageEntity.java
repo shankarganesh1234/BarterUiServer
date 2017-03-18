@@ -1,4 +1,4 @@
-package com.swap.entity.listing;
+package com.swap.entity.item;
 
 import java.util.Date;
 

@@ -10,17 +10,17 @@ import com.swap.common.enums.ItemConditionEnum;
 import com.swap.common.enums.ItemStageEnum;
 import com.swap.entity.category.CategoryEntity;
 import com.swap.entity.common.UserEntity;
-import com.swap.entity.listing.ListingEntity;
+import com.swap.entity.item.ItemEntity;
 import com.swap.entity.location.LocationEntity;
 import com.swap.models.listing.Item;
-import com.swap.models.listing.ListingRequest;
+import com.swap.models.listing.ItemRequest;
 
 @Service
-public class ListingTransformerImpl implements ListingTransformer {
+public class ItemTransformerImpl implements ItemTransformer {
 
 	@Override
-	public ListingEntity createListingEntity(Item item) {
-		ListingEntity listingEntity = new ListingEntity();
+	public ItemEntity createListingEntity(Item item) {
+		ItemEntity listingEntity = new ItemEntity();
 		BeanUtils.copyProperties(item, listingEntity);
 		if (item.getCondition() != null) {
 			listingEntity.setCondition(item.getCondition().name());
@@ -32,7 +32,7 @@ public class ListingTransformerImpl implements ListingTransformer {
 	}
 
 	@Override
-	public Item createaListingModel(ListingEntity entity) {
+	public Item createaListingModel(ItemEntity entity) {
 		Item item = new Item();
 		BeanUtils.copyProperties(entity, item);
 		item.setCondition(entity.getCondition() != null ? ItemConditionEnum.fromValue(entity.getCondition().trim()) : null);
@@ -41,8 +41,8 @@ public class ListingTransformerImpl implements ListingTransformer {
 	}
 
 	@Override
-	public ListingEntity createListingEntityFromId(Long id, boolean isItemId) {
-		ListingEntity entity = new ListingEntity();
+	public ItemEntity createListingEntityFromId(Long id, boolean isItemId) {
+		ItemEntity entity = new ItemEntity();
 		if (isItemId) {
 			entity.setItemId(id);
 		} else {
@@ -54,16 +54,16 @@ public class ListingTransformerImpl implements ListingTransformer {
 	}
 
 	@Override
-	public List<Item> convertFromEntitiesToItemList(List<ListingEntity> listingEntities) {
+	public List<Item> convertFromEntitiesToItemList(List<ItemEntity> listingEntities) {
 		List<Item> items = new ArrayList<>(listingEntities.size());
-		for (ListingEntity entity : listingEntities) {
+		for (ItemEntity entity : listingEntities) {
 			items.add(createaListingModel(entity));
 		}
 		return items;
 	}
 
 	@Override
-	public Item convertRequestToItem(ListingRequest listingRequest, String call) {
+	public Item convertRequestToItem(ItemRequest listingRequest, String call) {
 		Item item = new Item();
 		if ("POST".equals(call)) {
 			item.setItemStage(ItemStageEnum.INITIALIZED);

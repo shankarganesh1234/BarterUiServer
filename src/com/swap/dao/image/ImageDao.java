@@ -2,7 +2,7 @@ package com.swap.dao.image;
 
 import java.util.List;
 
-import com.swap.entity.listing.ImageEntity;
+import com.swap.entity.item.ImageEntity;
 
 public interface ImageDao {
 	ImageEntity createImage(ImageEntity image);

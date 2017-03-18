@@ -6,7 +6,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 @JsonSerialize(include = Inclusion.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ListingRequest {
+public class ItemRequest {
 	private String title;
 	private Long itemId;
 	private String description;

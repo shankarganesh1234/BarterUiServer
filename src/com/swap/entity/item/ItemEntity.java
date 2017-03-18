@@ -1,4 +1,4 @@
-package com.swap.entity.listing;
+package com.swap.entity.item;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,15 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.swap.db.listeners.ListingEntityInterceptor;
+import com.swap.db.listeners.ItemEntityInterceptor;
 import com.swap.entity.category.CategoryEntity;
 import com.swap.entity.common.UserEntity;
 import com.swap.entity.location.LocationEntity;
 
 @Entity
-@EntityListeners(value = ListingEntityInterceptor.class)
+@EntityListeners(value = ItemEntityInterceptor.class)
 @Table(name = "item")
-public class ListingEntity {
+public class ItemEntity {
 	@Column(name = "title")
 	private String title;
 

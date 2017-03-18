@@ -3,7 +3,7 @@ package com.swap.transformer.image;
 import java.io.InputStream;
 import java.util.Map;
 
-import com.swap.entity.listing.ImageEntity;
+import com.swap.entity.item.ImageEntity;
 
 public interface ImageTransformer {
 	public void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation);

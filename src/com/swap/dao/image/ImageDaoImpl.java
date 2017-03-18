@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 
-import com.swap.entity.listing.ImageEntity;
+import com.swap.entity.item.ImageEntity;
 
 @Service
 public class ImageDaoImpl implements ImageDao {
