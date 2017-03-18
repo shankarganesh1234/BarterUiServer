@@ -20,8 +20,8 @@ public class Constants {
 	// elasticsearch
 	//public static final String ELASTICSEARCH_BASE_URL = "http://54.202.10.115:9200/";
 	public static final String ELASTICSEARCH_BASE_URL = "http://localhost:9200/";
-	public static final String ELASTICSEARCH_INDEX_NAME = "swap/";
-	public static final String ELASTICSEARCH_INDEX_TYPE_ITEM = "item/";
+	public static final String ELASTICSEARCH_INDEX_NAME = "swap";
+	public static final String ELASTICSEARCH_INDEX_TYPE_ITEM = "item";
 	public static final String ACCEPT_HEADER = "Accept";
 	public static final String CONTENT_TYPE_HEADER = "Content-type";
 	public static final String ELASTICSEARCH_SEARCH_QUERY_KEY = "_search";
@@ -38,12 +38,23 @@ public class Constants {
 	public static final String MY_API_SECRET = "9GxNEKNAbmPp7Wj7f3kpvm5UW7w";
 	
 	// DSL
-	public static final String WILDCARD_KEY = "_wildcardKey";
-	public static final String WILDCARD_VALUE = "_wildcardValue";
 
-	public static final String FILTER_KEY = "_filterKey";
-	public static final String FILTER_VALUE = "_filterValue";
-	public static final String SEARCH_ZIP_TITLE_QUERY = "{ \"query\": { \"bool\": { \"must\": {  \"wildcard\":{ \"" + WILDCARD_KEY + "\":\""+WILDCARD_VALUE+"\" } }, \"filter\": { \"term\": { \""+ FILTER_KEY +"\": \"" + FILTER_VALUE + "\" } } } } }";
 	public static final String TITLE = "title";
 	public static final String ZIP = "zipCode";
+	public static final String BLANK = "";
+	public static final String FILTER = "filter";
+	public static final String TERM = "term";
+	public static final String QUERY = "query";
+	public static final String BOOL = "bool";
+	public static final String FROM = "from";
+	public static final String SIZE = "size";
+	public static final String CLUSTER_NAME = "cluster.name";
+	public static final String CLUSTER_NAME_VALUE = "bartery-cluster";
+	public static final String ELASTICSEARCH_HOST = "localhost";
+	
+	
+	// pagination 
+	public static final Integer LIMIT = 8;
+	public static final Integer START = 0;
+	public static final Integer PAGE = 1;
 }

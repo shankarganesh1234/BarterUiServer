@@ -2,17 +2,18 @@ package com.swap.models.search;
 
 import java.util.List;
 
+import com.swap.common.constants.Constants;
 import com.swap.models.elasticsearch.ItemDocument;
 
-public class SearchResponse {
+public class BarterySearchResponse {
 	
 	private List<ItemDocument> items;
-	private long start;
-	private long limit = 10;
 	private long total;
 	private String search;
 	private Long zip;
-	private int page = 1;
+	private int start = Constants.START;
+	private int limit = Constants.LIMIT;
+	private int page = Constants.PAGE;
 	
 	public String getSearch() {
 		return search;
@@ -32,16 +33,16 @@ public class SearchResponse {
 	public void setItems(List<ItemDocument> items) {
 		this.items = items;
 	}
-	public long getStart() {
+	public int getStart() {
 		return start;
 	}
-	public void setStart(long start) {
+	public void setStart(int start) {
 		this.start = start;
 	}
-	public long getLimit() {
+	public int getLimit() {
 		return limit;
 	}
-	public void setLimit(long limit) {
+	public void setLimit(int limit) {
 		this.limit = limit;
 	}
 	public long getTotal() {

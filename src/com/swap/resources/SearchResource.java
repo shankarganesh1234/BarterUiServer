@@ -11,9 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.swap.models.elasticsearch.ItemDocument;
-import com.swap.models.search.SearchRequest;
-import com.swap.models.search.SearchResponse;
+import com.swap.models.search.BarterySearchRequest;
+import com.swap.models.search.BarterySearchResponse;
 import com.swap.service.search.SearchService;
 
 @Path("/search")
@@ -26,13 +25,13 @@ public class SearchResource {
 	
 	@Path("/item")
 	@POST
-	public SearchResponse searchItems(SearchRequest searchRequest) {
+	public BarterySearchResponse searchItems(BarterySearchRequest searchRequest) {
 		return searchService.searchItems(searchRequest);
 	}
 	
 	@Path("/autocomplete/{term}")
 	@GET
-	public List<ItemDocument> autoComplete(@PathParam("term") String term) {
+	public List<String> autoComplete(@PathParam("term") String term) {
 		return searchService.autoComplete(term);
 	}
 	

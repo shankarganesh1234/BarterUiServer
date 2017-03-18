@@ -3,15 +3,14 @@ package com.swap.db.listeners;
 import java.io.IOException;
 
 import javax.inject.Inject;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.rest.RestStatus;
 import org.hibernate.event.spi.PostDeleteEvent;
 import org.hibernate.event.spi.PostDeleteEventListener;
 import org.hibernate.event.spi.PostInsertEvent;
@@ -19,10 +18,11 @@ import org.hibernate.event.spi.PostInsertEventListener;
 import org.hibernate.event.spi.PostUpdateEvent;
 import org.hibernate.event.spi.PostUpdateEventListener;
 import org.hibernate.persister.entity.EntityPersister;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import com.swap.common.components.ElasticTransportClient;
 import com.swap.common.constants.Constants;
-import com.swap.common.httpclient.SwapHttpClientFactory;
 import com.swap.entity.item.ItemEntity;
 import com.swap.models.elasticsearch.ItemDocument;
 
@@ -39,7 +39,24 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 	private static final Logger logger = Logger.getLogger(ItemEntityInterceptor.class);
 
 	@Inject
-	private SwapHttpClientFactory httpClientFactory;
+	private ElasticTransportClient elasticTransportClient;
+	
+	ObjectMapper mapper = new ObjectMapper(); // create once, reuse
+
+	
+	/**
+	 * 
+	 * @param item
+	 * @return
+	 */
+	private ItemDocument createItemDocument(ItemEntity item) {
+		ItemDocument itemDocument = new ItemDocument();
+		BeanUtils.copyProperties(item, itemDocument);
+		itemDocument.setZipCode((item.getZipCode() != null && item.getZipCode().getZipCode() != null ? item.getZipCode().getZipCode() : null));
+		itemDocument.setCategoryName((item.getCategoryId() != null && item.getCategoryId().getCategoryName() != null ? item.getCategoryId().getCategoryName() : null));
+		itemDocument.setTitleSuggest(item.getTitle());
+		return itemDocument;
+	}
 	
 	/**
 	 * 
@@ -63,38 +80,56 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 		if(itemId == null) {
 			logger.debug("Item id field is null/blank. Cannot index without an id");
 		}
-		
-		CloseableHttpResponse response = null;
+	
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			String itemJson = mapper.writeValueAsString(createItemDocument(item));
-			StringEntity entity = new StringEntity(itemJson);
-			CloseableHttpClient closeableHttpClient = httpClientFactory.getHttpClient();
-			
-			HttpPut put = new HttpPut(baseUrl + indexName + type + itemId);
-			put.setEntity(entity);
-			put.setHeader(Constants.ACCEPT_HEADER, MediaType.APPLICATION_JSON);
-			put.setHeader(Constants.CONTENT_TYPE_HEADER, MediaType.APPLICATION_JSON);
-			
-			response = closeableHttpClient.execute(put);
-			if(response != null && response.getStatusLine().getStatusCode() == 200) {
+			// generate json
+			ItemDocument itemDocument = createItemDocument(item);
+			byte[] itemSource = mapper.writeValueAsBytes(itemDocument);
+			IndexResponse indexResponse = elasticTransportClient.getTransportClient()
+					.prepareIndex(Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM)
+					.setSource(itemSource).get();
+			if(indexResponse != null && indexResponse.status().equals(RestStatus.CREATED)) {
 				logger.debug("Item with ItemId = " + itemId + " indexed successfully");
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.debug("Exception occurred within ListingEntityInterceptor.indexDocument(). Failing silently and proceeding");
-		} finally {
-			
-			if(response != null)
-				try {
-					response.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
+		} 
 	}
 	
+	/**
+	 * Index the document within elasticsearch node using http client
+	 * @param baseUrl
+	 * @param indexName
+	 * @param type
+	 * @param item
+	 */
+	private void updateDocument(String baseUrl, String indexName, String type, ItemEntity item) {
+		
+		if(item == null) {
+			logger.debug("Item instance was null. Nothing to index in elasticsearch");
+		}
+		
+		Long itemId = item.getItemId();
+		if(itemId == null) {
+			logger.debug("Item id field is null/blank. Cannot index without an id");
+		}
+	
+		try {
+			// generate json
+			ItemDocument itemDocument = createItemDocument(item);
+			byte[] itemSource = mapper.writeValueAsBytes(itemDocument);
+			UpdateResponse updateResponse = elasticTransportClient.getTransportClient()
+					.prepareUpdate(Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, String.valueOf(itemId))
+					.setDoc(itemSource).get();
+			if(updateResponse != null && updateResponse.status().equals(RestStatus.CREATED)) {
+				logger.debug("Item with ItemId = " + itemId + " updated successfully");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			logger.debug("Exception occurred within ListingEntityInterceptor.indexDocument(). Failing silently and proceeding");
+		} 
+	}
 	
 	/**
 	 * Index the document within elasticsearch node using http client
@@ -116,16 +151,13 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 		
 		CloseableHttpResponse response = null;
 		try {
-			CloseableHttpClient closeableHttpClient = httpClientFactory.getHttpClient();
-			
-			HttpDelete delete = new HttpDelete(baseUrl + indexName + type + itemId);
-			delete.setHeader(Constants.ACCEPT_HEADER, MediaType.APPLICATION_JSON);
-			delete.setHeader(Constants.CONTENT_TYPE_HEADER, MediaType.APPLICATION_JSON);
-			
-			response = closeableHttpClient.execute(delete);
-			if(response != null && response.getStatusLine().getStatusCode() == 200) {
+			DeleteResponse deleteResponse = elasticTransportClient.getTransportClient()
+					.prepareDelete(Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, String.valueOf(itemId))
+					.get();
+			if(deleteResponse != null && deleteResponse.status().equals(RestStatus.OK)) {
 				logger.debug("Item with ItemId = " + itemId + " deleted successfully");
 			}
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			logger.debug("Exception occurred within ListingEntityInterceptor.deleteDocument(). Failing silently and proceeding");
@@ -141,40 +173,6 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 		}
 	}
 	
-	/**
-	 * 
-	 * @param item
-	 * @return
-	 */
-	private ItemDocument createItemDocument(ItemEntity item) {
-		ItemDocument document = new ItemDocument();
-		document.setActiveInterests(item.getActiveInterests());
-		document.setCategoryName(item.getCategoryId() != null ? item.getCategoryId().getCategoryName() : null);
-		document.setCity(item.getZipCode() != null ? item.getZipCode().getCity() : null);
-		document.setCondition(item.getCondition());
-		document.setDescription(item.getDescription());
-		document.setImageUrl(item.getImage_id() != null ? item.getImage_id().getUrl() : null);
-		document.setItemId(item.getItemId());
-		document.setItemStage(document.getItemStage());
-		document.setNumOfInterests(item.getNumOfInterests());
-		document.setNumOfReviews(item.getNumOfReviews());
-		document.setQuantity(item.getQuantity());
-		document.setStory(item.getStory());
-		document.setTitle(item.getTitle());
-		document.setTitleSuggest(item.getTitle());
-		document.setUserName(item.getUserId() != null ? item.getUserId().getUserName() : null);
-		document.setZipCode(item.getZipCode() != null ? item.getZipCode().getZipCode() : null);
-		return document;
-	}
-	
-	public SwapHttpClientFactory getHttpClient() {
-		return httpClientFactory;
-	}
-
-	public void setHttpClient(SwapHttpClientFactory httpClientFactory) {
-		this.httpClientFactory = httpClientFactory;
-	}
-
 	@Override
 	public void onPostUpdate(PostUpdateEvent event) {
 		System.out.println("inside post update");
@@ -185,7 +183,7 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 		
 		if(obj instanceof ItemEntity) {
 			logger.debug("Entered within post update listener. Begin indexing document");
-			indexDocument(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, (ItemEntity) obj);
+			updateDocument(Constants.ELASTICSEARCH_BASE_URL, Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, (ItemEntity) obj);
 		}
 	}
 
