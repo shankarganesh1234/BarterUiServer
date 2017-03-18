@@ -16,6 +16,7 @@ import com.swap.common.exceptions.SwapException;
 import com.swap.dao.image.ImageDao;
 import com.swap.dao.item.ItemDao;
 import com.swap.entity.item.ImageEntity;
+import com.swap.entity.item.ItemEntity;
 import com.swap.transformer.image.ImageTransformer;
 import com.swap.transformer.listing.ItemTransformer;
 
@@ -47,9 +48,13 @@ public class ImageServiceImpl implements ImageService {
 
 			// create image entity
 			imageEntity = imageTransformer.createImageEntity(map);
+			ItemEntity itemEntity = new ItemEntity();
+			itemEntity.setItemId(itemId);
+			imageEntity.setItemId(itemEntity);
 
 			// save to image table
 			imageEntity = imageDao.createImage(imageEntity);
+			
 		} catch (SwapException ex) {
 			logger.error(ex);
 			throw ex;

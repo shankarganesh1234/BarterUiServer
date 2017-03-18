@@ -15,7 +15,6 @@ import org.hibernate.event.spi.EventType;
 import org.springframework.stereotype.Service;
 
 import com.swap.db.listeners.ItemEntityInterceptor;
-import com.swap.entity.interest.InterestEntity;
 import com.swap.entity.item.ImageEntity;
 import com.swap.entity.item.ItemEntity;
 
@@ -89,7 +88,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public void updateListingForImage(Long itemId, ImageEntity imageEntity) {
-		ItemEntity dbRecord = sessionFactory.getCurrentSession().load(ItemEntity.class, itemId);
+		ItemEntity dbRecord = sessionFactory.getCurrentSession().get(ItemEntity.class, itemId);
 		dbRecord.setImage_id(imageEntity);
 		sessionFactory.getCurrentSession().update(dbRecord);
 	}
