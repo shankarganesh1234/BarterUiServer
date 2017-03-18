@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateResponse;
@@ -42,7 +43,6 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 	private ElasticTransportClient elasticTransportClient;
 	
 	ObjectMapper mapper = new ObjectMapper(); // create once, reuse
-
 	
 	/**
 	 * 
@@ -50,6 +50,7 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 	 * @return
 	 */
 	private ItemDocument createItemDocument(ItemEntity item) {
+		mapper.setSerializationInclusion(Inclusion.NON_NULL);
 		ItemDocument itemDocument = new ItemDocument();
 		BeanUtils.copyProperties(item, itemDocument);
 		itemDocument.setZipCode((item.getZipCode() != null && item.getZipCode().getZipCode() != null ? item.getZipCode().getZipCode() : null));
