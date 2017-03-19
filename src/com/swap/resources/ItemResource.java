@@ -38,13 +38,13 @@ public class ItemResource {
 	}
 
 	@POST
-	public void listing(ItemRequest listingRequest) {
-		listingService.listing(listingRequest);
+	public Item listing(ItemRequest listingRequest) {
+		return listingService.listing(listingRequest);
 	}
 
 	@PUT
-	public void updateListing(ItemRequest listingRequest) {
-		listingService.updateListing(listingRequest);
+	public Item updateListing(ItemRequest listingRequest) {
+		return listingService.updateListing(listingRequest);
 	}
 
 	@DELETE
