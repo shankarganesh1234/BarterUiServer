@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -46,18 +44,6 @@ public class ImageEntity {
 	@Column(name = "create_date")
 	private Date createdAt;
 	
-	@OneToOne
-	@JoinColumn(name = "item_id")
-	private ItemEntity itemId;
-
-	public ItemEntity getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(ItemEntity itemId) {
-		this.itemId = itemId;
-	}
-
 	public String getPublic_id() {
 		return public_id;
 	}

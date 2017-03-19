@@ -50,8 +50,7 @@ public class ImageServiceImpl implements ImageService {
 			imageEntity = imageTransformer.createImageEntity(map);
 			ItemEntity itemEntity = new ItemEntity();
 			itemEntity.setItemId(itemId);
-			imageEntity.setItemId(itemEntity);
-
+			
 			// save to image table
 			imageEntity = imageDao.createImage(imageEntity);
 			
