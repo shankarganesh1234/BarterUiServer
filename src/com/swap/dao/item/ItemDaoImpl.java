@@ -53,7 +53,7 @@ public class ItemDaoImpl implements ItemDao {
 	public List<ItemEntity> getListingsByUserId(ItemEntity listingEntity) {
 		@SuppressWarnings("unchecked")
 		TypedQuery<ItemEntity> query = sessionFactory.getCurrentSession()
-				.createQuery("FROM ListingEntity where user_id = :userId");
+				.createQuery("FROM ItemEntity where user_id = :userId");
 		query.setParameter("userId", listingEntity.getUserId());
 		List<ItemEntity> result = query.getResultList();
 		return result;
