@@ -28,4 +28,5 @@ public class LoginResource {
 		return loginService.connectUser(request, providerId);
 	}
 
+	
 }

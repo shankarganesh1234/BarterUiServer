@@ -16,6 +16,7 @@
 		base-package="com.swap.common, com.swap.service, com.swap.dao, com.swap.transformer, com.swap.validator, com.swap.db.listeners, com.swap.client" />
 
 
+	<!-- resource bundle for messages -->
 	<bean id="resourceBundle"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="/WEB-INF/resources/locale/error_messages" />
@@ -24,37 +25,42 @@
 		<property name="useCodeAsDefaultMessage" value="true" />
 	</bean>
 
+	<!-- hibernate transaction manager -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
-	
+
+	<!-- text encryptor used by spring social -->
 	<bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors"
 		factory-method="noOpText" />
 
+	<!-- db data source -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<!-- <property name="url"
-			value="jdbc:postgresql://swapdb.cqxock9b8dxe.us-west-2.rds.amazonaws.com:5432/swapdb" /> -->
-		<property name="url"
-			value="jdbc:postgresql://localhost:5432/shanganesh" />
+		<!-- <property name="url" value="jdbc:postgresql://swapdb.cqxock9b8dxe.us-west-2.rds.amazonaws.com:5432/swapdb" 
+			/> -->
+		<property name="url" value="jdbc:postgresql://localhost:5432/shanganesh" />
 		<property name="username" value="csvswap" />
 		<property name="password" value="Csvswap1" />
 	</bean>
-	
-	<bean id="connectionFactoryLocator" 
-      class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
-    <property name="connectionFactories">
-        <list>
-            <bean class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
-                <constructor-arg value="1349995671730953" />
-                <constructor-arg value="52e714a35dc167259b385e5d8a62c0a0" />				
-            </bean>
-        </list>
-    </property>
-</bean>
 
+	<!-- connectionFactoryLocator for getting registered Connections -->
+	<bean id="connectionFactoryLocator"
+		class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+		<property name="connectionFactories">
+			<list>
+				<bean
+					class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
+					<constructor-arg value="422821098053082" />
+					<constructor-arg value="37a589b26576cebe77529d7f24ba7d3b" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Session factory used by hibernate -->
 	<bean id="mySessionFactory"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -64,15 +70,11 @@
 			</list>
 		</property>
 		<property name="hibernateProperties">
-		<props>
-		<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL81Dialect</prop>
-		<prop key="hibernate.show_sql">true</prop>
-		</props>
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL81Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
 		</property>
-		<!-- Adding Interceptor here -->
-		<!-- <property name="entityInterceptor">
-			<bean class="com.swap.entity.listing.ListingEntityInterceptor"></bean>
-		</property> -->
 	</bean>
 
 </beans>

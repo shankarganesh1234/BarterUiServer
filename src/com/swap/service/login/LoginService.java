@@ -6,5 +6,7 @@ import com.swap.models.login.LoginRequest;
 
 public interface LoginService {
 	UserProfile connectUser(LoginRequest inputRequest, String providerId);
-
+	boolean test(String providerId, String accessToken);
+	boolean hasExpired(String providerId, String accessToken);
+	boolean refresh(String providerId, String accessToken);
 }
