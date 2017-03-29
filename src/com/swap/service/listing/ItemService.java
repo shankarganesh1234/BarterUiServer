@@ -10,9 +10,9 @@ public interface ItemService {
 
 	public List<Item> getListingsByUserId(Long userId);
 
-	public void listing(ItemRequest listingRequest);
+	public Item listing(ItemRequest listingRequest);
 
-	public void updateListing(ItemRequest listingRequest);
+	public Item updateListing(ItemRequest listingRequest);
 	
 	public void deleteListing(Long itemId);
 	

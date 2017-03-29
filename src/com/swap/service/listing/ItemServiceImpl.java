@@ -75,12 +75,14 @@ public class ItemServiceImpl implements ItemService {
 
 	@Transactional
 	@Override
-	public void listing(ItemRequest listingRequest) {
+	public Item listing(ItemRequest listingRequest) {
+		Item item = null;
 		try {
 			listingValidator.validateListingRequest(listingRequest);
-			Item item = listingTransformer.convertRequestToItem(listingRequest, "POST");
+			item = listingTransformer.convertRequestToItem(listingRequest, "POST");
 			ItemEntity entity = listingTransformer.createListingEntity(item);
 			listingDao.createListing(entity);
+			item.setItemId(entity.getItemId());
 		} catch (SwapException ex) {
 			logger.error(ex);
 			throw ex;
@@ -91,16 +93,19 @@ public class ItemServiceImpl implements ItemService {
 			logger.error(ex);
 			throw new SwapException(ErrorEnum.GET_CATEGORY_FAILURE);
 		}
+		return item;
 	}
 
 	@Transactional
 	@Override
-	public void updateListing(ItemRequest listingRequest) {
+	public Item updateListing(ItemRequest listingRequest) {
+		Item item = null;
 		try {
 			listingValidator.validateUpdateRequest(listingRequest);
-			Item item = listingTransformer.convertRequestToItem(listingRequest, "PUT");
+			item = listingTransformer.convertRequestToItem(listingRequest, "PUT");
 			ItemEntity entity = listingTransformer.createListingEntity(item);
 			listingDao.updateListing(entity);
+			item.setItemId(entity.getItemId());
 		} catch (SwapException ex) {
 			logger.error(ex);
 			throw ex;
@@ -111,6 +116,7 @@ public class ItemServiceImpl implements ItemService {
 			logger.error(ex);
 			throw new SwapException(ErrorEnum.GET_CATEGORY_FAILURE);
 		}
+		return item;
 	}
 
 	@Transactional

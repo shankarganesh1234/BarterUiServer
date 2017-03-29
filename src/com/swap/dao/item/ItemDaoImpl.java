@@ -14,8 +14,8 @@ import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.event.spi.EventType;
 import org.springframework.stereotype.Service;
 
+import com.swap.common.components.CommonBeanUtils;
 import com.swap.db.listeners.ItemEntityInterceptor;
-import com.swap.entity.interest.InterestEntity;
 import com.swap.entity.item.ImageEntity;
 import com.swap.entity.item.ItemEntity;
 
@@ -31,6 +31,9 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Inject
 	private ItemEntityInterceptor listener;
+	
+	@Inject
+	private CommonBeanUtils commonBeanUtils;
 
 	@PostConstruct
 	public void init() {
@@ -50,7 +53,7 @@ public class ItemDaoImpl implements ItemDao {
 	public List<ItemEntity> getListingsByUserId(ItemEntity listingEntity) {
 		@SuppressWarnings("unchecked")
 		TypedQuery<ItemEntity> query = sessionFactory.getCurrentSession()
-				.createQuery("FROM ListingEntity where user_id = :userId");
+				.createQuery("FROM ItemEntity where user_id = :userId");
 		query.setParameter("userId", listingEntity.getUserId());
 		List<ItemEntity> result = query.getResultList();
 		return result;
@@ -63,7 +66,8 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public void updateListing(ItemEntity listingEntity) {
-		sessionFactory.getCurrentSession().update(listingEntity);
+		ItemEntity dbRecord = sessionFactory.getCurrentSession().get(ItemEntity.class, listingEntity.getItemId());
+		sessionFactory.getCurrentSession().update(createEntityForUpdate(listingEntity, dbRecord));
 	}
 
 	@Override
@@ -89,8 +93,19 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public void updateListingForImage(Long itemId, ImageEntity imageEntity) {
-		ItemEntity dbRecord = sessionFactory.getCurrentSession().load(ItemEntity.class, itemId);
+		ItemEntity dbRecord = sessionFactory.getCurrentSession().get(ItemEntity.class, itemId);
 		dbRecord.setImage_id(imageEntity);
 		sessionFactory.getCurrentSession().update(dbRecord);
+	}
+	
+	/**
+	 * 
+	 * @param source
+	 * @param destination
+	 * @return
+	 */
+	private ItemEntity createEntityForUpdate(ItemEntity source, ItemEntity destination) {
+		commonBeanUtils.nullAwareBeanCopy(destination, source);
+		return destination;
 	}
 }

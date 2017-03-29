@@ -69,6 +69,7 @@ public class ItemTransformerImpl implements ItemTransformer {
 			item.setItemStage(ItemStageEnum.INITIALIZED);
 		} else if ("PUT".equals(call)) {
 			item.setItemId(listingRequest.getItemId());
+			item.setItemStage(ItemStageEnum.fromValue(listingRequest.getItemStage()));
 		}
 
 		item.setTitle(listingRequest.getTitle());

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateResponse;
@@ -42,7 +43,6 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 	private ElasticTransportClient elasticTransportClient;
 	
 	ObjectMapper mapper = new ObjectMapper(); // create once, reuse
-
 	
 	/**
 	 * 
@@ -50,11 +50,13 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 	 * @return
 	 */
 	private ItemDocument createItemDocument(ItemEntity item) {
+		mapper.setSerializationInclusion(Inclusion.NON_NULL);
 		ItemDocument itemDocument = new ItemDocument();
 		BeanUtils.copyProperties(item, itemDocument);
 		itemDocument.setZipCode((item.getZipCode() != null && item.getZipCode().getZipCode() != null ? item.getZipCode().getZipCode() : null));
 		itemDocument.setCategoryName((item.getCategoryId() != null && item.getCategoryId().getCategoryName() != null ? item.getCategoryId().getCategoryName() : null));
 		itemDocument.setTitleSuggest(item.getTitle());
+		itemDocument.setImageUrl((item.getImage_id() != null && item.getImage_id().getUrl() != null) ? item.getImage_id().getUrl() : null);
 		return itemDocument;
 	}
 	
@@ -86,7 +88,7 @@ public class ItemEntityInterceptor implements  PostInsertEventListener, PostUpda
 			ItemDocument itemDocument = createItemDocument(item);
 			byte[] itemSource = mapper.writeValueAsBytes(itemDocument);
 			IndexResponse indexResponse = elasticTransportClient.getTransportClient()
-					.prepareIndex(Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM)
+					.prepareIndex(Constants.ELASTICSEARCH_INDEX_NAME, Constants.ELASTICSEARCH_INDEX_TYPE_ITEM, String.valueOf(itemId))
 					.setSource(itemSource).get();
 			if(indexResponse != null && indexResponse.status().equals(RestStatus.CREATED)) {
 				logger.debug("Item with ItemId = " + itemId + " indexed successfully");

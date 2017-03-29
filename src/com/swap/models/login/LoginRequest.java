@@ -5,15 +5,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class LoginRequest {
-	 private String accessToken;
+	private String accessToken;
 
-	    @NotNull
-	    public String getAccessToken() {
-	        return accessToken;
-	    }
+	@NotNull
+	public String getAccessToken() {
+		return accessToken;
+	}
 
-	    public void setAccessToken(String accessToken) {
-	        this.accessToken = accessToken;
-	    }
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
 
 }

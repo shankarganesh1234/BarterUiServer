@@ -43,7 +43,7 @@ public class ImageEntity {
 
 	@Column(name = "create_date")
 	private Date createdAt;
-
+	
 	public String getPublic_id() {
 		return public_id;
 	}

@@ -25,8 +25,9 @@ public class InterestResource {
 	private InterestService interestService;
 
 	@POST
-	public void createInterested(InterestRequest request) {
+	public boolean createInterested(InterestRequest request) {
 		interestService.createInterest(request);
+		return true;
 	}
 
 	@PUT
