@@ -11,7 +11,7 @@ public class ItemRequest {
 	private Long itemId;
 	private String description;
 	private Long zipCode;
-	private Long userId;
+	private String userId;
 	private Long categoryId;
 	private Long imageId;
 	private String condition;
@@ -45,11 +45,11 @@ public class ItemRequest {
 		this.description = description;
 	}
 
-	public Long getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

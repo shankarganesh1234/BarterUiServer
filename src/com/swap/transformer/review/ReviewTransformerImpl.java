@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import com.swap.entity.common.UserEntity;
 import com.swap.entity.review.ReviewEntity;
 import com.swap.models.review.ReviewRequest;
 import com.swap.models.review.ReviewResponse;
@@ -19,8 +18,8 @@ public class ReviewTransformerImpl implements ReviewTransformer {
 	public ReviewEntity createEntityFromRequest(ReviewRequest request) {
 		ReviewEntity entity = new ReviewEntity();
 		BeanUtils.copyProperties(request, entity);
-		entity.setReviewFor(createEntityFromId(request.getReviewFor()));
-		entity.setReviewBy(createEntityFromId(request.getReviewBy()));
+		entity.setReviewFor(request.getReviewFor());
+		entity.setReviewBy(request.getReviewBy());
 		return entity;
 	}
 
@@ -42,16 +41,5 @@ public class ReviewTransformerImpl implements ReviewTransformer {
 		}
 		reviewsResponse.setReviews(reviewResponseList);
 		return reviewsResponse;
-	}
-	
-	/**
-	 * Helper method to create entity from ID
-	 * @param id
-	 * @return
-	 */
-	private UserEntity createEntityFromId(Long id) {
-		UserEntity entity = new UserEntity();
-		entity.setUserId(id);
-		return entity;
 	}
 }

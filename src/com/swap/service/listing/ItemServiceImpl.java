@@ -37,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
 	public Item getListingByItemId(Long itemId) {
 		try {
 			listingValidator.validateItemId(itemId);
-			ItemEntity entity = listingTransformer.createListingEntityFromId(itemId, true);
+			ItemEntity entity = listingTransformer.createListingEntityFromId(String.valueOf(itemId), true);
 			entity = listingDao.getListingByItemId(entity);
 			listingValidator.validateResponse(entity);
 			return listingTransformer.createaListingModel(entity);
@@ -55,7 +55,7 @@ public class ItemServiceImpl implements ItemService {
 
 	@Transactional
 	@Override
-	public List<Item> getListingsByUserId(Long userId) {
+	public List<Item> getListingsByUserId(String userId) {
 		try {
 			listingValidator.validateUserId(userId);
 			ItemEntity entity = listingTransformer.createListingEntityFromId(userId, false);
@@ -124,7 +124,7 @@ public class ItemServiceImpl implements ItemService {
 	public void deleteListing(Long itemId) {
 		try {
 			listingValidator.validateItemId(itemId);
-			ItemEntity entity = listingTransformer.createListingEntityFromId(itemId, true);
+			ItemEntity entity = listingTransformer.createListingEntityFromId(String.valueOf(itemId), true);
 			listingDao.deleteListing(entity);
 		} catch (SwapException ex) {
 			logger.error(ex);
@@ -140,7 +140,7 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	@Transactional
-	public List<Long> getListingIdsByUserId(Long userId) {
+	public List<Long> getListingIdsByUserId(String userId) {
 		try {
 			listingValidator.validateUserId(userId);
 			return listingDao.getListingIdsByUserId(userId);

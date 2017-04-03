@@ -53,7 +53,7 @@ public class ItemDaoImpl implements ItemDao {
 	public List<ItemEntity> getListingsByUserId(ItemEntity listingEntity) {
 		@SuppressWarnings("unchecked")
 		TypedQuery<ItemEntity> query = sessionFactory.getCurrentSession()
-				.createQuery("FROM ItemEntity where user_id = :userId");
+				.createQuery("FROM ItemEntity where userId = :userId");
 		query.setParameter("userId", listingEntity.getUserId());
 		List<ItemEntity> result = query.getResultList();
 		return result;
@@ -76,7 +76,7 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 	@Override
-	public List<Long> getListingIdsByUserId(Long userId) {
+	public List<Long> getListingIdsByUserId(String userId) {
 
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		// Create CriteriaQuery

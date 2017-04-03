@@ -25,7 +25,5 @@ public class LoginResource {
 	@POST
 	public UserProfile socialLogin(@PathParam("providerId") String providerId, LoginRequest request) {
 		return loginService.connectUser(request, providerId);
-	}
-
-	
+	}	
 }

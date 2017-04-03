@@ -1,13 +1,11 @@
 package com.swap.models.review;
 
-import com.swap.entity.common.UserEntity;
-
 public class ReviewResponse {
 
 	private Long reviewId;
 	private String review;
-	private UserEntity reviewFor;
-	private UserEntity reviewBy;
+	private String reviewFor;
+	private String reviewBy;
 	private Integer feedbackScore;
 	private String comments;
 	
@@ -18,20 +16,20 @@ public class ReviewResponse {
 		this.review = review;
 	}
 	
-	public UserEntity getReviewFor() {
-		return reviewFor;
-	}
-	public void setReviewFor(UserEntity reviewFor) {
-		this.reviewFor = reviewFor;
-	}
-	public UserEntity getReviewBy() {
-		return reviewBy;
-	}
-	public void setReviewBy(UserEntity reviewBy) {
-		this.reviewBy = reviewBy;
-	}
 	public Integer getFeedbackScore() {
 		return feedbackScore;
+	}
+	public String getReviewFor() {
+		return reviewFor;
+	}
+	public void setReviewFor(String reviewFor) {
+		this.reviewFor = reviewFor;
+	}
+	public String getReviewBy() {
+		return reviewBy;
+	}
+	public void setReviewBy(String reviewBy) {
+		this.reviewBy = reviewBy;
 	}
 	public void setFeedbackScore(Integer feedbackScore) {
 		this.feedbackScore = feedbackScore;

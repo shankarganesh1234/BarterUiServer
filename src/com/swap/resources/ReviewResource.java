@@ -50,19 +50,19 @@ public class ReviewResource {
 
 	@GET
 	@Path("byuser/{userId}")
-	public ReviewsResponse getReviewsByUser(@PathParam("userId") Long userId) {
+	public ReviewsResponse getReviewsByUser(@PathParam("userId") String userId) {
 		return reviewService.getReviewsByUser(userId);
 	}
 
 	@GET
 	@Path("foruser/{userId}")
-	public ReviewsResponse getReviewsForUser(@PathParam("userId") Long userId) {
+	public ReviewsResponse getReviewsForUser(@PathParam("userId") String userId) {
 		return reviewService.getReviewsForUser(userId);
 	}
 	
 	@GET
 	@Path("foruserbyuser/{forUser}/{byUser}")
-	public ReviewsResponse getReviewsForUser(@PathParam("forUser") Long forUser, @PathParam("byUser") Long byUser) {
+	public ReviewsResponse getReviewsForUser(@PathParam("forUser") String forUser, @PathParam("byUser") String byUser) {
 		return reviewService.getReviewsForUserByUser(forUser, byUser);
 	}
 }

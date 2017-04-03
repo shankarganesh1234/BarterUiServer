@@ -33,7 +33,7 @@ public class ItemResource {
 
 	@Path("/user/{userId}")
 	@GET
-	public List<Item> getListingsByUserId(@PathParam("userId") Long userId) {
+	public List<Item> getListingsByUserId(@PathParam("userId") String userId) {
 		return listingService.getListingsByUserId(userId);
 	}
 

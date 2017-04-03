@@ -44,7 +44,7 @@ public class ReviewDaoImpl implements ReviewDao {
 	}
 
 	@Override
-	public List<ReviewEntity> getReviewsForUser(Long userId) {
+	public List<ReviewEntity> getReviewsForUser(String userId) {
 		// Create CriteriaBuilder
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		// Create CriteriaQuery
@@ -61,7 +61,7 @@ public class ReviewDaoImpl implements ReviewDao {
 	}
 
 	@Override
-	public List<ReviewEntity> getReviewsByUser(Long userId) {
+	public List<ReviewEntity> getReviewsByUser(String userId) {
 		// Create CriteriaBuilder
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		// Create CriteriaQuery
@@ -77,7 +77,7 @@ public class ReviewDaoImpl implements ReviewDao {
 	}
 
 	@Override
-	public List<ReviewEntity> getReviewsForUserByUser(Long forUser, Long byUser) {
+	public List<ReviewEntity> getReviewsForUserByUser(String forUser, String byUser) {
 		
 		List<Predicate> predicates = new ArrayList<Predicate>(2);
 		

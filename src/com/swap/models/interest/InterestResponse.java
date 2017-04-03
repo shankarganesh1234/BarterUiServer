@@ -2,8 +2,8 @@ package com.swap.models.interest;
 
 import java.util.Date;
 
-import com.swap.entity.common.UserEntity;
 import com.swap.entity.item.ItemEntity;
+import com.swap.entity.user.UserEntity;
 
 public class InterestResponse {
 

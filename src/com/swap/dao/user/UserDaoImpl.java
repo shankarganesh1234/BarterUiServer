@@ -6,84 +6,48 @@ import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.swap.entity.common.UserEntity;
+import com.swap.entity.user.UserEntity;
 
 @Service
 public class UserDaoImpl implements UserDao {
 
 	@Inject
 	private SessionFactory sessionFactory;
-	
+
 	public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+		this.sessionFactory = sessionFactory;
+	}
 
 	/**
 	 * Get an existing User
 	 */
 
 	@Override
-	public UserEntity getUserById(UserEntity inputEntity) {
-
-		return sessionFactory.getCurrentSession().get(UserEntity.class, inputEntity.getUserName());
-
-	}
-
-	/**
-	 * Create a new user
-	 */
-	@Override
-	public UserEntity createUser(UserEntity inputEntity) {
-		sessionFactory.getCurrentSession().save(inputEntity);
-		return inputEntity;
-	}
-
-	/**
-	 * Update an existing user
-	 */
-
-	@Override
-	public UserEntity updateUser(UserEntity inputEntity) {
-		sessionFactory.getCurrentSession().update(inputEntity);
-		return inputEntity;
-
+	public UserEntity getUserById(String userId) {
+		@SuppressWarnings("unchecked")
+		TypedQuery<UserEntity> query = sessionFactory.getCurrentSession()
+				.createQuery("FROM UserEntity where userId = :userId");
+		query.setParameter("userId", userId);
+		List<UserEntity> result = query.getResultList();
+		return result.get(0);
 	}
 
 	/**
 	 * Delete a user
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void deleteUserByUserId(UserEntity inputEntity) {
-		sessionFactory.getCurrentSession().delete(inputEntity);
-	}
-
-	/**
-	 * Get all users
-	 */
-	@Override
-	public List<UserEntity> getAllUsers() {
-		@SuppressWarnings("unchecked")
-		TypedQuery<UserEntity> query = sessionFactory.getCurrentSession().createQuery("FROM UserEntity"); 
-		List<UserEntity> result = query.getResultList();
-		return result;
-	}
-
-	@Override
-	public UserEntity getUserByUserName(UserEntity userEntity) {
-		 @SuppressWarnings("unchecked")
-		TypedQuery<UserEntity> query = sessionFactory.getCurrentSession().createQuery("FROM UserEntity where user_name = :username");
-	        query.setParameter("username", userEntity.getUserName());
-	        return query.getSingleResult();
-	}
-
-	@Override
-	public void deleteUserByUserName(UserEntity userEntity) {
-		 @SuppressWarnings("unchecked")
-			TypedQuery<UserEntity> query = sessionFactory.getCurrentSession().createQuery("DELETE FROM UserEntity where user_name = :username");
-		        query.setParameter("username", userEntity.getUserName());
-		        query.executeUpdate();
+	public Boolean deleteUserByUserId(String userId) {
+		try {
+			Query<UserEntity> q = sessionFactory.getCurrentSession().createQuery("delete UserEntity where user_id = " + userId);
+			q.executeUpdate();
+			return Boolean.TRUE;
+		} catch (Exception ex) {
+			return Boolean.FALSE;
+		}
 	}
 
 }

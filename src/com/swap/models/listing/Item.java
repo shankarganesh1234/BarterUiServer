@@ -8,9 +8,9 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import com.swap.common.enums.ItemConditionEnum;
 import com.swap.common.enums.ItemStageEnum;
 import com.swap.entity.category.CategoryEntity;
-import com.swap.entity.common.UserEntity;
 import com.swap.entity.item.ImageEntity;
 import com.swap.entity.location.LocationEntity;
+import com.swap.entity.user.UserEntity;
 
 @JsonSerialize(include = Inclusion.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)

@@ -8,7 +8,7 @@ import com.swap.models.listing.ItemRequest;
 public interface ItemService {
 	public Item getListingByItemId(Long itemId);
 
-	public List<Item> getListingsByUserId(Long userId);
+	public List<Item> getListingsByUserId(String userId);
 
 	public Item listing(ItemRequest listingRequest);
 
@@ -16,5 +16,5 @@ public interface ItemService {
 	
 	public void deleteListing(Long itemId);
 	
-	List<Long> getListingIdsByUserId(Long userId);
+	List<Long> getListingIdsByUserId(String userId);
 }
