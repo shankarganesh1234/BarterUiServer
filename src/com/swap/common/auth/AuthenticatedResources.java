@@ -25,5 +25,7 @@ public class AuthenticatedResources {
 	@PostConstruct
 	public void init() {
 		authenicatedResourcesMap.put("listing", "POST,PUT,DELETE");
+		authenicatedResourcesMap.put("interest", "GET,POST,PUT,DELETE");
+
 	}
 }
