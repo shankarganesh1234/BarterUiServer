@@ -72,6 +72,8 @@ public class InterestDaoImpl implements InterestDao {
 
 	@Override
 	public List<InterestEntity> getInterestedByItemOwnerUser(Long userId) {
+		
+		String userIdStr = String.valueOf(userId);
 		// Create CriteriaBuilder
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		// Create CriteriaQuery
@@ -80,7 +82,9 @@ public class InterestDaoImpl implements InterestDao {
 		// Add conditions
 		Root<InterestEntity> interestEntityRoot = criteriaQuery.from(InterestEntity.class);
 		criteriaQuery.select(interestEntityRoot);
-		criteriaQuery.where(builder.equal(interestEntityRoot.get("originalUser"), userId));
+		UserEntity user = new UserEntity();
+		user.setUserId(userIdStr);
+		criteriaQuery.where(builder.equal(interestEntityRoot.get("originalUser"), user));
 		// execute
 		List<InterestEntity> interests = sessionFactory.getCurrentSession().createQuery(criteriaQuery).getResultList();
 		return interests;
