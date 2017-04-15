@@ -16,7 +16,7 @@ public interface ItemDao {
 
 	void deleteListing(ItemEntity listingEntity);
 	
-	List<Long> getListingIdsByUserId(Long userId);
+	List<Long> getListingIdsByUserId(String userId);
 	
 	void updateListingForImage(Long itemId, ImageEntity imageEntity);
 }

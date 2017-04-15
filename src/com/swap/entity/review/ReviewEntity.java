@@ -7,16 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.swap.entity.common.UserEntity;
 
 @JsonSerialize(include = Inclusion.NON_NULL)
 @Entity
@@ -24,20 +19,12 @@ import com.swap.entity.common.UserEntity;
 public class ReviewEntity {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="review_id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long reviewId;
 	
 	@Column(name="user_review")
 	private String review;
-	
-	@OneToOne
-	@JoinColumn(name="user_review_for")
-	private UserEntity reviewFor;
-	
-	@ManyToOne
-	@JoinColumn(name="user_review_by")
-	private UserEntity reviewBy;
 	
 	@Column(name="feedback_score")
 	private Integer feedbackScore;
@@ -52,16 +39,22 @@ public class ReviewEntity {
 	@Column(name="updated_on", insertable = false)
 	private Date updatedDate;
 	
-	public UserEntity getReviewFor() {
+	@Column(name = "user_review_for")
+	private String reviewFor;
+	
+	@Column(name = "user_review_by")
+	private String reviewBy;
+	
+	public String getReviewFor() {
 		return reviewFor;
 	}
-	public void setReviewFor(UserEntity reviewFor) {
+	public void setReviewFor(String reviewFor) {
 		this.reviewFor = reviewFor;
 	}
-	public UserEntity getReviewBy() {
+	public String getReviewBy() {
 		return reviewBy;
 	}
-	public void setReviewBy(UserEntity reviewBy) {
+	public void setReviewBy(String reviewBy) {
 		this.reviewBy = reviewBy;
 	}
 	public Date getCreatedDate() {

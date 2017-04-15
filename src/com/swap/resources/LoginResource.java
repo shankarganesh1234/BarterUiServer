@@ -20,13 +20,10 @@ public class LoginResource {
 
 	@Inject
 	private LoginService loginService;
-
 	
 	@Path("{providerId}")
 	@POST
 	public UserProfile socialLogin(@PathParam("providerId") String providerId, LoginRequest request) {
 		return loginService.connectUser(request, providerId);
-	}
-
-	
+	}	
 }

@@ -18,8 +18,8 @@ import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.swap.entity.common.UserEntity;
 import com.swap.entity.item.ItemEntity;
+import com.swap.entity.user.UserEntity;
 
 @Entity
 @Table(name = "interest")

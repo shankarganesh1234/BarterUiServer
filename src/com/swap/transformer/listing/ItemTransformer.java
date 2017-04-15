@@ -12,7 +12,7 @@ public interface ItemTransformer {
 
 	Item createaListingModel(ItemEntity entity);
 
-	ItemEntity createListingEntityFromId(Long id, boolean isItemId);
+	ItemEntity createListingEntityFromId(String id, boolean isItemId);
 
 	List<Item> convertFromEntitiesToItemList(List<ItemEntity> listingEntities);
 

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import com.swap.common.enums.ItemConditionEnum;
 import com.swap.common.enums.ItemStageEnum;
 import com.swap.entity.category.CategoryEntity;
-import com.swap.entity.common.UserEntity;
 import com.swap.entity.item.ItemEntity;
 import com.swap.entity.location.LocationEntity;
+import com.swap.entity.user.UserEntity;
 import com.swap.models.listing.Item;
 import com.swap.models.listing.ItemRequest;
 
@@ -41,10 +41,10 @@ public class ItemTransformerImpl implements ItemTransformer {
 	}
 
 	@Override
-	public ItemEntity createListingEntityFromId(Long id, boolean isItemId) {
+	public ItemEntity createListingEntityFromId(String id, boolean isItemId) {
 		ItemEntity entity = new ItemEntity();
 		if (isItemId) {
-			entity.setItemId(id);
+			entity.setItemId(Long.valueOf(id));
 		} else {
 			UserEntity user = new UserEntity();
 			user.setUserId(id);

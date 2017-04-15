@@ -27,7 +27,7 @@ public class ItemValidatorImpl implements ItemValidator {
 	}
 	
 	@Override
-	public void validateUserId(Long userId) {
+	public void validateUserId(String userId) {
 		if (userId == null) {
 			throw new SwapException(ErrorEnum.INVALID_USER_ID);
 		}

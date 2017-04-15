@@ -5,8 +5,8 @@ import java.util.List;
 public class InterestRequest {
 
 	private Long interestId;
-	private Long originalUser;
-	private Long interestedUser;
+	private String originalUser;
+	private String interestedUser;
 	private Long originalItem;
 	private List<Long> swappableItemIds;
 	private Boolean oneSidedInterestFlag;
@@ -20,16 +20,16 @@ public class InterestRequest {
 	public void setInterestId(Long interestId) {
 		this.interestId = interestId;
 	}
-	public Long getOriginalUser() {
+	public String getOriginalUser() {
 		return originalUser;
 	}
-	public void setOriginalUser(Long originalUser) {
+	public void setOriginalUser(String originalUser) {
 		this.originalUser = originalUser;
 	}
-	public Long getInterestedUser() {
+	public String getInterestedUser() {
 		return interestedUser;
 	}
-	public void setInterestedUser(Long interestedUser) {
+	public void setInterestedUser(String interestedUser) {
 		this.interestedUser = interestedUser;
 	}
 	public Long getOriginalItem() {

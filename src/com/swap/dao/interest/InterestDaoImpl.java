@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 
 import com.swap.entity.interest.InterestEntity;
+import com.swap.entity.user.UserEntity;
 
 @Service
 public class InterestDaoImpl implements InterestDao {
@@ -52,6 +53,7 @@ public class InterestDaoImpl implements InterestDao {
 	public List<InterestEntity> getInterestsByInterestedUser(Long userId) {
 
 		// Create CriteriaBuilder
+		String userIdStr = String.valueOf(userId);
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		// Create CriteriaQuery
 		CriteriaQuery<InterestEntity> criteriaQuery = builder.createQuery(InterestEntity.class);
@@ -59,7 +61,9 @@ public class InterestDaoImpl implements InterestDao {
 		// Add conditions
 		Root<InterestEntity> interestEntityRoot = criteriaQuery.from(InterestEntity.class);
 		criteriaQuery.select(interestEntityRoot);
-		criteriaQuery.where(builder.equal(interestEntityRoot.get("interestedUser"), userId));
+		UserEntity user = new UserEntity();
+		user.setUserId(userIdStr);
+		criteriaQuery.where(builder.equal(interestEntityRoot.get("interestedUser"), user));
 
 		// execute
 		List<InterestEntity> interests = sessionFactory.getCurrentSession().createQuery(criteriaQuery).getResultList();
@@ -68,6 +72,8 @@ public class InterestDaoImpl implements InterestDao {
 
 	@Override
 	public List<InterestEntity> getInterestedByItemOwnerUser(Long userId) {
+		
+		String userIdStr = String.valueOf(userId);
 		// Create CriteriaBuilder
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		// Create CriteriaQuery
@@ -76,7 +82,9 @@ public class InterestDaoImpl implements InterestDao {
 		// Add conditions
 		Root<InterestEntity> interestEntityRoot = criteriaQuery.from(InterestEntity.class);
 		criteriaQuery.select(interestEntityRoot);
-		criteriaQuery.where(builder.equal(interestEntityRoot.get("originalUser"), userId));
+		UserEntity user = new UserEntity();
+		user.setUserId(userIdStr);
+		criteriaQuery.where(builder.equal(interestEntityRoot.get("originalUser"), user));
 		// execute
 		List<InterestEntity> interests = sessionFactory.getCurrentSession().createQuery(criteriaQuery).getResultList();
 		return interests;

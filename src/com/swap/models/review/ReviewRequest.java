@@ -3,8 +3,8 @@ package com.swap.models.review;
 public class ReviewRequest {
 
 	private String review;
-	private Long reviewFor;
-	private Long reviewBy;
+	private String reviewFor;
+	private String reviewBy;
 	private Integer feedbackScore;
 	private String comments;
 	private Long reviewId;
@@ -15,16 +15,16 @@ public class ReviewRequest {
 	public void setReview(String review) {
 		this.review = review;
 	}
-	public Long getReviewFor() {
+	public String getReviewFor() {
 		return reviewFor;
 	}
-	public void setReviewFor(Long reviewFor) {
+	public void setReviewFor(String reviewFor) {
 		this.reviewFor = reviewFor;
 	}
-	public Long getReviewBy() {
+	public String getReviewBy() {
 		return reviewBy;
 	}
-	public void setReviewBy(Long reviewBy) {
+	public void setReviewBy(String reviewBy) {
 		this.reviewBy = reviewBy;
 	}
 	public Integer getFeedbackScore() {

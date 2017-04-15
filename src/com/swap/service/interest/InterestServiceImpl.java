@@ -173,10 +173,10 @@ public class InterestServiceImpl implements InterestService {
 	 */
 	private void validateRequestIntegrity(InterestRequest request) {
 		
-		Long originalItemUser = request.getOriginalUser();
+		String originalItemUser = request.getOriginalUser();
 		Long originalItemId = request.getOriginalItem();
 		
-		Long interestedUser = request.getInterestedUser();
+		String interestedUser = request.getInterestedUser();
 		List<Long> swappableItemIds = request.getSwappableItemIds();
 		
 		List<Long> originalUserItems = listingService.getListingIdsByUserId(originalItemUser);

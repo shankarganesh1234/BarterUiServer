@@ -12,8 +12,8 @@ import javax.persistence.Table;
 
 import com.swap.db.listeners.ItemEntityInterceptor;
 import com.swap.entity.category.CategoryEntity;
-import com.swap.entity.common.UserEntity;
 import com.swap.entity.location.LocationEntity;
+import com.swap.entity.user.UserEntity;
 
 @Entity
 @EntityListeners(value = ItemEntityInterceptor.class)

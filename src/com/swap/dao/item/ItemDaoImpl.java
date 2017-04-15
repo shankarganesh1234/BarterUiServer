@@ -5,9 +5,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.event.service.spi.EventListenerRegistry;
@@ -18,6 +15,7 @@ import com.swap.common.components.CommonBeanUtils;
 import com.swap.db.listeners.ItemEntityInterceptor;
 import com.swap.entity.item.ImageEntity;
 import com.swap.entity.item.ItemEntity;
+import com.swap.entity.user.UserEntity;
 
 @Service
 public class ItemDaoImpl implements ItemDao {
@@ -53,7 +51,7 @@ public class ItemDaoImpl implements ItemDao {
 	public List<ItemEntity> getListingsByUserId(ItemEntity listingEntity) {
 		@SuppressWarnings("unchecked")
 		TypedQuery<ItemEntity> query = sessionFactory.getCurrentSession()
-				.createQuery("FROM ItemEntity where user_id = :userId");
+				.createQuery("FROM ItemEntity where userId = :userId");
 		query.setParameter("userId", listingEntity.getUserId());
 		List<ItemEntity> result = query.getResultList();
 		return result;
@@ -76,19 +74,14 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 	@Override
-	public List<Long> getListingIdsByUserId(Long userId) {
+	public List<Long> getListingIdsByUserId(String userId) {
 
-		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
-		// Create CriteriaQuery
-		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
-
-		// Add conditions
-		Root<ItemEntity> listingEntityRoot = criteriaQuery.from(ItemEntity.class);
-		criteriaQuery.select(listingEntityRoot.get("itemId"));
-		criteriaQuery.where(builder.equal(listingEntityRoot.get("userId"), userId));
-		// execute
-		List<Long> interests = sessionFactory.getCurrentSession().createQuery(criteriaQuery).getResultList();
-		return interests;
+		UserEntity userEntity = new UserEntity();
+		userEntity.setUserId(userId);
+		@SuppressWarnings("unchecked")
+		TypedQuery<Long> query = sessionFactory.getCurrentSession().createQuery("select itemEntity.itemId from ItemEntity itemEntity where itemEntity.userId = :userId").setParameter("userId", userEntity);
+		List<Long> items = query.getResultList();
+		return items;
 	}
 
 	@Override

@@ -9,8 +9,8 @@ public interface ReviewService {
 	void createReview(ReviewRequest request);
 	void updateReview(ReviewRequest request, Long reviewId);
 	ReviewResponse getReviewByReviewId(Long reviewId);
-	ReviewsResponse getReviewsForUser(Long userId);
-	ReviewsResponse getReviewsByUser(Long userId);
-	ReviewsResponse getReviewsForUserByUser(Long forUser, Long byUser);
+	ReviewsResponse getReviewsForUser(String userId);
+	ReviewsResponse getReviewsByUser(String userId);
+	ReviewsResponse getReviewsForUserByUser(String forUser, String byUser);
 	void deleteReviewByReviewId(Long id);
 }

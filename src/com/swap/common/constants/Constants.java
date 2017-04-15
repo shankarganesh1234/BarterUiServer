@@ -57,4 +57,9 @@ public class Constants {
 	public static final Integer LIMIT = 8;
 	public static final Integer START = 0;
 	public static final Integer PAGE = 1;
+	
+	// login
+	public static final String PROVIDER_ID = "facebook";
+	public static final String AUTHORIZATION = "Authorization";
+	
 }

@@ -11,7 +11,7 @@ public interface ItemValidator {
 
 	void validateItemId(Long itemId);
 	
-	void validateUserId(Long userId);
+	void validateUserId(String userId);
 
 	void validateResponse(ItemEntity entity) throws SwapException;
 

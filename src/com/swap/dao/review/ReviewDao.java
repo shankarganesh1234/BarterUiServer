@@ -9,9 +9,9 @@ public interface ReviewDao {
 	void createReview(ReviewEntity entity);
 	void updateReview(ReviewEntity entity);
 	ReviewEntity getReviewByReviewId(Long reviewId);
-	List<ReviewEntity> getReviewsForUser(Long userId);
-	List<ReviewEntity> getReviewsByUser(Long userId);
-	List<ReviewEntity> getReviewsForUserByUser(Long forUser, Long byUser);
+	List<ReviewEntity> getReviewsForUser(String userId);
+	List<ReviewEntity> getReviewsByUser(String userId);
+	List<ReviewEntity> getReviewsForUserByUser(String forUser, String byUser);
 	void deleteReviewByReviewId(Long id);
 	void deleteReviewsForUser(Long userId);
 	void deleteReviewsByUser(Long userId);

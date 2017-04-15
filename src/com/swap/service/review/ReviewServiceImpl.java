@@ -107,7 +107,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	@Transactional
-	public ReviewsResponse getReviewsForUser(Long userId) {
+	public ReviewsResponse getReviewsForUser(String userId) {
 		ReviewsResponse response = null;
 		try {
 			List<ReviewEntity> entities = reviewDao.getReviewsForUser(userId);
@@ -127,7 +127,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	@Transactional
-	public ReviewsResponse getReviewsByUser(Long userId) {
+	public ReviewsResponse getReviewsByUser(String userId) {
 		ReviewsResponse response = null;
 		try {
 			List<ReviewEntity> entities = reviewDao.getReviewsByUser(userId);
@@ -147,7 +147,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	@Transactional
-	public ReviewsResponse getReviewsForUserByUser(Long forUser, Long byUser) {
+	public ReviewsResponse getReviewsForUserByUser(String forUser, String byUser) {
 		ReviewsResponse response = null;
 		try {
 			List<ReviewEntity> entities = reviewDao.getReviewsForUserByUser(forUser, byUser);
