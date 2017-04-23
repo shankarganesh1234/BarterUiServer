@@ -210,4 +210,26 @@ public class InterestServiceImpl implements InterestService {
 		InterestEntity entity = interestEntities.get(0);
 		interestDao.createInterested(entity);
 	}
+
+	@Override
+	@Transactional
+	public InterestsResponse getInterests(String userId, String itemId) {
+		InterestsResponse interests = null;
+		try {
+			List<InterestEntity> interestEntities = interestDao.getInterests(userId, itemId);
+			List<InterestResponse> interestResonseList = interestTransformer.createResponseListFromEntityList(interestEntities);
+			interests = new InterestsResponse();
+			interests.setInterests(interestResonseList);
+		} catch (SwapException ex) {
+			logger.error(ex);
+			throw ex;
+		} catch (HibernateException ex) {
+			logger.error(ex);
+			throw new SwapException(ErrorEnum.CREATE_INTEREST_FAILURE);
+		} catch (Exception ex) {
+			logger.error(ex);
+			throw new SwapException(ErrorEnum.CREATE_INTEREST_FAILURE);
+		}
+		return interests;
+	}
 }

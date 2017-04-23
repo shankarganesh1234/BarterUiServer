@@ -12,5 +12,5 @@ public interface InterestDao {
 	InterestEntity getInterestById(Long id);
 	List<InterestEntity> getInterestsByInterestedUser(Long userId);
 	List<InterestEntity> getInterestedByItemOwnerUser(Long userId);
-	
+	List<InterestEntity> getInterests(String userId, String itemId);
 }
