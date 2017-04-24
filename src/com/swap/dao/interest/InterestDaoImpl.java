@@ -130,7 +130,7 @@ public class InterestDaoImpl implements InterestDao {
 	}
 
 	@Override
-	public List<InterestEntity> getInterests(String userId, String itemId) {
+	public List<InterestEntity> getInterests(String userId, String itemId, boolean isOwner) {
 		// Create CriteriaBuilder
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		// Create CriteriaQuery
@@ -148,10 +148,13 @@ public class InterestDaoImpl implements InterestDao {
 		
 		
 		Predicate where = builder.conjunction();
-		where = builder.or(where, builder.equal(interestEntityRoot.get("originalItemId"), item));
-		where = builder.or(where, builder.equal(interestEntityRoot.get("swappableItemId"), item));
-		where = builder.or(where, builder.equal(interestEntityRoot.get("originalUser"), user));
-		where = builder.or(where, builder.equal(interestEntityRoot.get("interestedUser"), user));
+		where = builder.and(where, builder.equal(interestEntityRoot.get("originalItemId"), item));
+		
+		if (isOwner)
+			where = builder.and(where, builder.equal(interestEntityRoot.get("originalUser"), user));
+		else
+			where = builder.and(where, builder.equal(interestEntityRoot.get("interestedUser"), user));
+
 		criteriaQuery.where(where);
 		
 		// execute

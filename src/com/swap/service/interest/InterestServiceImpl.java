@@ -213,10 +213,10 @@ public class InterestServiceImpl implements InterestService {
 
 	@Override
 	@Transactional
-	public InterestsResponse getInterests(String userId, String itemId) {
+	public InterestsResponse getInterests(String userId, String itemId, boolean isOwner) {
 		InterestsResponse interests = null;
 		try {
-			List<InterestEntity> interestEntities = interestDao.getInterests(userId, itemId);
+			List<InterestEntity> interestEntities = interestDao.getInterests(userId, itemId, isOwner);
 			List<InterestResponse> interestResonseList = interestTransformer.createResponseListFromEntityList(interestEntities);
 			interests = new InterestsResponse();
 			interests.setInterests(interestResonseList);
