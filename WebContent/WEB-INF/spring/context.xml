@@ -15,6 +15,12 @@
 	<context:component-scan
 		base-package="com.swap.common, com.swap.service, com.swap.dao, com.swap.transformer, com.swap.validator, com.swap.db.listeners, com.swap.client" />
 
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>/WEB-INF/classes/environment.properties</value>
+		</property>
+	</bean>
 
 	<!-- resource bundle for messages -->
 	<bean id="resourceBundle"
@@ -38,12 +44,10 @@
 	<!-- db data source -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
 		destroy-method="close">
-		<property name="driverClassName" value="org.postgresql.Driver" />
-		<!-- <property name="url" value="jdbc:postgresql://swapdb.cqxock9b8dxe.us-west-2.rds.amazonaws.com:5432/swapdb" 
-			/> -->
-		<property name="url" value="jdbc:postgresql://localhost:5432/shanganesh" />
-		<property name="username" value="csvswap" />
-		<property name="password" value="Csvswap1" />
+		<property name="driverClassName" value="${db.driverClassName}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
 	</bean>
 
 	<!-- connectionFactoryLocator for getting registered Connections -->
