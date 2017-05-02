@@ -9,6 +9,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.swap.models.interest.InterestRequest;
@@ -60,6 +61,11 @@ public class InterestResource {
 	@Path("originaluser/{userId}")
 	public InterestsResponse getInterestedByItemOwnerUser(@PathParam("userId") Long userId) {
 		return interestService.getInterestedByOriginalUser(userId);
+	}
+	
+	@GET
+	public InterestsResponse getInterests(@QueryParam("user") String userId, @QueryParam("item") String itemId, @QueryParam("isowner") boolean isOwner) {
+		return interestService.getInterests(userId, itemId, isOwner);
 	}
 
 //	@GET

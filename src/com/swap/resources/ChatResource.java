@@ -33,9 +33,14 @@ public class ChatResource {
 		return chatService.getChatChannelByInterestedUser(interestedUserId);
 	}
 	
+//	@POST
+//	public void createChatDetail(ChatDetailsRequest request) {
+//		chatService.createChatDetails(request);
+//	}
+	
 	@POST
-	public void createChatDetail(ChatDetailsRequest request) {
-		chatService.createChatDetails(request);
+	public void sendBirdWebHook(String sendbirdWebHookJson) {
+		System.out.println(sendbirdWebHookJson);
 	}
 	
 }
