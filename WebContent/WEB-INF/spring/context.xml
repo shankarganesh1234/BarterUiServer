@@ -16,10 +16,14 @@
 		base-package="com.swap.common, com.swap.service, com.swap.dao, com.swap.transformer, com.swap.validator, com.swap.db.listeners, com.swap.client" />
 
 	<bean
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location">
-			<value>/WEB-INF/classes/environment.properties</value>
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id="propertyPlaceHolder">
+		<property name="properties" ref="envProps">
 		</property>
+	</bean>
+
+	<bean id="envProps"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location" value="/WEB-INF/classes/environment.properties" />
 	</bean>
 
 	<!-- resource bundle for messages -->
