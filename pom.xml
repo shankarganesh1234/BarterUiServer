@@ -9,6 +9,7 @@
 	<description>REST services for powering swap functionality</description>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<finalName>customServer</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

@@ -2,6 +2,13 @@ package com.swap.common.constants;
 
 public class Constants {
 
+	// prop names
+	public static final String ELASTICSEARCH_BASEURL = "elasticsearch.baseurl";
+	public static final String ELASTICSEARCH_CLUSTERNAME = "elasticsearch.clustername";
+	public static final String ELASTICSEARCH_INDEXNAME = "elasticsearch.indexname";
+	public static final String ELASTICSEARCH_INDEXTYPE = "elasticsearch.indextype";
+	public static final String ELASTICSEARCH_HOST = "elasticsearch.host";
+
 	// request response cache
 	public static final String REQ_RES_CACHE = "ReqResCache";
 	public static final Integer CACHE_REQ_RES_EXPIRE_AFTER = 10;
@@ -18,10 +25,6 @@ public class Constants {
 	public static final String CATEGORY_ID = "categoryId";
 
 	// elasticsearch
-	//public static final String ELASTICSEARCH_BASE_URL = "http://54.202.10.115:9200/";
-	public static final String ELASTICSEARCH_BASE_URL = "http://localhost:9200/";
-	public static final String ELASTICSEARCH_INDEX_NAME = "swap";
-	public static final String ELASTICSEARCH_INDEX_TYPE_ITEM = "item";
 	public static final String ACCEPT_HEADER = "Accept";
 	public static final String CONTENT_TYPE_HEADER = "Content-type";
 	public static final String ELASTICSEARCH_SEARCH_QUERY_KEY = "_search";
@@ -49,9 +52,6 @@ public class Constants {
 	public static final String FROM = "from";
 	public static final String SIZE = "size";
 	public static final String CLUSTER_NAME = "cluster.name";
-	public static final String CLUSTER_NAME_VALUE = "bartery-cluster";
-	public static final String ELASTICSEARCH_HOST = "localhost";
-	
 	
 	// pagination 
 	public static final Integer LIMIT = 8;

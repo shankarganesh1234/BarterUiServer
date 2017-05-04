@@ -11,6 +11,7 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.stereotype.Component;
 
 import com.swap.common.components.ElasticTransportClient;
@@ -23,16 +24,24 @@ public class SearchElasticDaoImpl implements SearchElasticDao {
 
 	@Inject
 	private ElasticTransportClient elasticTransportClient;
+	
+	@Inject
+	private PropertiesFactoryBean envProps;
 
 	@Override
 	public List<CompletionSuggestion.Entry> autoComplete(SuggestBuilder suggestBuilder) {
 
+		List<CompletionSuggestion.Entry> entryList = null;
+		try {
 		SearchResponse searchResponse = elasticTransportClient.getTransportClient()
-				.prepareSearch(Constants.ELASTICSEARCH_INDEX_NAME).setTypes(Constants.ELASTICSEARCH_INDEX_TYPE_ITEM)
+				.prepareSearch(envProps.getObject().getProperty(Constants.ELASTICSEARCH_INDEXNAME)).setTypes(envProps.getObject().getProperty(Constants.ELASTICSEARCH_INDEXTYPE))
 				.suggest(suggestBuilder).execute().actionGet();
 
 		CompletionSuggestion compSuggestion = searchResponse.getSuggest().getSuggestion("suggest");
-        List<CompletionSuggestion.Entry> entryList = compSuggestion.getEntries();
+        entryList = compSuggestion.getEntries();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
         return entryList;
 	}
 
@@ -46,8 +55,8 @@ public class SearchElasticDaoImpl implements SearchElasticDao {
 		SearchResponse searchResponse = null;
 		try {
 			SearchRequestBuilder srb = elasticTransportClient.getTransportClient()
-					.prepareSearch(Constants.ELASTICSEARCH_INDEX_NAME)
-					.setTypes(Constants.ELASTICSEARCH_INDEX_TYPE_ITEM);
+					.prepareSearch(envProps.getObject().getProperty(Constants.ELASTICSEARCH_INDEXNAME))
+					.setTypes(envProps.getObject().getProperty(Constants.ELASTICSEARCH_INDEXTYPE));
 			srb.setQuery(query);
 			srb.setSearchType(SearchType.QUERY_THEN_FETCH).setFrom(from).setSize(limit);
 			searchResponse = srb.execute().actionGet();

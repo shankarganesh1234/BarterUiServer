@@ -88,7 +88,7 @@ public class ImageServiceImpl implements ImageService {
 	@Override
 	@Transactional
 	public void createImage(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, Long itemId) {
-		String uploadedFileLocation = "/Users/shanganesh/Documents/image_copy/" + fileDetail.getFileName();
+		String uploadedFileLocation = "/tmp/bartery/images/" + fileDetail.getFileName();
 		ImageEntity imageEntity = uploadImage(uploadedInputStream, uploadedFileLocation, itemId);
 		updateItemTableWithImage(itemId, imageEntity);
 	}

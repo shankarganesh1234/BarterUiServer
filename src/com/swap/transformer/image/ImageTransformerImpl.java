@@ -14,6 +14,7 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import com.cloudinary.Cloudinary;
@@ -29,7 +30,7 @@ public class ImageTransformerImpl implements ImageTransformer {
 	@Override
 	public void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
 		try {
-			OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
+			OutputStream out = FileUtils.openOutputStream(new File(uploadedFileLocation));
 			int read = 0;
 			byte[] bytes = new byte[1024];
 
