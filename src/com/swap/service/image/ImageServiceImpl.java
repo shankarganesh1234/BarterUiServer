@@ -11,6 +11,9 @@ import org.hibernate.HibernateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.swap.client.CloudinaryClient;
 import com.swap.common.error.ErrorEnum;
 import com.swap.common.exceptions.SwapException;
 import com.swap.dao.image.ImageDao;
@@ -36,6 +39,9 @@ public class ImageServiceImpl implements ImageService {
 	@Inject
 	private ImageDao imageDao;
 
+	@Inject
+	CloudinaryClient cloudinaryClient;
+
 	@Override
 	public ImageEntity uploadImage(InputStream uploadedInputStream, String uploadedFileLocation, Long itemId) {
 		ImageEntity imageEntity = null;
@@ -50,10 +56,10 @@ public class ImageServiceImpl implements ImageService {
 			imageEntity = imageTransformer.createImageEntity(map);
 			ItemEntity itemEntity = new ItemEntity();
 			itemEntity.setItemId(itemId);
-			
+
 			// save to image table
 			imageEntity = imageDao.createImage(imageEntity);
-			
+
 		} catch (SwapException ex) {
 			logger.error(ex);
 			throw ex;
@@ -68,7 +74,7 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	
+
 	public void updateItemTableWithImage(Long itemId, ImageEntity imageEntity) {
 		try {
 			// update image_id in item table with item id
@@ -91,5 +97,25 @@ public class ImageServiceImpl implements ImageService {
 		String uploadedFileLocation = "/tmp/bartery/images/" + fileDetail.getFileName();
 		ImageEntity imageEntity = uploadImage(uploadedInputStream, uploadedFileLocation, itemId);
 		updateItemTableWithImage(itemId, imageEntity);
+	}
+
+	@Override
+	public boolean deleteImage(String publicImageId) throws Exception {
+
+		if (publicImageId == null)
+			return false;
+
+		boolean result = false;
+		Cloudinary cloudinary = cloudinaryClient.getCloudinary();
+		Map<String, Object> deleteResult;
+
+		deleteResult = (Map<String, Object>) cloudinary.uploader().destroy(publicImageId, ObjectUtils.emptyMap());
+		if (deleteResult != null) {
+			String cloudinaryResult = String.valueOf(deleteResult.get("result"));
+			if (cloudinaryResult != null && cloudinaryResult.equals("ok")) {
+				result = true;
+			}
+		}
+		return result;
 	}
 }

@@ -27,6 +27,7 @@ import com.swap.common.components.ElasticTransportClient;
 import com.swap.common.constants.Constants;
 import com.swap.entity.item.ItemEntity;
 import com.swap.models.elasticsearch.ItemDocument;
+import com.swap.service.image.ImageService;
 
 /**
  * Hibernate entity listeners that hook on to the entity lifecycle and listen to
@@ -46,6 +47,9 @@ public class ItemEntityInterceptor
 
 	@Inject
 	private PropertiesFactoryBean envProps;
+	
+	@Inject
+	private ImageService imageService;
 
 	ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 
@@ -162,16 +166,23 @@ public class ItemEntityInterceptor
 		}
 
 		Long itemId = item.getItemId();
+		String publicImageId = item.getImage_id().getPublic_id();
 		if (itemId == null) {
 			logger.debug("Item id field is null/blank. Cannot index without an id");
 		}
 
 		CloseableHttpResponse response = null;
 		try {
+			
+			// delete from cloudinary
+			imageService.deleteImage(publicImageId);
+			
+			// delete from elastic search
 			DeleteResponse deleteResponse = elasticTransportClient.getTransportClient()
 					.prepareDelete(envProps.getObject().getProperty(Constants.ELASTICSEARCH_INDEXNAME),
 							envProps.getObject().getProperty(Constants.ELASTICSEARCH_INDEXTYPE), String.valueOf(itemId))
 					.get();
+			
 			if (deleteResponse != null && deleteResponse.status().equals(RestStatus.OK)) {
 				logger.debug("Item with ItemId = " + itemId + " deleted successfully");
 			}

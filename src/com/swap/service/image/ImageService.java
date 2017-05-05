@@ -12,4 +12,6 @@ public interface ImageService {
 	void updateItemTableWithImage(Long itemId, ImageEntity imageEntity);
 
 	void createImage(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, Long itemId);
+
+	boolean deleteImage(String publicImageId) throws Exception ;
 }

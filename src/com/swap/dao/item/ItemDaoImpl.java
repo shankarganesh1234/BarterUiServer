@@ -70,6 +70,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public void deleteListing(ItemEntity listingEntity) {
+		listingEntity = sessionFactory.getCurrentSession().get(ItemEntity.class, listingEntity.getItemId());
 		sessionFactory.getCurrentSession().delete(listingEntity);
 	}
 
