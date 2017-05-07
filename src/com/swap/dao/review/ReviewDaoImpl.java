@@ -13,6 +13,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
+import com.swap.common.CommonUtil;
 import com.swap.entity.review.ReviewEntity;
 
 @Component
@@ -27,12 +28,14 @@ public class ReviewDaoImpl implements ReviewDao {
 
 	@Override
 	public void createReview(ReviewEntity entity) {
+		entity.setUpsertDate(CommonUtil.getCurrentDate());
 		sessionFactory.getCurrentSession().save(entity);
 
 	}
 
 	@Override
 	public void updateReview(ReviewEntity entity) {
+		entity.setUpsertDate(CommonUtil.getCurrentDate());
 		ReviewEntity dbRecord = sessionFactory.getCurrentSession().load(ReviewEntity.class, entity.getReviewId());
 		copyProperties(entity, dbRecord);
 		sessionFactory.getCurrentSession().update(dbRecord);

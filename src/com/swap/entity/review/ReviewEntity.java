@@ -1,6 +1,6 @@
 package com.swap.entity.review;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,6 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @JsonSerialize(include = Inclusion.NON_NULL)
 @Entity
@@ -32,19 +31,21 @@ public class ReviewEntity {
 	@Column(name="comments")
 	private String comments;
 	
-	@Column(name="created_on", insertable = false, updatable = false)
-	private Date createdDate;
-	
-	@UpdateTimestamp
-	@Column(name="updated_on", insertable = false)
-	private Date updatedDate;
-	
 	@Column(name = "user_review_for")
 	private String reviewFor;
 	
 	@Column(name = "user_review_by")
 	private String reviewBy;
 	
+	@Column(name = "upsert_date")
+	private Timestamp upsertDate;
+	
+	public Timestamp getUpsertDate() {
+		return upsertDate;
+	}
+	public void setUpsertDate(Timestamp upsertDate) {
+		this.upsertDate = upsertDate;
+	}
 	public String getReviewFor() {
 		return reviewFor;
 	}
@@ -56,18 +57,6 @@ public class ReviewEntity {
 	}
 	public void setReviewBy(String reviewBy) {
 		this.reviewBy = reviewBy;
-	}
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
 	}
 	public Long getReviewId() {
 		return reviewId;

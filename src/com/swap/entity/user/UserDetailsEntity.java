@@ -1,5 +1,7 @@
 package com.swap.entity.user;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,6 +24,17 @@ public class UserDetailsEntity {
 	
 	@Column(name="about_me")
 	private String aboutMe;
+	
+	@Column(name = "upsert_date")
+	private Timestamp upsertDate;
+
+	public Timestamp getUpsertDate() {
+		return upsertDate;
+	}
+
+	public void setUpsertDate(Timestamp upsertDate) {
+		this.upsertDate = upsertDate;
+	}
 
 	public String getStatus() {
 		return status;

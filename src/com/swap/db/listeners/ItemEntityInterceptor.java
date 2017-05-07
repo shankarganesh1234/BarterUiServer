@@ -69,6 +69,7 @@ public class ItemEntityInterceptor
 		itemDocument.setTitleSuggest(item.getTitle());
 		itemDocument.setImageUrl((item.getImage_id() != null && item.getImage_id().getUrl() != null)
 				? item.getImage_id().getUrl() : null);
+		itemDocument.setUpsertDate(item.getUpsertDate());
 		return itemDocument;
 	}
 

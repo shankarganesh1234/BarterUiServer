@@ -15,7 +15,6 @@ import com.swap.dao.item.ItemDao;
 import com.swap.entity.item.ItemEntity;
 import com.swap.models.listing.Item;
 import com.swap.models.listing.ItemRequest;
-import com.swap.service.image.ImageService;
 import com.swap.transformer.listing.ItemTransformer;
 import com.swap.validator.listing.ItemValidator;
 
@@ -33,9 +32,6 @@ public class ItemServiceImpl implements ItemService {
 	@Inject
 	private ItemValidator listingValidator;
 	
-	@Inject
-	private ImageService imageService;
-
 	@Transactional
 	@Override
 	public Item getListingByItemId(Long itemId) {

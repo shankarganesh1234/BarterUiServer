@@ -1,5 +1,7 @@
 package com.swap.entity.item;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -66,6 +68,17 @@ public class ItemEntity {
 
 	@Column(name = "active_interests")
 	private Boolean activeInterests;
+	
+	@Column(name = "upsert_date")
+	private Timestamp upsertDate;
+	
+	public Timestamp getUpsertDate() {
+		return upsertDate;
+	}
+
+	public void setUpsertDate(Timestamp upsertDate) {
+		this.upsertDate = upsertDate;
+	}
 
 	public Boolean getActiveInterests() {
 		return activeInterests;

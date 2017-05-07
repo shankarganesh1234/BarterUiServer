@@ -1,13 +1,13 @@
 ##### item create index #################
 PUT
-http://54.202.10.115:9200/swap
+http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/swap
 ##### end item create index #################
 
 
 #### item mapping #############################################################
 
 PUT
-http://54.202.10.115:9200/swap/item/_mapping
+http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/swap/item/_mapping
 {
 	"properties": {
 		"categoryName": {
@@ -54,6 +54,9 @@ http://54.202.10.115:9200/swap/item/_mapping
 		 },
 		 "titleSuggest": {
 			"type": "completion"
+		 },
+		  "upsertDate": {
+			"type": "date"
 		 }
 		 
 	}

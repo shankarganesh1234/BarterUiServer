@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 
+import com.swap.common.CommonUtil;
 import com.swap.entity.user.UserDetailsEntity;
 import com.swap.entity.user.UserEntity;
 
@@ -20,6 +21,7 @@ public class UserDetailsDaoImpl implements UserDetailsDao {
 
 	@Override
 	public UserEntity createUserDetails(UserDetailsEntity userDetails) {
+		userDetails.setUpsertDate(CommonUtil.getCurrentDate());
 		sessionFactory.getCurrentSession().save(userDetails);
 		String userId = userDetails.getUserId();
 		return sessionFactory.getCurrentSession().get(UserEntity.class, userId);
@@ -27,6 +29,7 @@ public class UserDetailsDaoImpl implements UserDetailsDao {
 
 	@Override
 	public UserEntity updateUserDetails(UserDetailsEntity userDetails) {
+		userDetails.setUpsertDate(CommonUtil.getCurrentDate());
 		sessionFactory.getCurrentSession().update(userDetails);
 		String userId = userDetails.getUserId();
 		return sessionFactory.getCurrentSession().get(UserEntity.class, userId);

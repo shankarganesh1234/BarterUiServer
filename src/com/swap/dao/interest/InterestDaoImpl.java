@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 
+import com.swap.common.CommonUtil;
 import com.swap.entity.interest.InterestEntity;
 import com.swap.entity.item.ItemEntity;
 import com.swap.entity.user.UserEntity;
@@ -28,11 +29,16 @@ public class InterestDaoImpl implements InterestDao {
 
 	@Override
 	public void createInterested(InterestEntity entity) {
+		// update timestamp
+		entity.setUpsertDate(CommonUtil.getCurrentDate());
 		sessionFactory.getCurrentSession().save(entity);
 	}
 
 	@Override
 	public void updateInterested(InterestEntity entity) {
+		// update timestamp
+		entity.setUpsertDate(CommonUtil.getCurrentDate());
+		
 		InterestEntity dbRecord = sessionFactory.getCurrentSession().load(InterestEntity.class, entity.getInterestId());
 		copyProperties(entity, dbRecord);
 		checkActiveInterests(dbRecord);
