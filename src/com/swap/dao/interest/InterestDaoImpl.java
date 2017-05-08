@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +30,62 @@ public class InterestDaoImpl implements InterestDao {
 
 	@Override
 	public void createInterested(InterestEntity entity) {
-		// update timestamp
-		entity.setUpsertDate(CommonUtil.getCurrentDate());
-		sessionFactory.getCurrentSession().save(entity);
+		createOrUpdateInterest(entity);
+		//entity.setUpsertDate(CommonUtil.getCurrentDate());
+		//sessionFactory.getCurrentSession().save(entity);
+	}
+	
+	/**
+	 * Check if an interest already exists for the item by the interested user.
+	 * If yes, then update
+	 * If no, then create
+	 * @param entity
+	 */
+	public void createOrUpdateInterest(InterestEntity entity) {
+
+		// check if an interest already exists, then create new or update
+		// existing
+		// Create CriteriaBuilder
+		String origUserId = String.valueOf(entity.getOriginalUser().getUserId());
+		String interestedUserId = String.valueOf(entity.getInterestedUser().getUserId());
+		Long originalItemId = entity.getOriginalItemId().getItemId();
+		
+		
+		// Create CriteriaBuilder
+		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		// Create CriteriaQuery
+		CriteriaQuery<InterestEntity> criteriaQuery = builder.createQuery(InterestEntity.class);
+
+		// Add conditions
+		Root<InterestEntity> interestEntityRoot = criteriaQuery.from(InterestEntity.class);
+		criteriaQuery.select(interestEntityRoot);
+				
+		UserEntity originalUser = new UserEntity();
+		originalUser.setUserId(origUserId);
+		
+		UserEntity interestedUser = new UserEntity();
+		interestedUser.setUserId(interestedUserId);
+		
+		ItemEntity originalItem = new ItemEntity();
+		originalItem.setItemId(originalItemId);
+		
+		Predicate where = builder.conjunction();
+		where = builder.and(where, builder.equal(interestEntityRoot.get("originalUser"), originalUser));
+		where = builder.and(where, builder.equal(interestEntityRoot.get("interestedUser"), interestedUser));
+		where = builder.and(where, builder.equal(interestEntityRoot.get("originalItemId"), originalItem));
+		criteriaQuery.where(where);
+		// execute
+		List<InterestEntity> interests = sessionFactory.getCurrentSession().createQuery(criteriaQuery).getResultList();
+		
+		if(CollectionUtils.isEmpty(interests)) {
+			entity.setUpsertDate(CommonUtil.getCurrentDate());
+			sessionFactory.getCurrentSession().saveOrUpdate(entity);
+		} else {
+			InterestEntity existingInterest = interests.get(0);
+			existingInterest.setSwappableItemId(entity.getSwappableItemId());
+			existingInterest.setUpsertDate(CommonUtil.getCurrentDate());
+			sessionFactory.getCurrentSession().saveOrUpdate(existingInterest);
+		}
 	}
 
 	@Override
