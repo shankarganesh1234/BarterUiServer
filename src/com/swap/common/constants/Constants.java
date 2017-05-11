@@ -8,6 +8,9 @@ public class Constants {
 	public static final String ELASTICSEARCH_INDEXNAME = "elasticsearch.indexname";
 	public static final String ELASTICSEARCH_INDEXTYPE = "elasticsearch.indextype";
 	public static final String ELASTICSEARCH_HOST = "elasticsearch.host";
+	public static final String ELASTICSEARCH_CHAT_INDEXNAME = "elasticsearch.chat.indexname";
+	public static final String ELASTICSEARCH_CHAT_INDEXTYPE = "elasticsearch.chat.indextype";
+	
 
 	// request response cache
 	public static final String REQ_RES_CACHE = "ReqResCache";
