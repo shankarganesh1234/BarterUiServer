@@ -1,9 +1,11 @@
 package com.swap.db.listeners;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Component;
 
 import com.swap.common.components.ElasticTransportClient;
 import com.swap.common.constants.Constants;
+import com.swap.entity.item.ImageEntity;
 import com.swap.entity.item.ItemEntity;
 import com.swap.models.elasticsearch.ItemDocument;
 import com.swap.service.image.ImageService;
@@ -67,8 +70,12 @@ public class ItemEntityInterceptor
 		itemDocument.setCategoryName((item.getCategoryId() != null && item.getCategoryId().getCategoryName() != null
 				? item.getCategoryId().getCategoryName() : null));
 		itemDocument.setTitleSuggest(item.getTitle());
-		itemDocument.setImageUrl((item.getImage_id() != null && item.getImage_id().getUrl() != null)
-				? item.getImage_id().getUrl() : null);
+		
+		if(CollectionUtils.isNotEmpty(item.getImages())) {
+			ImageEntity primaryImage = item.getImages().get(0);
+			itemDocument.setImageUrl((primaryImage != null && primaryImage.getUrl() != null)
+					? primaryImage.getUrl() : null);
+		}
 		itemDocument.setUpsertDate(item.getUpsertDate());
 		return itemDocument;
 	}
@@ -167,7 +174,8 @@ public class ItemEntityInterceptor
 		}
 
 		Long itemId = item.getItemId();
-		String publicImageId = item.getImage_id().getPublic_id();
+		List<ImageEntity> images = item.getImages();
+		
 		if (itemId == null) {
 			logger.debug("Item id field is null/blank. Cannot index without an id");
 		}
@@ -176,7 +184,11 @@ public class ItemEntityInterceptor
 		try {
 			
 			// delete from cloudinary
-			imageService.deleteImage(publicImageId);
+			if(CollectionUtils.isEmpty(images)) {
+				for(ImageEntity imageEntity : images) {
+					imageService.deleteImage(imageEntity.getPublic_id());
+				}
+			}
 			
 			// delete from elastic search
 			DeleteResponse deleteResponse = elasticTransportClient.getTransportClient()

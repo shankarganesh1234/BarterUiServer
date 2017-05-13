@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.swap.common.CommonUtil;
 import com.swap.common.components.CommonBeanUtils;
+import com.swap.common.enums.ItemStageEnum;
 import com.swap.db.listeners.ItemEntityInterceptor;
 import com.swap.entity.item.ImageEntity;
 import com.swap.entity.item.ItemEntity;
@@ -79,7 +80,6 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public List<Long> getListingIdsByUserId(String userId) {
-
 		UserEntity userEntity = new UserEntity();
 		userEntity.setUserId(userId);
 		@SuppressWarnings("unchecked")
@@ -89,10 +89,11 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 	@Override
-	public void updateListingForImage(Long itemId, ImageEntity imageEntity) {
+	public void updateListingForImage(Long itemId, List<ImageEntity> images) {
 		ItemEntity dbRecord = sessionFactory.getCurrentSession().get(ItemEntity.class, itemId);
 		dbRecord.setUpsertDate(CommonUtil.getCurrentDate());
-		dbRecord.setImage_id(imageEntity);
+		dbRecord.setItemStage(ItemStageEnum.PUBLISHED.name());
+		dbRecord.setImages(images);
 		sessionFactory.getCurrentSession().update(dbRecord);
 	}
 	
@@ -106,4 +107,5 @@ public class ItemDaoImpl implements ItemDao {
 		commonBeanUtils.nullAwareBeanCopy(destination, source);
 		return destination;
 	}
+	
 }

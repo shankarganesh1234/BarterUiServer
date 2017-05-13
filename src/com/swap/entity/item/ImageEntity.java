@@ -44,6 +44,17 @@ public class ImageEntity {
 	@Column(name = "upsert_date")
 	private Timestamp upsertDate;
 	
+	@Column(name = "item_id")
+	private Long item;
+	
+	public Long getItem() {
+		return item;
+	}
+
+	public void setItem(Long item) {
+		this.item = item;
+	}
+
 	public String getPublic_id() {
 		return public_id;
 	}

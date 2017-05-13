@@ -39,12 +39,7 @@ public class ChatResource {
 	public ChatDetailsResponse getChatDetailsByInterestedUser(@PathParam("interestedUserId") String interestedUserId) {
 		return chatService.getChatChannelByInterestedUser(interestedUserId);
 	}
-	
-//	@POST
-//	public void createChatDetail(ChatDetailsRequest request) {
-//		chatService.createChatDetails(request);
-//	}
-	
+
 	/**
 	 * Need to keep it post as sendbird expects it to be a POST
 	 * @param sendbirdWebHookJson

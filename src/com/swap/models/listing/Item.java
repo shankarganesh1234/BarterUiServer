@@ -1,5 +1,7 @@
 package com.swap.models.listing;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -21,7 +23,7 @@ public class Item {
 	private LocationEntity zipCode;
 	private UserEntity userId;
 	private CategoryEntity categoryId;
-	private ImageEntity image_id;
+	private List<ImageEntity> images;
 	private ItemConditionEnum condition;
 	private int quantity;
 	private int numOfReviews;
@@ -35,14 +37,6 @@ public class Item {
 
 	public void setZipCode(LocationEntity zipCode) {
 		this.zipCode = zipCode;
-	}
-
-	public ImageEntity getImage_id() {
-		return image_id;
-	}
-
-	public void setImage_id(ImageEntity image_id) {
-		this.image_id = image_id;
 	}
 
 	public String getTitle() {
@@ -134,15 +128,11 @@ public class Item {
 		this.story = story;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Item [title=").append(title).append(", itemId=").append(itemId).append(", description=")
-				.append(description).append(", zipCode=").append(zipCode).append(", userId=").append(userId)
-				.append(", categoryId=").append(categoryId).append(", image_id=").append(image_id)
-				.append(", condition=").append(condition).append(", quantity=").append(quantity)
-				.append(", numOfReviews=").append(numOfReviews).append(", numOfInterests=").append(numOfInterests)
-				.append(", itemStage=").append(itemStage).append(", story=").append(story).append("]");
-		return builder.toString();
+	public List<ImageEntity> getImages() {
+		return images;
 	}
+
+	public void setImages(List<ImageEntity> images) {
+		this.images = images;
+	}		
 }
