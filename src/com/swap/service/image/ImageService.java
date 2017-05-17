@@ -12,7 +12,9 @@ public interface ImageService {
 
 	void createImages(FormDataBodyPart body, Long itemId);
 	
-	boolean deleteImage(String publicImageId) throws Exception ;
+	boolean deleteImage(String publicImageId);
+	
+	boolean deleteImageFromDb(String publicImageId);
 	
 	List<ImageEntity> uploadImages(FormDataBodyPart body, Long itemId);
 	

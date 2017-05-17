@@ -47,7 +47,8 @@ public class ImageServiceImpl implements ImageService {
 	CloudinaryClient cloudinaryClient;
 
 	@Override
-	public ImageEntity uploadImageToCloudinaryAndDb(InputStream uploadedInputStream, String uploadedFileLocation, Long itemId) {
+	public ImageEntity uploadImageToCloudinaryAndDb(InputStream uploadedInputStream, String uploadedFileLocation,
+			Long itemId) {
 		ImageEntity imageEntity = null;
 		try {
 			// save it
@@ -76,21 +77,26 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	public boolean deleteImage(String publicImageId) throws Exception {
+	public boolean deleteImage(String publicImageId) {
 
 		if (publicImageId == null)
 			return false;
 
 		boolean result = false;
-		Cloudinary cloudinary = cloudinaryClient.getCloudinary();
-		Map<String, Object> deleteResult;
 
-		deleteResult = (Map<String, Object>) cloudinary.uploader().destroy(publicImageId, ObjectUtils.emptyMap());
-		if (deleteResult != null) {
-			String cloudinaryResult = String.valueOf(deleteResult.get("result"));
-			if (cloudinaryResult != null && cloudinaryResult.equals("ok")) {
-				result = true;
+		try {
+			Cloudinary cloudinary = cloudinaryClient.getCloudinary();
+			Map<String, Object> deleteResult;
+
+			deleteResult = (Map<String, Object>) cloudinary.uploader().destroy(publicImageId, ObjectUtils.emptyMap());
+			if (deleteResult != null) {
+				String cloudinaryResult = String.valueOf(deleteResult.get("result"));
+				if (cloudinaryResult != null && cloudinaryResult.equals("ok")) {
+					result = true;
+				}
 			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return result;
 	}
@@ -103,7 +109,7 @@ public class ImageServiceImpl implements ImageService {
 		// update item stage to published
 		updateItemStage(itemId, images);
 	}
-	
+
 	@Override
 	public List<ImageEntity> uploadImages(FormDataBodyPart body, Long itemId) {
 		List<ImageEntity> images = new LinkedList<>();
@@ -114,10 +120,11 @@ public class ImageServiceImpl implements ImageService {
 				String uploadedFileLocation = "/tmp/bartery/images/" + fileDetail.getFileName();
 				// add to cloudinary and save in db
 				images.add(uploadImageToCloudinaryAndDb(inputStream, uploadedFileLocation, itemId));
-			}	
+			}
 		}
 		return images;
 	}
+
 	/**
 	 * 
 	 * @param itemId
@@ -138,5 +145,32 @@ public class ImageServiceImpl implements ImageService {
 			logger.error(ex);
 			throw new SwapException(ErrorEnum.GET_IMAGE_FAILURE);
 		}
+	}
+	
+	@Override
+	@Transactional
+	public boolean deleteImageFromDb(String publicImageId) {
+		boolean result = false;
+		try {
+			ImageEntity entity = new ImageEntity();
+			entity.setPublic_id(publicImageId);
+			// delete image from db
+			imageDao.deleteImage(entity);
+			
+			// delete image from cloudinary
+			deleteImage(publicImageId);
+			
+			result = true;
+		} catch (SwapException ex) {
+			logger.error(ex);
+			throw ex;
+		} catch (HibernateException ex) {
+			logger.error(ex);
+			throw new SwapException(ErrorEnum.GET_IMAGE_FAILURE);
+		} catch (Exception ex) {
+			logger.error(ex);
+			throw new SwapException(ErrorEnum.GET_IMAGE_FAILURE);
+		}
+		return result;
 	}
 }
