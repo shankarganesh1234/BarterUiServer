@@ -2,29 +2,20 @@ package com.swap.common.constants;
 
 public class Constants {
 
-	// request response cache
-	public static final String REQ_RES_CACHE = "ReqResCache";
-	public static final Integer CACHE_REQ_RES_EXPIRE_AFTER = 10;
-	public static final Integer CACHE_REQ_RES_MAX_SIZE = 10;
-	public static final Integer CACHE_EVICT_ASYNC_THREAD_POOL_SIZE = 5;
-	public static final Integer CACHE_INITIAL_DELAY = 60;
-	public static final Integer CACHE_FIXED_RATE = 60;
-
+	// prop names
+	public static final String ELASTICSEARCH_BASEURL = "elasticsearch.baseurl";
+	public static final String ELASTICSEARCH_CLUSTERNAME = "elasticsearch.clustername";
+	public static final String ELASTICSEARCH_INDEXNAME = "elasticsearch.indexname";
+	public static final String ELASTICSEARCH_INDEXTYPE = "elasticsearch.indextype";
+	public static final String ELASTICSEARCH_HOST = "elasticsearch.host";
+	public static final String ELASTICSEARCH_CHAT_INDEXNAME = "elasticsearch.chat.indexname";
+	public static final String ELASTICSEARCH_CHAT_INDEXTYPE = "elasticsearch.chat.indextype";
+	
 	// category cache
 	public static final String CACHE_CATEGORY = "category";
 	public static final String CACHE_CATEGORIES = "categories";
 	public static final Integer CACHE_CATEGORIES_EXPIRE_AFTER = 30;
 	public static final Integer CACHE_CATEGORY_MAX_SIZE = 10;
-	public static final String CATEGORY_ID = "categoryId";
-
-	// elasticsearch
-	//public static final String ELASTICSEARCH_BASE_URL = "http://54.202.10.115:9200/";
-	public static final String ELASTICSEARCH_BASE_URL = "http://localhost:9200/";
-	public static final String ELASTICSEARCH_INDEX_NAME = "swap";
-	public static final String ELASTICSEARCH_INDEX_TYPE_ITEM = "item";
-	public static final String ACCEPT_HEADER = "Accept";
-	public static final String CONTENT_TYPE_HEADER = "Content-type";
-	public static final String ELASTICSEARCH_SEARCH_QUERY_KEY = "_search";
 
 	// ERROR CODES
 	public static final Integer INTERNAL_SERVER_ERROR = 500;
@@ -42,16 +33,7 @@ public class Constants {
 	public static final String TITLE = "title";
 	public static final String ZIP = "zipCode";
 	public static final String BLANK = "";
-	public static final String FILTER = "filter";
-	public static final String TERM = "term";
-	public static final String QUERY = "query";
-	public static final String BOOL = "bool";
-	public static final String FROM = "from";
-	public static final String SIZE = "size";
 	public static final String CLUSTER_NAME = "cluster.name";
-	public static final String CLUSTER_NAME_VALUE = "bartery-cluster";
-	public static final String ELASTICSEARCH_HOST = "localhost";
-	
 	
 	// pagination 
 	public static final Integer LIMIT = 8;

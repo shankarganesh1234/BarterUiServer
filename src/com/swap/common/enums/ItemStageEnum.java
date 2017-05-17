@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonCreator;
 
 public enum ItemStageEnum {
-	INITIALIZED("INITIALIZED"), PENDING("PENDING"), COMPLETED("COMPLETED");
+	INITIALIZED("INITIALIZED"), PENDING("PENDING"), COMPLETED("COMPLETED"), PUBLISHED("PUBLISHED");
 
 	private String itemStageValue;
 

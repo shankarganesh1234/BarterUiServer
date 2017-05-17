@@ -1,5 +1,7 @@
 package com.swap.models.elasticsearch;
 
+import java.util.Date;
+
 public class ItemDocument {
 
 	private String title;
@@ -18,6 +20,14 @@ public class ItemDocument {
 	private Boolean activeInterests;
 	private String titleSuggest;
 	private String city;
+	private Date upsertDate;
+	
+	public Date getUpsertDate() {
+		return upsertDate;
+	}
+	public void setUpsertDate(Date upsertDate) {
+		this.upsertDate = upsertDate;
+	}
 	public String getTitle() {
 		return title;
 	}

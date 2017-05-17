@@ -18,5 +18,6 @@ public interface ItemDao {
 	
 	List<Long> getListingIdsByUserId(String userId);
 	
-	void updateListingForImage(Long itemId, ImageEntity imageEntity);
+	void updateListingForImage(Long itemId, List<ImageEntity> images);
+	
 }

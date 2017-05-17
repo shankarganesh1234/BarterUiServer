@@ -1,16 +1,16 @@
 ##### item create index #################
 PUT
-http://54.202.10.115:9200/swap
+http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/swap
 ##### end item create index #################
 
 
 #### item mapping #############################################################
 
 PUT
-http://54.202.10.115:9200/swap/item/_mapping
+http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/swap/item/_mapping
 {
 	"properties": {
-		"categoryName": {
+		"chatChannelId": {
 			"type": "string"
 		},
 		"condition": {
@@ -54,9 +54,42 @@ http://54.202.10.115:9200/swap/item/_mapping
 		 },
 		 "titleSuggest": {
 			"type": "completion"
+		 },
+		  "upsertDate": {
+			"type": "date"
 		 }
 		 
 	}
 }
-
 #### end item mapping #############################################################
+
+## chat history index creation
+PUT
+http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/chat
+
+## chat history mapping
+PUT
+http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/chat/history/_mapping
+{
+	"properties": {
+		"chatChannelId": {
+			"type": "string"
+		},
+		"participants": {
+			"type": "string"
+		},
+		"senderId": {
+			"type": "string"
+		},
+		"senderName": {
+			"type": "long"
+		},
+		"message": {
+			"type": "string"
+		},
+		"messageTimestamp": {
+			"type": "date"
+		}
+	}
+}
+## end chat history mapping

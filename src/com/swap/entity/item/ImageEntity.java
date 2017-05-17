@@ -1,6 +1,6 @@
 package com.swap.entity.item;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,9 +41,20 @@ public class ImageEntity {
 	@Column(name = "secure_url")
 	private String secure_url;
 
-	@Column(name = "create_date")
-	private Date createdAt;
+	@Column(name = "upsert_date")
+	private Timestamp upsertDate;
 	
+	@Column(name = "item_id")
+	private Long item;
+	
+	public Long getItem() {
+		return item;
+	}
+
+	public void setItem(Long item) {
+		this.item = item;
+	}
+
 	public String getPublic_id() {
 		return public_id;
 	}
@@ -124,11 +135,11 @@ public class ImageEntity {
 		this.secure_url = secure_url;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public Timestamp getUpsertDate() {
+		return upsertDate;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
+	public void setUpsertDate(Timestamp upsertDate) {
+		this.upsertDate = upsertDate;
 	}
 }

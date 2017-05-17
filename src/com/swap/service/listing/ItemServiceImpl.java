@@ -31,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
 
 	@Inject
 	private ItemValidator listingValidator;
-
+	
 	@Transactional
 	@Override
 	public Item getListingByItemId(Long itemId) {

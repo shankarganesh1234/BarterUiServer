@@ -1,5 +1,7 @@
 package com.swap.entity.chat;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -28,6 +30,17 @@ public class ChatEntity {
 	@OneToOne
 	@JoinColumn(name = "interested_user_id")
 	private UserEntity interestedUserId;
+	
+	@Column(name = "upsert_date")
+	private Timestamp upsertDate;
+	
+	public Timestamp getUpsertDate() {
+		return upsertDate;
+	}
+
+	public void setUpsertDate(Timestamp upsertDate) {
+		this.upsertDate = upsertDate;
+	}
 
 	public String getChannelId() {
 		return channelId;

@@ -1,12 +1,19 @@
 package com.swap.entity.item;
 
+import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -42,10 +49,6 @@ public class ItemEntity {
 	@JoinColumn(name = "category_id")
 	private CategoryEntity categoryId;
 
-	@OneToOne
-	@JoinColumn(name = "image_id")
-	private ImageEntity image_id;
-	
 	@Column(name = "condition")
 	private String condition;
 
@@ -66,6 +69,28 @@ public class ItemEntity {
 
 	@Column(name = "active_interests")
 	private Boolean activeInterests;
+	
+	@Column(name = "upsert_date")
+	private Timestamp upsertDate;
+	
+	@OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ImageEntity> images = new LinkedList<ImageEntity>();
+    
+    public List<ImageEntity> getImages() {
+		return images;
+	}
+
+	public void setImages(List<ImageEntity> images) {
+		this.images = images;
+	}
+
+	public Timestamp getUpsertDate() {
+		return upsertDate;
+	}
+
+	public void setUpsertDate(Timestamp upsertDate) {
+		this.upsertDate = upsertDate;
+	}
 
 	public Boolean getActiveInterests() {
 		return activeInterests;
@@ -123,12 +148,6 @@ public class ItemEntity {
 		this.description = description;
 	}
 
-	// public List<Image> getImages() {
-	// return images;
-	// }
-	// public void setImages(List<Image> images) {
-	// this.images = images;
-	// }
 	public String getCondition() {
 		return condition;
 	}
@@ -175,13 +194,5 @@ public class ItemEntity {
 
 	public void setStory(String story) {
 		this.story = story;
-	}
-
-	public ImageEntity getImage_id() {
-		return image_id;
-	}
-
-	public void setImage_id(ImageEntity image_id) {
-		this.image_id = image_id;
-	}
+	}	
 }

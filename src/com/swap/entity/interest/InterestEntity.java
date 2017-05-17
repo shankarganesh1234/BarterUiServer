@@ -1,6 +1,6 @@
 package com.swap.entity.interest;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,13 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import com.swap.entity.item.ItemEntity;
 import com.swap.entity.user.UserEntity;
@@ -60,13 +57,16 @@ public class InterestEntity {
 	@Column(name = "swap_confirmed")
 	private Boolean swapConfirmed;
 
-	@Column(name = "created_on", insertable = false, updatable = false)
-	private Date createdOn;
+	@Column(name = "upsert_date")
+	private Timestamp upsertDate;
+	
+	public Timestamp getUpsertDate() {
+		return upsertDate;
+	}
 
-	@UpdateTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_on")
-	private Date updatedOn;
+	public void setUpsertDate(Timestamp upsertDate) {
+		this.upsertDate = upsertDate;
+	}
 
 	public Long getInterestId() {
 		return interestId;
@@ -140,22 +140,6 @@ public class InterestEntity {
 		this.swapConfirmed = swapConfirmed;
 	}
 
-	public Date getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
-
-	public Date getUpdatedOn() {
-		return updatedOn;
-	}
-
-	public void setUpdatedOn(Date updatedOn) {
-		this.updatedOn = updatedOn;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -163,9 +147,8 @@ public class InterestEntity {
 				.append(", interestedUser=").append(interestedUser).append(", originalItemId=").append(originalItemId)
 				.append(", swappableItemId=").append(swappableItemId).append(", transactionId=").append(transactionId)
 				.append(", oneSidedInterestFlag=").append(oneSidedInterestFlag).append(", twoSidedInterestFlag=")
-				.append(twoSidedInterestFlag).append(", swapConfirmed=").append(swapConfirmed).append(", createdOn=")
-				.append(createdOn).append(", updatedOn=").append(updatedOn).append("]");
+				.append(twoSidedInterestFlag).append(", swapConfirmed=").append(swapConfirmed).append(", upsertDate=")
+				.append(upsertDate).append("]");
 		return builder.toString();
 	}
-
 }

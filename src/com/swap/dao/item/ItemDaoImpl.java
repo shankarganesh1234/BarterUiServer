@@ -11,7 +11,9 @@ import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.event.spi.EventType;
 import org.springframework.stereotype.Service;
 
+import com.swap.common.CommonUtil;
 import com.swap.common.components.CommonBeanUtils;
+import com.swap.common.enums.ItemStageEnum;
 import com.swap.db.listeners.ItemEntityInterceptor;
 import com.swap.entity.item.ImageEntity;
 import com.swap.entity.item.ItemEntity;
@@ -59,23 +61,25 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public void createListing(ItemEntity listingEntity) {
+		listingEntity.setUpsertDate(CommonUtil.getCurrentDate());
 		sessionFactory.getCurrentSession().save(listingEntity);
 	}
 
 	@Override
 	public void updateListing(ItemEntity listingEntity) {
+		listingEntity.setUpsertDate(CommonUtil.getCurrentDate());
 		ItemEntity dbRecord = sessionFactory.getCurrentSession().get(ItemEntity.class, listingEntity.getItemId());
 		sessionFactory.getCurrentSession().update(createEntityForUpdate(listingEntity, dbRecord));
 	}
 
 	@Override
 	public void deleteListing(ItemEntity listingEntity) {
+		listingEntity = sessionFactory.getCurrentSession().get(ItemEntity.class, listingEntity.getItemId());
 		sessionFactory.getCurrentSession().delete(listingEntity);
 	}
 
 	@Override
 	public List<Long> getListingIdsByUserId(String userId) {
-
 		UserEntity userEntity = new UserEntity();
 		userEntity.setUserId(userId);
 		@SuppressWarnings("unchecked")
@@ -85,9 +89,11 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 	@Override
-	public void updateListingForImage(Long itemId, ImageEntity imageEntity) {
+	public void updateListingForImage(Long itemId, List<ImageEntity> images) {
 		ItemEntity dbRecord = sessionFactory.getCurrentSession().get(ItemEntity.class, itemId);
-		dbRecord.setImage_id(imageEntity);
+		dbRecord.setUpsertDate(CommonUtil.getCurrentDate());
+		dbRecord.setItemStage(ItemStageEnum.PUBLISHED.name());
+		dbRecord.setImages(images);
 		sessionFactory.getCurrentSession().update(dbRecord);
 	}
 	
@@ -101,4 +107,5 @@ public class ItemDaoImpl implements ItemDao {
 		commonBeanUtils.nullAwareBeanCopy(destination, source);
 		return destination;
 	}
+	
 }

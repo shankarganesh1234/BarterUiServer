@@ -9,6 +9,7 @@
 	<description>REST services for powering swap functionality</description>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<finalName>customServer</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -246,4 +247,32 @@
 			<url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
 		</repository>
 	</repositories>
+	<profiles>
+		<profile>
+			<id>prod</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>test</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<delete
+											file="${project.build.outputDirectory}/environment.properties" />
+										<copy file="src/main/resources/environment.prod.properties"
+											tofile="${project.build.outputDirectory}/environment.properties" />
+									</tasks>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
