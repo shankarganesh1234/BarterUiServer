@@ -43,5 +43,6 @@ public class Constants {
 	// login
 	public static final String PROVIDER_ID = "facebook";
 	public static final String AUTHORIZATION = "Authorization";
+	public static final String FB_LONG_TOKEN = "https://graph.facebook.com/oauth/access_token";
 	
 }

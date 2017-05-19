@@ -9,4 +9,5 @@ public interface LoginService {
 	boolean test(String providerId, String accessToken);
 	boolean hasExpired(String providerId, String accessToken);
 	boolean refresh(String providerId, String accessToken);
+	String getLongLivedToken(String accessToken);
 }

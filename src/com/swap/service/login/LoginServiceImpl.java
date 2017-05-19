@@ -13,6 +13,7 @@ import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.stereotype.Service;
 
+import com.swap.client.FacebookClient;
 import com.swap.models.login.LoginRequest;
 import com.swap.validator.login.LoginValidator;
 
@@ -27,6 +28,9 @@ public class LoginServiceImpl implements LoginService {
 
 	@Autowired
 	private UsersConnectionRepository usersConnectionRepository;
+	
+	@Inject
+	private FacebookClient fbClient;
 
 	@Override
 	public UserProfile connectUser(LoginRequest inputRequest, String providerId) {
@@ -110,4 +114,8 @@ public class LoginServiceImpl implements LoginService {
 		return connection.hasExpired();
 	}
 
+	@Override
+	public String getLongLivedToken(String accessToken) {
+		return fbClient.getLongLivedAccessToken(accessToken);
+	}
 }

@@ -3,6 +3,7 @@ package com.swap.resources;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -10,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.social.connect.UserProfile;
 
+import com.swap.models.login.FbLongLivedTokenRequest;
 import com.swap.models.login.LoginRequest;
 import com.swap.service.login.LoginService;
 
@@ -25,5 +27,11 @@ public class LoginResource {
 	@POST
 	public UserProfile socialLogin(@PathParam("providerId") String providerId, LoginRequest request) {
 		return loginService.connectUser(request, providerId);
-	}	
+	}
+	
+	@PUT
+	@Path("/longlivedtoken")
+	public String getLongLivedToken(FbLongLivedTokenRequest request) {
+		return loginService.getLongLivedToken(request.getAccessToken());
+	}
 }
