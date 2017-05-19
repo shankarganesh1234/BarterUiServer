@@ -53,7 +53,7 @@ public class ItemDaoImpl implements ItemDao {
 	public List<ItemEntity> getListingsByUserId(ItemEntity listingEntity) {
 		@SuppressWarnings("unchecked")
 		TypedQuery<ItemEntity> query = sessionFactory.getCurrentSession()
-				.createQuery("FROM ItemEntity where userId = :userId");
+				.createQuery("FROM ItemEntity where userId = :userId ORDER BY upsertDate DESC");
 		query.setParameter("userId", listingEntity.getUserId());
 		List<ItemEntity> result = query.getResultList();
 		return result;
@@ -67,9 +67,10 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public void updateListing(ItemEntity listingEntity) {
-		listingEntity.setUpsertDate(CommonUtil.getCurrentDate());
 		ItemEntity dbRecord = sessionFactory.getCurrentSession().get(ItemEntity.class, listingEntity.getItemId());
-		sessionFactory.getCurrentSession().update(createEntityForUpdate(listingEntity, dbRecord));
+		ItemEntity persistItem = createEntityForUpdate(listingEntity, dbRecord);
+		persistItem.setUpsertDate(CommonUtil.getCurrentDate());
+		sessionFactory.getCurrentSession().update(persistItem);
 	}
 
 	@Override

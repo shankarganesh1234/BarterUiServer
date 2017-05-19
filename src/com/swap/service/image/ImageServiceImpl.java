@@ -104,6 +104,9 @@ public class ImageServiceImpl implements ImageService {
 	@Override
 	@Transactional
 	public void createImages(FormDataBodyPart body, Long itemId) {
+		
+		if(body == null)
+			return;
 		// uplooad to cloudinary and db
 		List<ImageEntity> images = uploadImages(body, itemId);
 		// update item stage to published
