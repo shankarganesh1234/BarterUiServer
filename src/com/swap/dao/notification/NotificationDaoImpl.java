@@ -3,6 +3,7 @@ package com.swap.dao.notification;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -28,7 +29,7 @@ public class NotificationDaoImpl implements NotificationDao {
 
 		boolean result = false;
 		try {
-			sessionFactory.getCurrentSession().save(notificationEntity);
+			sessionFactory.getCurrentSession().saveOrUpdate(notificationEntity);
 			result = true;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -37,13 +38,14 @@ public class NotificationDaoImpl implements NotificationDao {
 	}
 
 	@Override
-	public boolean updateStatusToRead(String id, NotificationStatusEnum notificationStatus) {
+	public boolean updateStatusToRead(String interestId, String userId, NotificationStatusEnum notificationStatus) {
 
 		boolean result = false;
 		try {
-			NotificationEntity entity = sessionFactory.getCurrentSession().get(NotificationEntity.class, id);
-			entity.setStatus(notificationStatus.name());
-			sessionFactory.getCurrentSession().save(entity);
+			Query query = sessionFactory.getCurrentSession().createQuery("delete NotificationEntity where interestId = :interestId and userId = :userId");
+			query.setParameter("interestId", interestId);
+			query.setParameter("userId", userId);
+			query.executeUpdate();
 			result = true;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -61,9 +63,8 @@ public class NotificationDaoImpl implements NotificationDao {
 		// Add conditions
 		Root<NotificationEntity> notificationEntityRoot = criteriaQuery.from(NotificationEntity.class);
 		criteriaQuery.select(notificationEntityRoot);
-		NotificationEntity notification = new NotificationEntity();
-		notification.setUserId(userId);
-		criteriaQuery.where(builder.equal(notificationEntityRoot.get("userId"), notification));
+		
+		criteriaQuery.where(builder.equal(notificationEntityRoot.get("userId"), userId));
 
 		// execute
 		List<NotificationEntity> notifications = sessionFactory.getCurrentSession().createQuery(criteriaQuery)

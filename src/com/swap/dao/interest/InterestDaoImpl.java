@@ -29,10 +29,10 @@ public class InterestDaoImpl implements InterestDao {
 	}
 
 	@Override
-	public void createInterested(InterestEntity entity) {
+	public InterestEntity createInterested(InterestEntity entity) {
 		createOrUpdateInterest(entity);
-		//entity.setUpsertDate(CommonUtil.getCurrentDate());
-		//sessionFactory.getCurrentSession().save(entity);
+		return entity;
+		
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class InterestDaoImpl implements InterestDao {
 	}
 
 	@Override
-	public void updateInterested(InterestEntity entity) {
+	public InterestEntity updateInterested(InterestEntity entity) {
 		// update timestamp
 		entity.setUpsertDate(CommonUtil.getCurrentDate());
 		
@@ -97,6 +97,7 @@ public class InterestDaoImpl implements InterestDao {
 		copyProperties(entity, dbRecord);
 		checkActiveInterests(dbRecord);
 		sessionFactory.getCurrentSession().update(dbRecord);
+		return entity;
 	}
 
 	@Override

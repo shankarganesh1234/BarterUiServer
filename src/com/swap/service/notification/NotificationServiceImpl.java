@@ -24,9 +24,6 @@ public class NotificationServiceImpl implements NotificationService {
 	@Inject
 	private NotificationTransformer notificationTransformer;
 	
-//	@Inject
-//	private NotificationSessionHandler notificationSessionHandler;
-	
 	@Override
 	@Transactional
 	public boolean createNotification(NotificationModel notificationModel) {
@@ -46,13 +43,13 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	@Transactional
-	public boolean updateStatusToRead(String id) {
+	public boolean updateStatusToRead(String interestId, String userId) {
 		// update read status
-		boolean result = notificationDao.updateStatusToRead(id, NotificationStatusEnum.READ);
+		boolean result = notificationDao.updateStatusToRead(interestId, userId, NotificationStatusEnum.READ);
 		
 		// send notification
 		if(result) {
-			sendNotificationWebsocket(id);
+			sendNotificationWebsocket(userId);
 		}
 		return result;
 	}
@@ -65,6 +62,7 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
+	@Transactional
 	public void sendNotificationWebsocket(String userId) {
 
 		// send the notifications if the websocket is open for the user
@@ -73,12 +71,7 @@ public class NotificationServiceImpl implements NotificationService {
 			List<NotificationModel> notifications = getUnreadNotificationsForUser(userId);
 
 			if (CollectionUtils.isNotEmpty(notifications)) {
-				StringBuilder builder = new StringBuilder();
-				for (NotificationModel model : notifications) {
-					builder.append(model.getInterestId() + ",");
-				}
-				String interests = builder.substring(0, builder.length() - 1);
-				NotificationSessionHandler.sendToSession(userId, interests);
+				NotificationSessionHandler.sendToSession(userId, notifications);
 			}
 		}
 	}

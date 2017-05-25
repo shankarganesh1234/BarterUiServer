@@ -17,7 +17,6 @@ import com.swap.models.listing.Item;
 import com.swap.models.listing.ItemRequest;
 import com.swap.transformer.listing.ItemTransformer;
 import com.swap.validator.listing.ItemValidator;
-import com.swap.websocket.NotificationSessionHandler;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -61,11 +60,6 @@ public class ItemServiceImpl implements ItemService {
 			listingValidator.validateUserId(userId);
 			ItemEntity entity = listingTransformer.createListingEntityFromId(userId, false);
 			List<ItemEntity> ListingEntities = listingDao.getListingsByUserId(entity);
-			
-			// mock : delete later
-			NotificationSessionHandler.sendToSession(userId, "1,2,3,4,5");
-			//
-			
 			return listingTransformer.convertFromEntitiesToItemList(ListingEntities);
 		} catch (SwapException ex) {
 			logger.error(ex);
@@ -161,4 +155,5 @@ public class ItemServiceImpl implements ItemService {
 			throw new SwapException(ErrorEnum.GET_CATEGORY_FAILURE);
 		}
 	}
+	
 }

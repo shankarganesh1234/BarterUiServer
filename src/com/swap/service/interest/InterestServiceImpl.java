@@ -9,6 +9,8 @@ import org.hibernate.HibernateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.swap.common.enums.NotificationStatusEnum;
+import com.swap.common.enums.NotificationTypeEnum;
 import com.swap.common.error.ErrorEnum;
 import com.swap.common.exceptions.SwapException;
 import com.swap.dao.interest.InterestDao;
@@ -16,7 +18,9 @@ import com.swap.entity.interest.InterestEntity;
 import com.swap.models.interest.InterestRequest;
 import com.swap.models.interest.InterestResponse;
 import com.swap.models.interest.InterestsResponse;
+import com.swap.models.notification.NotificationModel;
 import com.swap.service.listing.ItemService;
+import com.swap.service.notification.NotificationService;
 import com.swap.transformer.interest.InterestTransformer;
 import com.swap.validator.interest.InterestValidator;
 
@@ -37,6 +41,9 @@ public class InterestServiceImpl implements InterestService {
 	@Inject
 	private InterestTransformer interestTransformer;
 	
+	@Inject
+	private NotificationService notificationService;
+	
 	@Override
 	@Transactional
 	public void createInterest(InterestRequest request) {
@@ -49,6 +56,8 @@ public class InterestServiceImpl implements InterestService {
 			
 			if (request.getOneSidedInterestFlag()) {
 				createLike(request);
+				
+				
 			} else {
 				createDislike(request);
 			}
@@ -196,7 +205,15 @@ public class InterestServiceImpl implements InterestService {
 			List<InterestEntity> interestEntities = interestTransformer.createEntityList(request);
 			if (interestEntities != null && !interestEntities.isEmpty()) {
 				for (InterestEntity entity : interestEntities) {
-					interestDao.createInterested(entity);
+					InterestEntity interest = interestDao.createInterested(entity);
+					
+					// section for generating notification for user
+					NotificationModel model = new NotificationModel();
+					model.setInterestId(String.valueOf(interest.getInterestId()));
+					model.setStatus(NotificationStatusEnum.UNREAD);
+					model.setType(NotificationTypeEnum.MY_OFFERS);
+					model.setUserId(interest.getOriginalUser().getUserId());
+					notificationService.createNotification(model);
 				}
 			}
 	}

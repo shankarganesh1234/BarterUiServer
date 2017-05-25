@@ -1,18 +1,22 @@
 package com.swap.websocket;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.websocket.Session;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
+
+import com.swap.models.notification.NotificationModel;
 
 @Service
 @ApplicationScoped
 public final class NotificationSessionHandler {
 	private static final Map<String, Session> sessions = new HashMap<>();
-
+	private static final ObjectMapper mapper = new ObjectMapper();
 	/**
 	 * Add a new user websocket session to the sessions map
 	 * @param userId
@@ -35,13 +39,13 @@ public final class NotificationSessionHandler {
 	 * @param userId
 	 * @param message
 	 */
-	public static void sendToSession(String userId, String interestNotifications) {
-        try {
-        	sessions.get(userId).getBasicRemote().sendText(interestNotifications);
-        } catch (Exception ex) {
-            sessions.remove(userId);
-        }
-    }
+	public static void sendToSession(String userId, List<NotificationModel> interestNotifications) {
+		try {
+			sessions.get(userId).getBasicRemote().sendText(mapper.writeValueAsString(interestNotifications));
+		} catch (Exception ex) {
+			sessions.remove(userId);
+		}
+	}
 	
 	/**
 	 * Check if active websocket session is present for user

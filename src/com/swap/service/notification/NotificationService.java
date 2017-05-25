@@ -7,7 +7,7 @@ import com.swap.models.notification.NotificationModel;
 public interface NotificationService {
 
 	boolean createNotification(NotificationModel notificationModel);
-	boolean updateStatusToRead(String id);
+	boolean updateStatusToRead(String userId, String interestId);
 	List<NotificationModel> getUnreadNotificationsForUser(String userId);
 	void sendNotificationWebsocket(String userId);
 }

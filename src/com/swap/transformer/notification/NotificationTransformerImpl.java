@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
+import com.swap.common.enums.NotificationStatusEnum;
+import com.swap.common.enums.NotificationTypeEnum;
 import com.swap.entity.notification.NotificationEntity;
 import com.swap.models.notification.NotificationModel;
 
@@ -17,8 +19,8 @@ public class NotificationTransformerImpl implements NotificationTransformer {
 		NotificationEntity notificationEntity = new NotificationEntity();
 		notificationEntity.setInterestId(notificationModel.getInterestId());
 		notificationEntity.setUserId(notificationModel.getUserId());
-		notificationEntity.setType(notificationModel.getType());
-		notificationEntity.setStatus(notificationModel.getStatus());
+		notificationEntity.setType(notificationModel.getType().name());
+		notificationEntity.setStatus(notificationModel.getStatus().name());
 		return notificationEntity;
 	}
 
@@ -27,9 +29,8 @@ public class NotificationTransformerImpl implements NotificationTransformer {
 		NotificationModel notificationModel = new NotificationModel();
 		notificationModel.setInterestId(notificationEntity.getInterestId());
 		notificationModel.setUserId(notificationEntity.getUserId());
-		notificationModel.setType(notificationEntity.getType());
-		notificationModel.setStatus(notificationEntity.getStatus());
-		notificationModel.setId(notificationEntity.getId());
+		notificationModel.setType(NotificationTypeEnum.fromValue(notificationEntity.getType()));
+		notificationModel.setStatus(NotificationStatusEnum.fromValue(notificationEntity.getStatus()));
 		return notificationModel;
 	}
 	
