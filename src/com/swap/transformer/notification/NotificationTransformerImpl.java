@@ -47,5 +47,16 @@ public class NotificationTransformerImpl implements NotificationTransformer {
 			notifications.add(model);
 		}
 		return notifications;
+	}
+
+	@Override
+	public NotificationEntity createNotificationEntity(String interestId, String userId, NotificationStatusEnum status,
+			NotificationTypeEnum type) {
+		NotificationEntity notificationEntity = new NotificationEntity();
+		notificationEntity.setInterestId(interestId);
+		notificationEntity.setUserId(userId);
+		notificationEntity.setType(type.name());
+		notificationEntity.setStatus(status.name());
+		return notificationEntity;
 	}	
 }

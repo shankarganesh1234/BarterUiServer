@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.swap.common.enums.NotificationStatusEnum;
+import com.swap.common.enums.NotificationTypeEnum;
 import com.swap.dao.notification.NotificationDao;
 import com.swap.entity.notification.NotificationEntity;
 import com.swap.models.notification.NotificationModel;
@@ -26,17 +27,17 @@ public class NotificationServiceImpl implements NotificationService {
 	
 	@Override
 	@Transactional
-	public boolean createNotification(NotificationModel notificationModel) {
+	public boolean createNotification(String interestId, String userId, NotificationStatusEnum status, NotificationTypeEnum type) {
 		boolean result = false;
 		//tx and get entity
-		NotificationEntity notificationEntity = notificationTransformer.txNotificationModel(notificationModel);
+		NotificationEntity notificationEntity = notificationTransformer.createNotificationEntity(interestId, userId, status, type);
 		
 		// create db record
 		result = notificationDao.createInterest(notificationEntity);
 		
 		// send notification
 		if(result) {
-			sendNotificationWebsocket(notificationModel.getUserId());
+			sendNotificationWebsocket(userId);
 		}
 		return result;
 	}

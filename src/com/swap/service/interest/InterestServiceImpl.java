@@ -56,8 +56,6 @@ public class InterestServiceImpl implements InterestService {
 			
 			if (request.getOneSidedInterestFlag()) {
 				createLike(request);
-				
-				
 			} else {
 				createDislike(request);
 			}
@@ -119,6 +117,7 @@ public class InterestServiceImpl implements InterestService {
 		try {
 			InterestEntity entity = interestDao.getInterestById(id);
 			interestResponse = interestTransformer.createResponseFromEntity(entity);
+			notificationService.updateStatusToRead(String.valueOf(id), entity.getOriginalUser().getUserId());
 		} catch (SwapException ex) {
 			logger.error(ex);
 			throw ex;
@@ -202,18 +201,14 @@ public class InterestServiceImpl implements InterestService {
 	 * @param request
 	 */
 	private void createLike(InterestRequest request) {
+		
 			List<InterestEntity> interestEntities = interestTransformer.createEntityList(request);
 			if (interestEntities != null && !interestEntities.isEmpty()) {
 				for (InterestEntity entity : interestEntities) {
 					InterestEntity interest = interestDao.createInterested(entity);
 					
 					// section for generating notification for user
-					NotificationModel model = new NotificationModel();
-					model.setInterestId(String.valueOf(interest.getInterestId()));
-					model.setStatus(NotificationStatusEnum.UNREAD);
-					model.setType(NotificationTypeEnum.MY_OFFERS);
-					model.setUserId(interest.getOriginalUser().getUserId());
-					notificationService.createNotification(model);
+					notificationService.createNotification(String.valueOf(interest.getInterestId()), interest.getOriginalUser().getUserId(), NotificationStatusEnum.UNREAD, NotificationTypeEnum.MY_OFFERS);
 				}
 			}
 	}
