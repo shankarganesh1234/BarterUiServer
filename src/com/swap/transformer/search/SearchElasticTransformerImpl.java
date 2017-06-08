@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -121,12 +123,24 @@ public class SearchElasticTransformerImpl implements SearchElasticTransformer {
 	 */
 	public QueryBuilder createSearchRequest(BarterySearchRequest request) {
 
-		String searchTerm = (request.getSearch() == null || request.getSearch().trim().equals(Constants.BLANK)) ? "*"
+		String searchTerm = StringUtils.isBlank(request.getSearch()) ? "*"
 				: request.getSearch().trim() + "*";
+		
 		Long zip = request.getZip();
-		QueryBuilder qb = QueryBuilders.boolQuery().must(QueryBuilders.wildcardQuery(Constants.TITLE, searchTerm))
-				.filter(QueryBuilders.termQuery(Constants.ZIP, zip));
-
-		return qb;
+		
+		//BoolQueryBuilder bqb = null;
+		BoolQueryBuilder bqb = QueryBuilders.boolQuery().must(QueryBuilders.wildcardQuery(Constants.TITLE, searchTerm));
+		
+		// add category query if present
+		if(!request.getCategoryName().equalsIgnoreCase(Constants.ALL_CATEGORIES)) {
+			bqb.must(QueryBuilders.matchQuery(Constants.CATEGORY_NAME, request.getCategoryName()));
+		}
+		
+		// add zip code if present
+		if(request.getZip() != null) {
+			bqb.filter(QueryBuilders.termQuery(Constants.ZIP, zip));
+		}
+		
+		return bqb;
 	}
 }

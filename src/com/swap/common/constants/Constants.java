@@ -45,4 +45,8 @@ public class Constants {
 	public static final String AUTHORIZATION = "Authorization";
 	public static final String FB_LONG_TOKEN = "https://graph.facebook.com/oauth/access_token";
 	
+	//search
+	public static final String ALL_CATEGORIES = "All categories";
+	public static final String CATEGORY_NAME = "categoryName";
+	
 }

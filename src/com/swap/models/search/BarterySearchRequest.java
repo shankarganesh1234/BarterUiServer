@@ -6,9 +6,18 @@ public class BarterySearchRequest {
 
 	private String search;
 	private Long zip;
+	private String categoryName;
 	private int start = Constants.START;
 	private int limit = Constants.LIMIT;
 	private int page = Constants.PAGE;
+	
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
 	
 	public int getPage() {
 		return page;
