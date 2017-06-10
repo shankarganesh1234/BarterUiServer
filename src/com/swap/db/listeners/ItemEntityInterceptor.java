@@ -70,6 +70,7 @@ public class ItemEntityInterceptor
 		itemDocument.setCategoryName((item.getCategoryId() != null && item.getCategoryId().getCategoryName() != null
 				? item.getCategoryId().getCategoryName() : null));
 		itemDocument.setTitleSuggest(item.getTitle());
+		itemDocument.setTitleLowerCase(item.getTitle().toLowerCase());
 		
 		if(CollectionUtils.isNotEmpty(item.getImages())) {
 			ImageEntity primaryImage = item.getImages().get(0);

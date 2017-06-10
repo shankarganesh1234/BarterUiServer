@@ -124,12 +124,12 @@ public class SearchElasticTransformerImpl implements SearchElasticTransformer {
 	public QueryBuilder createSearchRequest(BarterySearchRequest request) {
 
 		String searchTerm = StringUtils.isBlank(request.getSearch()) ? "*"
-				: request.getSearch().trim() + "*";
+				: request.getSearch().toLowerCase().trim() + "*";
 		
 		Long zip = request.getZip();
 		
 		//BoolQueryBuilder bqb = null;
-		BoolQueryBuilder bqb = QueryBuilders.boolQuery().must(QueryBuilders.wildcardQuery(Constants.TITLE, searchTerm));
+		BoolQueryBuilder bqb = QueryBuilders.boolQuery().must(QueryBuilders.wildcardQuery(Constants.TITLE_LOWERCASE, searchTerm));
 		
 		// add category query if present
 		if(!request.getCategoryName().equalsIgnoreCase(Constants.ALL_CATEGORIES)) {

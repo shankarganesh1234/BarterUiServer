@@ -11,6 +11,12 @@ public class Constants {
 	public static final String ELASTICSEARCH_CHAT_INDEXNAME = "elasticsearch.chat.indexname";
 	public static final String ELASTICSEARCH_CHAT_INDEXTYPE = "elasticsearch.chat.indextype";
 	
+	public static final String ELASTICSEARCH_LOG_CLUSTERNAME = "elasticsearch.log.clustername";
+	public static final String ELASTICSEARCH_LOG_HOST = "elasticsearch.log.host";
+	public static final String ELASTICSEARCH_LOG_INDEXNAME = "elasticsearch.log.indexname";
+	public static final String ELASTICSEARCH_LOG_INDEXTYPE = "elasticsearch.log.indextype";
+	
+	
 	// category cache
 	public static final String CACHE_CATEGORY = "category";
 	public static final String CACHE_CATEGORIES = "categories";
@@ -31,6 +37,7 @@ public class Constants {
 	// DSL
 
 	public static final String TITLE = "title";
+	public static final String TITLE_LOWERCASE = "titleLowerCase";
 	public static final String ZIP = "zipCode";
 	public static final String BLANK = "";
 	public static final String CLUSTER_NAME = "cluster.name";
