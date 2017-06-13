@@ -58,7 +58,7 @@ public class ItemEntityInterceptor
 	
 	@Inject
 	private GeoLocationStore geoLocationStore;
-
+	
 	ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 
 	/**
@@ -70,13 +70,13 @@ public class ItemEntityInterceptor
 		mapper.setSerializationInclusion(Inclusion.NON_NULL);
 		ItemDocument itemDocument = new ItemDocument();
 		BeanUtils.copyProperties(item, itemDocument);
-		itemDocument.setZipCode((item.getZipCode() != null && item.getZipCode().getZipCode() != null
-				? item.getZipCode().getZipCode() : null));
+		itemDocument.setZipCode((item.getZipCode() != null && item.getZipCode() != null
+				? item.getZipCode() : null));
 		itemDocument.setCategoryName((item.getCategoryId() != null && item.getCategoryId().getCategoryName() != null
 				? item.getCategoryId().getCategoryName() : null));
 		itemDocument.setTitleSuggest(item.getTitle());
 		itemDocument.setTitleLowerCase(item.getTitle().toLowerCase());
-		itemDocument.setLocation(getLocation(item.getZipCode().getZipCode()));
+		itemDocument.setLocation(getLocation(item.getZipCode()));
 		
 		if(CollectionUtils.isNotEmpty(item.getImages())) {
 			ImageEntity primaryImage = item.getImages().get(0);
@@ -97,12 +97,19 @@ public class ItemEntityInterceptor
 			return null;
 		
 		String zipStr = String.valueOf(zipCode);
-		GeoLocation location = geoLocationStore.getGeoLocationMap().get(zipStr.trim());
+		GeoLocation geoLocation = geoLocationStore.getGeoLocationMap().get(zipStr.trim());
 		
-		if(location == null)
+		if(geoLocation == null) {
+			// the zip is not present in the location store
+			// invoking google location api
+			geoLocation = geoLocationStore.getLocationFromGoogle(zipCode);
+		}
+		
+		// could not find location from store and google 
+		if(geoLocation == null)
 			return null;
 		
-		return location.getLatitude() + "," + location.getLongitude();
+		return geoLocation.getLatitude() + "," + geoLocation.getLongitude();
 	}
 	
 	/**

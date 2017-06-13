@@ -18,7 +18,6 @@ import com.swap.entity.interest.InterestEntity;
 import com.swap.models.interest.InterestRequest;
 import com.swap.models.interest.InterestResponse;
 import com.swap.models.interest.InterestsResponse;
-import com.swap.models.notification.NotificationModel;
 import com.swap.service.listing.ItemService;
 import com.swap.service.notification.NotificationService;
 import com.swap.transformer.interest.InterestTransformer;

@@ -12,7 +12,6 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.action.index.IndexResponse;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.util.CollectionUtils;
 

@@ -10,7 +10,6 @@ import com.swap.common.enums.ItemConditionEnum;
 import com.swap.common.enums.ItemStageEnum;
 import com.swap.entity.category.CategoryEntity;
 import com.swap.entity.item.ItemEntity;
-import com.swap.entity.location.LocationEntity;
 import com.swap.entity.user.UserEntity;
 import com.swap.models.listing.Item;
 import com.swap.models.listing.ItemRequest;
@@ -79,9 +78,7 @@ public class ItemTransformerImpl implements ItemTransformer {
 		category.setCategoryId(listingRequest.getCategoryId());
 		item.setCategoryId(category);
 
-		LocationEntity entity = new LocationEntity();
-		entity.setZipCode(listingRequest.getZipCode());
-		item.setZipCode(entity);
+		item.setZipCode(listingRequest.getZipCode());
 
 		UserEntity user = new UserEntity();
 		user.setUserId(listingRequest.getUserId());

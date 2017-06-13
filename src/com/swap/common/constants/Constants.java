@@ -56,4 +56,7 @@ public class Constants {
 	public static final String ALL_CATEGORIES = "All categories";
 	public static final String CATEGORY_NAME = "categoryName";
 	
+	//location services
+	public static final String GOOGLE_LOCATION_API_URL = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
+	
 }
