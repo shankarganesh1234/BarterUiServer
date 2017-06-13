@@ -6,13 +6,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -22,7 +27,9 @@ import org.elasticsearch.search.suggest.completion.CompletionSuggestion.Entry.Op
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.springframework.stereotype.Component;
 
+import com.swap.common.components.GeoLocationStore;
 import com.swap.common.constants.Constants;
+import com.swap.models.common.GeoLocation;
 import com.swap.models.elasticsearch.ItemDocument;
 import com.swap.models.search.BarterySearchRequest;
 import com.swap.models.search.BarterySearchResponse;
@@ -32,6 +39,9 @@ public class SearchElasticTransformerImpl implements SearchElasticTransformer {
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 
+	@Inject
+	private GeoLocationStore geoLocationStore;
+	
 	@Override
 	public BarterySearchResponse convertToSearchResponse(SearchResponse searchResponse,
 			BarterySearchRequest searchRequest) {
@@ -126,21 +136,54 @@ public class SearchElasticTransformerImpl implements SearchElasticTransformer {
 		String searchTerm = StringUtils.isBlank(request.getSearch()) ? "*"
 				: request.getSearch().toLowerCase().trim() + "*";
 		
-		Long zip = request.getZip();
-		
 		//BoolQueryBuilder bqb = null;
 		BoolQueryBuilder bqb = QueryBuilders.boolQuery().must(QueryBuilders.wildcardQuery(Constants.TITLE_LOWERCASE, searchTerm));
 		
 		// add category query if present
 		if(!request.getCategoryName().equalsIgnoreCase(Constants.ALL_CATEGORIES)) {
-			bqb.must(QueryBuilders.matchQuery(Constants.CATEGORY_NAME, request.getCategoryName()));
+			bqb.must(QueryBuilders.matchQuery(Constants.CATEGORY_NAME, request.getCategoryName()).operator(Operator.AND));
 		}
 		
-		// add zip code if present
+		// add geo distance query if present
 		if(request.getZip() != null) {
-			bqb.filter(QueryBuilders.termQuery(Constants.ZIP, zip));
+			GeoDistanceQueryBuilder geoDistanceQueryBuilder = createGeoDistanceQuery(request);
+			if(geoDistanceQueryBuilder != null) {
+				bqb.filter(createGeoDistanceQuery(request));
+			}
 		}
-		
 		return bqb;
+	}
+	
+	/**
+	 * Create a geo distance query after converting zip to lat/lon
+	 * @return
+	 */
+	public GeoDistanceQueryBuilder createGeoDistanceQuery(BarterySearchRequest request) {
+		
+		if(request.getZip() == null) 
+			return null;
+		
+		GeoLocation geoLocation = getGeoLocation(request.getZip());
+		double lat = Double.valueOf(geoLocation.getLatitude());
+		double lon = Double.valueOf(geoLocation.getLongitude());
+		
+		String distance = request.getDistance() != null ? String.valueOf(request.getDistance()) : Constants.DEFAULT_SEARCH_DISTANCE;
+		return QueryBuilders.geoDistanceQuery(Constants.LOCATION).point(lat, lon).distance(distance, DistanceUnit.MILES);
+	}
+	
+	/**
+	 * Get coordinates for zip from map or from google maps api
+	 * @return
+	 */
+	public GeoLocation getGeoLocation(Long zip) {
+		GeoLocation geoLocation = null;
+		
+		geoLocation = geoLocationStore.getGeoLocationMap().get(String.valueOf(zip));
+		
+		if(geoLocation == null) {
+			// zip not present in map, call google maps api
+			geoLocation = geoLocationStore.getLocationFromGoogle(zip);
+		}
+		return geoLocation;
 	}
 }

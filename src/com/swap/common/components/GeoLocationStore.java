@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.swap.client.GoogleLocationClient;
+import com.swap.common.constants.Constants;
 import com.swap.models.common.GeoLocation;
 
 @Component
@@ -37,11 +38,11 @@ public class GeoLocationStore {
 	public void init() {
 		geoLocationMap = new HashMap<>();
 		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("geolocation.txt").getFile());
+		File file = new File(classLoader.getResource(Constants.GEO_FILE_NAME).getFile());
 
 		try {
 
-			List<String> lines = FileUtils.readLines(file, "UTF-8");
+			List<String> lines = FileUtils.readLines(file, Constants.ENCODING_UTF);
 			for (String line : lines) {
 				GeoLocation location = new GeoLocation();
 				String[] geoLocationStr = line.split(",");

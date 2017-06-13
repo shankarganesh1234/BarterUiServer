@@ -25,20 +25,9 @@ public class SearchResource {
 	@Inject
 	private SearchService searchService;
 	
-	@Inject
-	private PropertiesFactoryBean envProps;
-	
 	@Path("/item")
 	@POST
 	public BarterySearchResponse searchItems(BarterySearchRequest searchRequest) {
-		
-		try {
-			System.out.println("Elasticsearch base url = " + envProps.getObject().getProperty("elasticsearch.baseurl"));
-			System.out.println("Elasticsearch cluster name = " + envProps.getObject().getProperty("elasticsearch.clustername"));
-		} catch(Exception ex) {
-			ex.printStackTrace();
-		}
-		
 		return searchService.searchItems(searchRequest);
 	}
 	

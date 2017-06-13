@@ -7,6 +7,7 @@ public class BarterySearchRequest {
 	private String search;
 	private Long zip;
 	private String categoryName;
+	private Long distance;
 	private int start = Constants.START;
 	private int limit = Constants.LIMIT;
 	private int page = Constants.PAGE;
@@ -57,5 +58,13 @@ public class BarterySearchRequest {
 
 	public void setZip(Long zip) {
 		this.zip = zip;
+	}
+
+	public Long getDistance() {
+		return distance;
+	}
+
+	public void setDistance(Long distance) {
+		this.distance = distance;
 	}
 }

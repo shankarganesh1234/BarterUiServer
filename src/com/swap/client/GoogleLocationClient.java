@@ -40,8 +40,8 @@ public class GoogleLocationClient {
 
             geoLocation = new GeoLocation();
             geoLocation.setZip(String.valueOf(zip));
-            geoLocation.setLatitude(String.valueOf(jsonResponse.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getBigDecimal("lat")));
-            geoLocation.setLongitude(String.valueOf(jsonResponse.getJSONArray("results").getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getBigDecimal("lng")));
+            geoLocation.setLatitude(String.valueOf(jsonResponse.getJSONArray(Constants.RESULTS).getJSONObject(0).getJSONObject(Constants.GEOMETRY).getJSONObject(Constants.LOCATION).getBigDecimal(Constants.LAT)));
+            geoLocation.setLongitude(String.valueOf(jsonResponse.getJSONArray(Constants.RESULTS).getJSONObject(0).getJSONObject(Constants.GEOMETRY).getJSONObject(Constants.LOCATION).getBigDecimal(Constants.LNG)));
             
             EntityUtils.consume(entity);
 			

@@ -58,5 +58,16 @@ public class Constants {
 	
 	//location services
 	public static final String GOOGLE_LOCATION_API_URL = "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=";
+	public static final String LOCATION = "location";
+	public static final String DEFAULT_SEARCH_DISTANCE = "10";
+	public static final String GEO_FILE_NAME = "geolocation.txt";
+	public static final String ENCODING_UTF = "UTF-8";
+	public static final String RESULTS = "results";
+	public static final String GEOMETRY = "geometry";
+	public static final String LAT = "lat";
+	public static final String LNG = "lng";
+
+
+	
 	
 }
