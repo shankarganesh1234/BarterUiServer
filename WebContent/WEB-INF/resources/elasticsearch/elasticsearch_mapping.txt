@@ -55,8 +55,10 @@ http://54.183.41.168:9200/swap/item/_mapping
 		 },
 		  "upsertDate": {
 			"type": "date"
+		 },
+		 "location": {
+		 	"type": "geo_point"
 		 }
-		 
 	}
 }
 #### end item mapping #############################################################

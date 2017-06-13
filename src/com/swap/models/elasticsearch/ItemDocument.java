@@ -22,7 +22,14 @@ public class ItemDocument {
 	private String city;
 	private Date upsertDate;
 	private String titleLowerCase;
+	private String location;
 	
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
 	public String getTitleLowerCase() {
 		return titleLowerCase;
 	}
