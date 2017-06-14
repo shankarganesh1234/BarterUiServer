@@ -11,8 +11,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.beans.factory.config.PropertiesFactoryBean;
-
 import com.swap.models.search.BarterySearchRequest;
 import com.swap.models.search.BarterySearchResponse;
 import com.swap.service.search.SearchService;
