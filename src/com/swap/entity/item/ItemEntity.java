@@ -19,7 +19,6 @@ import javax.persistence.Table;
 
 import com.swap.db.listeners.ItemEntityInterceptor;
 import com.swap.entity.category.CategoryEntity;
-import com.swap.entity.location.LocationEntity;
 import com.swap.entity.user.UserEntity;
 
 @Entity
@@ -37,9 +36,8 @@ public class ItemEntity {
 	@Column(name = "description")
 	private String description;
 
-	@OneToOne
-	@JoinColumn(name = "zip_code")
-	private LocationEntity zipCode;
+	@Column(name = "zip_code")
+	private Long zipCode;
 
 	@OneToOne
 	@JoinColumn(name = "user_id")
@@ -100,11 +98,11 @@ public class ItemEntity {
 		this.activeInterests = activeInterests;
 	}
 
-	public LocationEntity getZipCode() {
+	public Long getZipCode() {
 		return zipCode;
 	}
 
-	public void setZipCode(LocationEntity zipCode) {
+	public void setZipCode(Long zipCode) {
 		this.zipCode = zipCode;
 	}
 

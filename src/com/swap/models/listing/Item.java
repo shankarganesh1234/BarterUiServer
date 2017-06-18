@@ -11,7 +11,6 @@ import com.swap.common.enums.ItemConditionEnum;
 import com.swap.common.enums.ItemStageEnum;
 import com.swap.entity.category.CategoryEntity;
 import com.swap.entity.item.ImageEntity;
-import com.swap.entity.location.LocationEntity;
 import com.swap.entity.user.UserEntity;
 
 @JsonSerialize(include = Inclusion.NON_NULL)
@@ -20,7 +19,7 @@ public class Item {
 	private String title;
 	private Long itemId;
 	private String description;
-	private LocationEntity zipCode;
+	private Long zipCode;
 	private UserEntity userId;
 	private CategoryEntity categoryId;
 	private List<ImageEntity> images;
@@ -31,11 +30,11 @@ public class Item {
 	private ItemStageEnum itemStage;
 	private String story;
 
-	public LocationEntity getZipCode() {
+	public Long getZipCode() {
 		return zipCode;
 	}
 
-	public void setZipCode(LocationEntity zipCode) {
+	public void setZipCode(Long zipCode) {
 		this.zipCode = zipCode;
 	}
 

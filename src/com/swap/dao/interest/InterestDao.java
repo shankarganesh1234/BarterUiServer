@@ -6,8 +6,8 @@ import com.swap.entity.interest.InterestEntity;
 
 public interface InterestDao {
 
-	void createInterested(InterestEntity entity);
-	void updateInterested(InterestEntity entity);
+	InterestEntity createInterested(InterestEntity entity);
+	InterestEntity updateInterested(InterestEntity entity);
 	void deleteInterest(Long id);
 	InterestEntity getInterestById(Long id);
 	List<InterestEntity> getInterestsByInterestedUser(Long userId);

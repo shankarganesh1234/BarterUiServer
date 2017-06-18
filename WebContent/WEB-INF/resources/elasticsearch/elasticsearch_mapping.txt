@@ -1,18 +1,15 @@
 ##### item create index #################
 PUT
-http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/swap
+http://54.183.41.168:9200/swap
 ##### end item create index #################
 
 
 #### item mapping #############################################################
 
 PUT
-http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/swap/item/_mapping
+http://54.183.41.168:9200/swap/item/_mapping
 {
 	"properties": {
-		"chatChannelId": {
-			"type": "string"
-		},
 		"condition": {
 			"type": "string"
 		},
@@ -34,10 +31,11 @@ http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/swap/item/_mappin
 		"quantity": {
 			"type": "long"
 		},
-		"story": {
-			"type": "string"
-		},
 		"title": {
+			"type": "string",
+			"index":"not_analyzed"
+		},
+		"titleLowerCase": {
 			"type": "string",
 			"index":"not_analyzed"
 		},
@@ -57,19 +55,21 @@ http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/swap/item/_mappin
 		 },
 		  "upsertDate": {
 			"type": "date"
+		 },
+		 "location": {
+		 	"type": "geo_point"
 		 }
-		 
 	}
 }
 #### end item mapping #############################################################
 
 ## chat history index creation
 PUT
-http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/chat
+http://54.183.41.168:9200/chat
 
 ## chat history mapping
 PUT
-http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/chat/history/_mapping
+http://54.183.41.168:9200/chat/history/_mapping
 {
 	"properties": {
 		"chatChannelId": {
@@ -93,3 +93,29 @@ http://ec2-54-215-206-176.us-west-1.compute.amazonaws.com:9200/chat/history/_map
 	}
 }
 ## end chat history mapping
+
+
+## start log mapping
+PUT
+http://54.153.7.48:9200/log
+
+## log mapping
+PUT
+http://54.153.7.48:9200/log/request/_mapping
+{
+	"properties": {
+		"method": {
+			"type": "string"
+		},
+		"uri": {
+			"type": "string"
+		},
+		"clientIp": {
+			"type": "ip"
+		},
+		"requestDate": {
+			"type": "date"
+		} 
+	}
+}
+## end log mapping 

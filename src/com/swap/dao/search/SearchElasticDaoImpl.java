@@ -4,11 +4,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -50,7 +52,7 @@ public class SearchElasticDaoImpl implements SearchElasticDao {
 	 * @param query
 	 * @return
 	 */
-	public SearchResponse searchItems(QueryBuilder query, int from, int limit) {
+	public SearchResponse searchItems(QueryBuilder query, int from, int limit, String sortField, SortOrder sortOrder) {
 		logger.debug("Entering searchItems");
 		SearchResponse searchResponse = null;
 		try {
@@ -59,6 +61,12 @@ public class SearchElasticDaoImpl implements SearchElasticDao {
 					.setTypes(envProps.getObject().getProperty(Constants.ELASTICSEARCH_INDEXTYPE));
 			srb.setQuery(query);
 			srb.setSearchType(SearchType.QUERY_THEN_FETCH).setFrom(from).setSize(limit);
+			
+			// sorting by time of create or update
+			if(!StringUtils.isBlank(sortField)) {
+				srb.addSort(sortField, sortOrder);
+			}
+			
 			searchResponse = srb.execute().actionGet();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

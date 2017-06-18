@@ -9,6 +9,8 @@ import org.hibernate.HibernateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.swap.common.enums.NotificationStatusEnum;
+import com.swap.common.enums.NotificationTypeEnum;
 import com.swap.common.error.ErrorEnum;
 import com.swap.common.exceptions.SwapException;
 import com.swap.dao.interest.InterestDao;
@@ -17,6 +19,7 @@ import com.swap.models.interest.InterestRequest;
 import com.swap.models.interest.InterestResponse;
 import com.swap.models.interest.InterestsResponse;
 import com.swap.service.listing.ItemService;
+import com.swap.service.notification.NotificationService;
 import com.swap.transformer.interest.InterestTransformer;
 import com.swap.validator.interest.InterestValidator;
 
@@ -36,6 +39,9 @@ public class InterestServiceImpl implements InterestService {
 
 	@Inject
 	private InterestTransformer interestTransformer;
+	
+	@Inject
+	private NotificationService notificationService;
 	
 	@Override
 	@Transactional
@@ -110,6 +116,7 @@ public class InterestServiceImpl implements InterestService {
 		try {
 			InterestEntity entity = interestDao.getInterestById(id);
 			interestResponse = interestTransformer.createResponseFromEntity(entity);
+			notificationService.updateStatusToRead(String.valueOf(id), entity.getOriginalUser().getUserId());
 		} catch (SwapException ex) {
 			logger.error(ex);
 			throw ex;
@@ -193,10 +200,14 @@ public class InterestServiceImpl implements InterestService {
 	 * @param request
 	 */
 	private void createLike(InterestRequest request) {
+		
 			List<InterestEntity> interestEntities = interestTransformer.createEntityList(request);
 			if (interestEntities != null && !interestEntities.isEmpty()) {
 				for (InterestEntity entity : interestEntities) {
-					interestDao.createInterested(entity);
+					InterestEntity interest = interestDao.createInterested(entity);
+					
+					// section for generating notification for user
+					notificationService.createNotification(String.valueOf(interest.getInterestId()), interest.getOriginalUser().getUserId(), NotificationStatusEnum.UNREAD, NotificationTypeEnum.MY_OFFERS);
 				}
 			}
 	}

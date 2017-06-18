@@ -7,10 +7,12 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.springframework.stereotype.Service;
 
+import com.swap.common.constants.Constants;
 import com.swap.common.error.ErrorEnum;
 import com.swap.common.exceptions.SwapException;
 import com.swap.dao.search.SearchElasticDao;
@@ -40,7 +42,7 @@ public class SearchServiceImpl implements SearchService {
 	public BarterySearchResponse searchItems(BarterySearchRequest searchRequest) {
 
 		BarterySearchResponse searchResponse = null;
-
+		SearchResponse result = null;
 		try {
 			// validate request
 			searchValidator.validateSearchElasticRequest(searchRequest);
@@ -49,7 +51,12 @@ public class SearchServiceImpl implements SearchService {
 			QueryBuilder query = searchElasticTransformer.createSearchRequest(searchRequest);
 			
 			// call DAO and get response
-			SearchResponse result = searchElasticDao.searchItems(query, searchRequest.getStart(), searchRequest.getLimit());
+			// if query is null, it would mean the search is called from landing page
+			if(query == null) {
+				result = searchElasticDao.searchItems(query, searchRequest.getStart(), searchRequest.getLimit(), Constants.DEFAULT_SORTFIELD, SortOrder.DESC);
+			} else {
+				result = searchElasticDao.searchItems(query, searchRequest.getStart(), searchRequest.getLimit(), null, null);
+			}
 
 			// validate response
 			searchResponse = searchElasticTransformer.convertToSearchResponse(result, searchRequest);

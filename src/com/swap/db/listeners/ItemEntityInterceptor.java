@@ -26,9 +26,11 @@ import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.stereotype.Component;
 
 import com.swap.common.components.ElasticTransportClient;
+import com.swap.common.components.GeoLocationStore;
 import com.swap.common.constants.Constants;
 import com.swap.entity.item.ImageEntity;
 import com.swap.entity.item.ItemEntity;
+import com.swap.models.common.GeoLocation;
 import com.swap.models.elasticsearch.ItemDocument;
 import com.swap.service.image.ImageService;
 
@@ -53,7 +55,10 @@ public class ItemEntityInterceptor
 	
 	@Inject
 	private ImageService imageService;
-
+	
+	@Inject
+	private GeoLocationStore geoLocationStore;
+	
 	ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 
 	/**
@@ -65,11 +70,13 @@ public class ItemEntityInterceptor
 		mapper.setSerializationInclusion(Inclusion.NON_NULL);
 		ItemDocument itemDocument = new ItemDocument();
 		BeanUtils.copyProperties(item, itemDocument);
-		itemDocument.setZipCode((item.getZipCode() != null && item.getZipCode().getZipCode() != null
-				? item.getZipCode().getZipCode() : null));
+		itemDocument.setZipCode((item.getZipCode() != null && item.getZipCode() != null
+				? item.getZipCode() : null));
 		itemDocument.setCategoryName((item.getCategoryId() != null && item.getCategoryId().getCategoryName() != null
 				? item.getCategoryId().getCategoryName() : null));
 		itemDocument.setTitleSuggest(item.getTitle());
+		itemDocument.setTitleLowerCase(item.getTitle().toLowerCase());
+		itemDocument.setLocation(getLocation(item.getZipCode()));
 		
 		if(CollectionUtils.isNotEmpty(item.getImages())) {
 			ImageEntity primaryImage = item.getImages().get(0);
@@ -80,6 +87,31 @@ public class ItemEntityInterceptor
 		return itemDocument;
 	}
 
+	/**
+	 * Get geo point from zip
+	 * @return
+	 */
+	private String getLocation(Long zipCode) {
+		
+		if(zipCode == null)
+			return null;
+		
+		String zipStr = String.valueOf(zipCode);
+		GeoLocation geoLocation = geoLocationStore.getGeoLocationMap().get(zipStr.trim());
+		
+		if(geoLocation == null) {
+			// the zip is not present in the location store
+			// invoking google location api
+			geoLocation = geoLocationStore.getLocationFromGoogle(zipCode);
+		}
+		
+		// could not find location from store and google 
+		if(geoLocation == null)
+			return null;
+		
+		return geoLocation.getLatitude() + "," + geoLocation.getLongitude();
+	}
+	
 	/**
 	 * 
 	 */
