@@ -86,6 +86,7 @@ public class InterestDaoImpl implements InterestDao {
 			existingInterest.setUpsertDate(CommonUtil.getCurrentDate());
 			sessionFactory.getCurrentSession().saveOrUpdate(existingInterest);
 		}
+		sessionFactory.getCurrentSession().flush();
 	}
 
 	@Override

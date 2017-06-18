@@ -127,30 +127,43 @@ public class SearchElasticTransformerImpl implements SearchElasticTransformer {
 	}
 
 	/**
-	 * 
+	 * Creates regular as well as default search queries, for querying elasticsearch
+	 * data
 	 * @param request
 	 * @return
 	 */
 	public QueryBuilder createSearchRequest(BarterySearchRequest request) {
 
-		String searchTerm = StringUtils.isBlank(request.getSearch()) ? "*"
-				: request.getSearch().toLowerCase().trim() + "*";
-		
-		//BoolQueryBuilder bqb = null;
-		BoolQueryBuilder bqb = QueryBuilders.boolQuery().must(QueryBuilders.wildcardQuery(Constants.TITLE_LOWERCASE, searchTerm));
-		
-		// add category query if present
-		if(!request.getCategoryName().equalsIgnoreCase(Constants.ALL_CATEGORIES)) {
-			bqb.must(QueryBuilders.matchQuery(Constants.CATEGORY_NAME, request.getCategoryName()).operator(Operator.AND));
-		}
-		
-		// add geo distance query if present
-		if(request.getZip() != null) {
-			GeoDistanceQueryBuilder geoDistanceQueryBuilder = createGeoDistanceQuery(request);
-			if(geoDistanceQueryBuilder != null) {
-				bqb.filter(createGeoDistanceQuery(request));
+		BoolQueryBuilder bqb = null;
+		// when zip is 0, the case represents when the user just lands on the
+		// landing page
+		// and default results need to be shown
+		if (request.getZip() == 0) {
+
+			
+			
+		} else {
+
+			String searchTerm = StringUtils.isBlank(request.getSearch()) ? "*"
+					: "*" + request.getSearch().toLowerCase().trim() + "*";
+
+			bqb = QueryBuilders.boolQuery().must(QueryBuilders.wildcardQuery(Constants.TITLE_LOWERCASE, searchTerm));
+
+			// add category query if present
+			if (!request.getCategoryName().equalsIgnoreCase(Constants.ALL_CATEGORIES)) {
+				bqb.must(QueryBuilders.matchQuery(Constants.CATEGORY_NAME, request.getCategoryName())
+						.operator(Operator.AND));
+			}
+
+			// add geo distance query if present
+			if (request.getZip() != null) {
+				GeoDistanceQueryBuilder geoDistanceQueryBuilder = createGeoDistanceQuery(request);
+				if (geoDistanceQueryBuilder != null) {
+					bqb.filter(createGeoDistanceQuery(request));
+				}
 			}
 		}
+
 		return bqb;
 	}
 	

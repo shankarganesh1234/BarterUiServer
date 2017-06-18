@@ -66,7 +66,9 @@ public class Constants {
 	public static final String GEOMETRY = "geometry";
 	public static final String LAT = "lat";
 	public static final String LNG = "lng";
-
+	public static final String DEFAULT_SORTFIELD = "upsertDate";
+	
+	
 
 	
 	
