@@ -1,1 +1,1 @@
-# customServer
+# BarterUi Server Side Application
