@@ -43,7 +43,7 @@ public class Constants {
 	public static final String CLUSTER_NAME = "cluster.name";
 	
 	// pagination 
-	public static final Integer LIMIT = 8;
+	public static final Integer LIMIT = 20;
 	public static final Integer START = 0;
 	public static final Integer PAGE = 1;
 	
