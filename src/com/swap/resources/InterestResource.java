@@ -64,12 +64,14 @@ public class InterestResource {
 	}
 	
 	@GET
+	@Path("user/{userId}")
+	public InterestsResponse getInterestsAndOffers(@PathParam("userId") Long userId) {
+		return interestService.getInterestsAndOffers(userId);
+	}
+	
+	@GET
 	public InterestsResponse getInterests(@QueryParam("user") String userId, @QueryParam("item") String itemId, @QueryParam("isowner") boolean isOwner) {
 		return interestService.getInterests(userId, itemId, isOwner);
 	}
 
-//	@GET
-//	public List<InterestResponse> getInteresedByUserForUser(Long byUserId, Long forUserId) {
-//		return null;
-//	}
 }

@@ -1,5 +1,6 @@
 package com.swap.service.interest;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -207,7 +208,7 @@ public class InterestServiceImpl implements InterestService {
 					InterestEntity interest = interestDao.createInterested(entity);
 					
 					// section for generating notification for user
-					notificationService.createNotification(String.valueOf(interest.getInterestId()), interest.getOriginalUser().getUserId(), NotificationStatusEnum.UNREAD, NotificationTypeEnum.MY_OFFERS);
+					notificationService.createNotification(String.valueOf(interest.getInterestId()), interest.getOriginalUser().getUserId(), NotificationStatusEnum.UNREAD, NotificationTypeEnum.INTEREST);
 				}
 			}
 	}
@@ -229,6 +230,38 @@ public class InterestServiceImpl implements InterestService {
 		try {
 			List<InterestEntity> interestEntities = interestDao.getInterests(userId, itemId, isOwner);
 			List<InterestResponse> interestResonseList = interestTransformer.createResponseListFromEntityList(interestEntities);
+			interests = new InterestsResponse();
+			interests.setInterests(interestResonseList);
+		} catch (SwapException ex) {
+			logger.error(ex);
+			throw ex;
+		} catch (HibernateException ex) {
+			logger.error(ex);
+			throw new SwapException(ErrorEnum.CREATE_INTEREST_FAILURE);
+		} catch (Exception ex) {
+			logger.error(ex);
+			throw new SwapException(ErrorEnum.CREATE_INTEREST_FAILURE);
+		}
+		return interests;
+	}
+
+	@Override
+	@Transactional
+	public InterestsResponse getInterestsAndOffers(Long userId) {
+		InterestsResponse interests = null;
+		List<InterestEntity> combinedList = new LinkedList<>();
+		try {
+			List<InterestEntity> interestEntities = interestDao.getInterestsByInterestedUser(userId);
+			List<InterestEntity> offerEntities = interestDao.getInterestedByItemOwnerUser(userId);
+			
+			if(interestEntities != null) {
+				combinedList.addAll(interestEntities);
+			}
+			if(offerEntities != null) {
+				combinedList.addAll(offerEntities);
+			}
+			
+			List<InterestResponse> interestResonseList = interestTransformer.createResponseListFromEntityList(combinedList);
 			interests = new InterestsResponse();
 			interests.setInterests(interestResonseList);
 		} catch (SwapException ex) {

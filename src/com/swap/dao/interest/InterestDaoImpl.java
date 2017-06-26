@@ -128,6 +128,7 @@ public class InterestDaoImpl implements InterestDao {
 		UserEntity user = new UserEntity();
 		user.setUserId(userIdStr);
 		criteriaQuery.where(builder.equal(interestEntityRoot.get("interestedUser"), user));
+		criteriaQuery.orderBy(builder.desc(interestEntityRoot.get("upsertDate")));
 
 		// execute
 		List<InterestEntity> interests = sessionFactory.getCurrentSession().createQuery(criteriaQuery).getResultList();
@@ -149,6 +150,8 @@ public class InterestDaoImpl implements InterestDao {
 		UserEntity user = new UserEntity();
 		user.setUserId(userIdStr);
 		criteriaQuery.where(builder.equal(interestEntityRoot.get("originalUser"), user));
+		criteriaQuery.orderBy(builder.desc(interestEntityRoot.get("upsertDate")));
+
 		// execute
 		List<InterestEntity> interests = sessionFactory.getCurrentSession().createQuery(criteriaQuery).getResultList();
 		return interests;
