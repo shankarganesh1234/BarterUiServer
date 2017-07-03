@@ -30,9 +30,7 @@ public class InterestDaoImpl implements InterestDao {
 
 	@Override
 	public InterestEntity createInterested(InterestEntity entity) {
-		createOrUpdateInterest(entity);
-		return entity;
-		
+		return createOrUpdateInterest(entity);
 	}
 	
 	/**
@@ -41,8 +39,9 @@ public class InterestDaoImpl implements InterestDao {
 	 * If no, then create
 	 * @param entity
 	 */
-	public void createOrUpdateInterest(InterestEntity entity) {
+	public InterestEntity createOrUpdateInterest(InterestEntity entity) {
 
+		InterestEntity interestEntity = null;
 		// check if an interest already exists, then create new or update
 		// existing
 		// Create CriteriaBuilder
@@ -80,13 +79,16 @@ public class InterestDaoImpl implements InterestDao {
 		if(CollectionUtils.isEmpty(interests)) {
 			entity.setUpsertDate(CommonUtil.getCurrentDate());
 			sessionFactory.getCurrentSession().saveOrUpdate(entity);
+			interestEntity = entity;
 		} else {
 			InterestEntity existingInterest = interests.get(0);
 			existingInterest.setSwappableItemId(entity.getSwappableItemId());
 			existingInterest.setUpsertDate(CommonUtil.getCurrentDate());
 			sessionFactory.getCurrentSession().saveOrUpdate(existingInterest);
+			interestEntity = existingInterest;
 		}
 		sessionFactory.getCurrentSession().flush();
+		return interestEntity;
 	}
 
 	@Override
