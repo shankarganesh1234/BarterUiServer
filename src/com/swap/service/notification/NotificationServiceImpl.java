@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,7 +72,8 @@ public class NotificationServiceImpl implements NotificationService {
 			// get latest notification status for the user
 			List<NotificationModel> notifications = getUnreadNotificationsForUser(userId);
 
-			if (CollectionUtils.isNotEmpty(notifications)) {
+			// not checking for null notifications, since that is a valid scenario
+			if (StringUtils.isNotBlank(userId)) {
 				NotificationSessionHandler.sendToSession(userId, notifications);
 			}
 		}
