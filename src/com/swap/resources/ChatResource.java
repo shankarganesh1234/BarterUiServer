@@ -13,6 +13,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swap.models.chat.ChatDetailsResponse;
@@ -52,6 +54,7 @@ public class ChatResource {
 		SendbirdWebhookRequest sendbirdRequest;
 		boolean result = false;
 		try {
+			System.out.println("printing sendbird webhook response = " + request);
 		    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			sendbirdRequest = objectMapper.readValue(request, SendbirdWebhookRequest.class);
 			result = chatService.appendChatHistory(sendbirdRequest);
@@ -65,6 +68,10 @@ public class ChatResource {
 	@Path("/history")
 	@GET
 	public List<ChatHistoryDocument> getChatHistory(@QueryParam("channelId") String channelId) {
+		
+		if(StringUtils.isBlank(channelId))
+			return null;
+		
 		return chatService.getChatHistory(channelId);
 	}
 	
