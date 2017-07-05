@@ -14,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,8 @@ import com.swap.service.chat.ChatService;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ChatResource {
+
+	private static final Logger logger = Logger.getLogger(ChatResource.class);
 
 	@Inject
 	ChatService chatService;
@@ -50,11 +53,13 @@ public class ChatResource {
 	@POST
 	public boolean sendbirdChatHistoryWebhook(String request) {
 		
+		logger.debug("entering SENDBIRD WEBHOOK");
+		logger.debug("Sendbird request :  " + request);
+
 		ObjectMapper objectMapper = new ObjectMapper();
 		SendbirdWebhookRequest sendbirdRequest;
 		boolean result = false;
 		try {
-			System.out.println("printing sendbird webhook response = " + request);
 		    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			sendbirdRequest = objectMapper.readValue(request, SendbirdWebhookRequest.class);
 			result = chatService.appendChatHistory(sendbirdRequest);

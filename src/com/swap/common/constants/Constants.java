@@ -68,7 +68,8 @@ public class Constants {
 	public static final String LNG = "lng";
 	public static final String DEFAULT_SORTFIELD = "upsertDate";
 	
-	
+	// sendbird 
+	public static final String SENDBIRD_BASE_URL = "https://api.sendbird.com/v3/";
 
 	
 	
