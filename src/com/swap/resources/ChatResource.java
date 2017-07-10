@@ -62,6 +62,7 @@ public class ChatResource {
 		try {
 		    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			sendbirdRequest = objectMapper.readValue(request, SendbirdWebhookRequest.class);
+			logger.debug("SendbirdWebhookRequest after deserializarion :  " + sendbirdRequest);
 			result = chatService.appendChatHistory(sendbirdRequest);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

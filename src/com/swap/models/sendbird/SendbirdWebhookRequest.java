@@ -1,5 +1,7 @@
 package com.swap.models.sendbird;
 
+import java.util.Arrays;
+
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
@@ -12,6 +14,14 @@ public class SendbirdWebhookRequest {
 	private Channel channel;
 	private Sender sender;
 	private Payload payload;
+	private Member members[];
+	
+	public Member[] getMembers() {
+		return members;
+	}
+	public void setMembers(Member[] members) {
+		this.members = members;
+	}
 	public Channel getChannel() {
 		return channel;
 	}
@@ -30,19 +40,16 @@ public class SendbirdWebhookRequest {
 	public void setPayload(Payload payload) {
 		this.payload = payload;
 	}
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("SendbirdWebhookRequest [channel=").append(channel).append(", sender=").append(sender)
-				.append(", payload=").append(payload).append("]");
-		return builder.toString();
-	}
 	public String getCategory() {
 		return category;
 	}
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+	@Override
+	public String toString() {
+		return "SendbirdWebhookRequest [category=" + category + ", channel=" + channel + ", sender=" + sender
+				+ ", payload=" + payload + ", members=" + Arrays.toString(members) + "]";
+	}
 	
 }

@@ -71,6 +71,7 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public boolean appendChatHistory(SendbirdWebhookRequest request) {
 		ChatHistoryDocument document = chatTransformer.createChatHistoryDocument(request);
+		logger.debug("ChatHistoryDocument final :  " + document);
 		return chatElasticDaoImpl.appendChatHistory(document);
 	}
 
