@@ -11,6 +11,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
+import com.swap.common.CommonUtil;
 import com.swap.common.enums.NotificationStatusEnum;
 import com.swap.entity.notification.NotificationEntity;
 
@@ -29,6 +30,7 @@ public class NotificationDaoImpl implements NotificationDao {
 
 		boolean result = false;
 		try {
+			notificationEntity.setCreateTimestamp(CommonUtil.getCurrentDate());
 			sessionFactory.getCurrentSession().saveOrUpdate(notificationEntity);
 			result = true;
 		} catch (Exception ex) {
