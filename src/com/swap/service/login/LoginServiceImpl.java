@@ -2,6 +2,7 @@ package com.swap.service.login;
 
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
@@ -14,11 +15,16 @@ import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.stereotype.Service;
 
 import com.swap.client.FacebookClient;
+import com.swap.models.chat.CreateUserRequest;
+import com.swap.models.login.FbLongLivedTokenResponse;
 import com.swap.models.login.LoginRequest;
+import com.swap.service.chat.ChatService;
 import com.swap.validator.login.LoginValidator;
 
 @Service
 public class LoginServiceImpl implements LoginService {
+
+	private static final Logger logger = Logger.getLogger(LoginServiceImpl.class);
 
 	@Inject
 	private LoginValidator loginValidator;
@@ -31,6 +37,9 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Inject
 	private FacebookClient fbClient;
+	
+	@Inject
+	private ChatService chatService;
 
 	@Override
 	public UserProfile connectUser(LoginRequest inputRequest, String providerId) {
@@ -59,6 +68,18 @@ public class LoginServiceImpl implements LoginService {
 		else
 			usersConnectionRepository.createConnectionRepository(userProfile.getId()).updateConnection(connection);
 
+		// create sendbird user
+		
+		if(chatService.getSendbirdUser(userProfile.getId()) == null) {
+			logger.debug("User does not exist in sendbird. Creating new user...");
+			CreateUserRequest userRequest = new CreateUserRequest();
+			userRequest.setUser_id(userProfile.getId());
+			userRequest.setNickname(userProfile.getId());
+			userRequest.setProfile_url("");
+			chatService.createSendbirdUser(userRequest);
+		} else {
+			logger.debug("User already exists in sendbird");
+		}
 		return userProfile;
 	}
 
@@ -115,7 +136,7 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public String getLongLivedToken(String accessToken) {
+	public FbLongLivedTokenResponse getLongLivedToken(String accessToken) {
 		return fbClient.getLongLivedAccessToken(accessToken);
 	}
 }

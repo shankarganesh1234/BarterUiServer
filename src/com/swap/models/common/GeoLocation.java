@@ -25,4 +25,8 @@ public class GeoLocation {
 		this.longitude = longitude;
 	}
 	
+	@Override
+	public String toString() {
+		return "GeoLocation [zip=" + zip + ", latitude=" + latitude + ", longitude=" + longitude + "]";
+	}
 }
