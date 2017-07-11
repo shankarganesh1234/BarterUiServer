@@ -11,7 +11,7 @@ public class ChatHistoryDocument {
 	private String message;
 	private Date messageTimestamp;
 	private Long interestId;
-	private String receiverName;
+	private String receiverId;
 	private boolean isOnline;
 	
 	public boolean isOnline() {
@@ -20,11 +20,11 @@ public class ChatHistoryDocument {
 	public void setOnline(boolean isOnline) {
 		this.isOnline = isOnline;
 	}
-	public String getReceiverName() {
-		return receiverName;
+	public String getReceiverId() {
+		return receiverId;
 	}
-	public void setReceiverName(String receiverName) {
-		this.receiverName = receiverName;
+	public void setReceiverId(String receiverId) {
+		this.receiverId = receiverId;
 	}
 	public Long getInterestId() {
 		return interestId;
@@ -72,7 +72,7 @@ public class ChatHistoryDocument {
 	public String toString() {
 		return "ChatHistoryDocument [chatChannelId=" + chatChannelId + ", participants=" + participants + ", senderId="
 				+ senderId + ", senderName=" + senderName + ", message=" + message + ", messageTimestamp="
-				+ messageTimestamp + ", interestId=" + interestId + ", receiverName=" + receiverName + ", isOnline="
+				+ messageTimestamp + ", interestId=" + interestId + ", receiverId=" + receiverId + ", isOnline="
 				+ isOnline + "]";
 	}
 }

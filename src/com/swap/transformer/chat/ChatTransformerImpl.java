@@ -74,7 +74,7 @@ public class ChatTransformerImpl implements ChatTransformer {
 				logger.debug("sender user id : " + sender.getUser_id());
 				if(!member.getUser_id().equalsIgnoreCase(sender.getUser_id())) {
 					logger.debug("Entered receiver loop");
-					document.setReceiverName(member.getUser_id());
+					document.setReceiverId(member.getUser_id());
 					document.setInterestId(CommonUtil.decodeInterestId(payload.getMessage()));
 					document.setOnline(member.isIs_online());
 				}
