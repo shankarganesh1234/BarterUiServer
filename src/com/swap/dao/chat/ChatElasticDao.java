@@ -7,5 +7,5 @@ import com.swap.models.elasticsearch.ChatHistoryDocument;
 public interface ChatElasticDao {
 
 	boolean appendChatHistory(ChatHistoryDocument chatDocument);
-	List<ChatHistoryDocument> getChatHistory(String channelId);
+	List<ChatHistoryDocument> getChatHistory(String interestId, String channelId);
 }

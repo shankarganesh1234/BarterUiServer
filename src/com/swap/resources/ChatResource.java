@@ -73,12 +73,12 @@ public class ChatResource {
 	
 	@Path("/history")
 	@GET
-	public List<ChatHistoryDocument> getChatHistory(@QueryParam("channelId") String channelId) {
+	public List<ChatHistoryDocument> getChatHistory(@QueryParam("interestId") String interestId, @QueryParam("channelId") String channelId) {
 		
 		if(StringUtils.isBlank(channelId))
 			return null;
 		
-		return chatService.getChatHistory(channelId);
+		return chatService.getChatHistory(interestId, channelId);
 	}
 	
 }

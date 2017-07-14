@@ -76,8 +76,8 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public List<ChatHistoryDocument> getChatHistory(String channelId) {
-		return chatElasticDaoImpl.getChatHistory(channelId);
+	public List<ChatHistoryDocument> getChatHistory(String interestId, String channelId) {
+		return chatElasticDaoImpl.getChatHistory(interestId, channelId);
 	}
 
 	@Override

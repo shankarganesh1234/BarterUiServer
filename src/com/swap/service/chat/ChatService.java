@@ -21,7 +21,7 @@ public interface ChatService {
 	
 	boolean appendChatHistory(SendbirdWebhookRequest request);
 	
-	List<ChatHistoryDocument> getChatHistory(String channelId);
+	List<ChatHistoryDocument> getChatHistory(String interestId, String channelId);
 	
 	UserResponse createSendbirdUser(CreateUserRequest createUser);
 	

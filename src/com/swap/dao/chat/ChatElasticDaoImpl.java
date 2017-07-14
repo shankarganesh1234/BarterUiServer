@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
@@ -59,7 +59,7 @@ public class ChatElasticDaoImpl implements ChatElasticDao {
 	}
 
 	@Override
-	public List<ChatHistoryDocument> getChatHistory(String channelId) {
+	public List<ChatHistoryDocument> getChatHistory(String interestId, String channelId) {
 		
 		List<ChatHistoryDocument> chatHistoryDocuments = new LinkedList<>();
 		SearchResponse searchResponse = null;
@@ -68,8 +68,13 @@ public class ChatElasticDaoImpl implements ChatElasticDao {
 			SearchRequestBuilder srb = elasticTransportClient.getTransportClient()
 					.prepareSearch(envProps.getObject().getProperty(Constants.ELASTICSEARCH_CHAT_INDEXNAME))
 					.setTypes(envProps.getObject().getProperty(Constants.ELASTICSEARCH_CHAT_INDEXTYPE));
-			QueryBuilder qb = QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("chatChannelId", channelId));
-			srb.setQuery(qb);
+			
+			BoolQueryBuilder bqb = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("chatChannelId", channelId));
+			bqb.must(QueryBuilders.matchQuery("interestId", interestId));
+			
+			//QueryBuilder qb = QueryBuilders.boolQuery().filter(QueryBuilders.termQuery("chatChannelId", channelId));
+			//srb.setQuery(qb);
+			srb.setQuery(bqb);
 			SortOrder sortOrder = SortOrder.ASC;
 			FieldSortBuilder sortBuilder = SortBuilders.fieldSort("messageTimestamp").order(sortOrder).sortMode(SortMode.MIN);
 			srb.addSort(sortBuilder);
