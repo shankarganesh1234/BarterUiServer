@@ -80,7 +80,7 @@ public class ChatElasticDaoImpl implements ChatElasticDao {
 			srb.addSort(sortBuilder);
 			
 			searchResponse = srb.execute().actionGet();
-			
+			 
 			
 			SearchHit[] hits = searchResponse.getHits().getHits();
 

@@ -30,9 +30,9 @@ public class Constants {
 	public static final String CLOUD_NAME = "cloud_name";
 	public static final String MY_CLOUD_NAME = "damwv9ygo";
 	public static final String API_KEY = "api_key";
-	public static final String MY_API_KEY = "165899739553247";
+	public static final String MY_API_KEY = "";
 	public static final String API_SECRET = "api_secret";
-	public static final String MY_API_SECRET = "9GxNEKNAbmPp7Wj7f3kpvm5UW7w";
+	public static final String MY_API_SECRET = "";
 	
 	// DSL
 	public static final String TITLE = "title";
@@ -74,7 +74,7 @@ public class Constants {
 	public static final String EXCHANGE_TOKEN = "fb_exchange_token";
 	public static final String CLIENT_ID = "client_id";
 	public static final String CLIENT_SECRET = "client_secret";
-	public static final String FB_CLIENT_ID_VALUE = "422821098053082";
-	public static final String FB_CLIENT_SECRET_VALUE = "37a589b26576cebe77529d7f24ba7d3b";
+	public static final String FB_CLIENT_ID_VALUE = "";
+	public static final String FB_CLIENT_SECRET_VALUE = "";
 
 }
