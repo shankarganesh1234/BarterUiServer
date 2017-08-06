@@ -89,6 +89,13 @@ http://54.183.41.168:9200/chat/history/_mapping
 		},
 		"messageTimestamp": {
 			"type": "date"
+		},
+		{
+		"interestId": {
+			"type": "long"
+		},
+		"receiverId": {
+			"type": "string"
 		}
 	}
 }

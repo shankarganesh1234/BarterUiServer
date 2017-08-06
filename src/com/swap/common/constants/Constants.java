@@ -30,12 +30,11 @@ public class Constants {
 	public static final String CLOUD_NAME = "cloud_name";
 	public static final String MY_CLOUD_NAME = "damwv9ygo";
 	public static final String API_KEY = "api_key";
-	public static final String MY_API_KEY = "165899739553247";
+	public static final String MY_API_KEY = "";
 	public static final String API_SECRET = "api_secret";
-	public static final String MY_API_SECRET = "9GxNEKNAbmPp7Wj7f3kpvm5UW7w";
+	public static final String MY_API_SECRET = "";
 	
 	// DSL
-
 	public static final String TITLE = "title";
 	public static final String TITLE_LOWERCASE = "titleLowerCase";
 	public static final String ZIP = "zipCode";
@@ -43,14 +42,10 @@ public class Constants {
 	public static final String CLUSTER_NAME = "cluster.name";
 	
 	// pagination 
-	public static final Integer LIMIT = 8;
+	public static final Integer LIMIT = 20;
 	public static final Integer START = 0;
 	public static final Integer PAGE = 1;
 	
-	// login
-	public static final String PROVIDER_ID = "facebook";
-	public static final String AUTHORIZATION = "Authorization";
-	public static final String FB_LONG_TOKEN = "https://graph.facebook.com/oauth/access_token";
 	
 	//search
 	public static final String ALL_CATEGORIES = "All categories";
@@ -68,8 +63,18 @@ public class Constants {
 	public static final String LNG = "lng";
 	public static final String DEFAULT_SORTFIELD = "upsertDate";
 	
-	
+	// sendbird 
+	public static final String SENDBIRD_BASE_URL = "https://api.sendbird.com/v3/";
 
-	
-	
+	// facebook
+	public static final String PROVIDER_ID = "facebook";
+	public static final String AUTHORIZATION = "Authorization";
+	public static final String FB_LONG_TOKEN = "https://graph.facebook.com/oauth/access_token";
+	public static final String GRANT_TYPE = "grant_type";
+	public static final String EXCHANGE_TOKEN = "fb_exchange_token";
+	public static final String CLIENT_ID = "client_id";
+	public static final String CLIENT_SECRET = "client_secret";
+	public static final String FB_CLIENT_ID_VALUE = "";
+	public static final String FB_CLIENT_SECRET_VALUE = "";
+
 }

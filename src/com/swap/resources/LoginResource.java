@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.social.connect.UserProfile;
 
 import com.swap.models.login.FbLongLivedTokenRequest;
+import com.swap.models.login.FbLongLivedTokenResponse;
 import com.swap.models.login.LoginRequest;
 import com.swap.service.login.LoginService;
 
@@ -31,7 +32,7 @@ public class LoginResource {
 	
 	@PUT
 	@Path("/longlivedtoken")
-	public String getLongLivedToken(FbLongLivedTokenRequest request) {
+	public FbLongLivedTokenResponse getLongLivedToken(FbLongLivedTokenRequest request) {
 		return loginService.getLongLivedToken(request.getAccessToken());
 	}
 }

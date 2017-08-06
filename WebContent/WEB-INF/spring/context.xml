@@ -61,8 +61,8 @@
 			<list>
 				<bean
 					class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
-					<constructor-arg value="422821098053082" />
-					<constructor-arg value="37a589b26576cebe77529d7f24ba7d3b" />
+					<constructor-arg value="" />
+					<constructor-arg value="" />
 				</bean>
 			</list>
 		</property>

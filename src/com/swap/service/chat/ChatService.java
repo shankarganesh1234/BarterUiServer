@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.swap.models.chat.ChatDetailsRequest;
 import com.swap.models.chat.ChatDetailsResponse;
+import com.swap.models.chat.CreateUserRequest;
+import com.swap.models.chat.UserResponse;
 import com.swap.models.elasticsearch.ChatHistoryDocument;
 import com.swap.models.sendbird.SendbirdWebhookRequest;
 
@@ -19,5 +21,9 @@ public interface ChatService {
 	
 	boolean appendChatHistory(SendbirdWebhookRequest request);
 	
-	List<ChatHistoryDocument> getChatHistory(String channelId);
+	List<ChatHistoryDocument> getChatHistory(String interestId, String channelId);
+	
+	UserResponse createSendbirdUser(CreateUserRequest createUser);
+	
+	UserResponse getSendbirdUser(String userId);
 }

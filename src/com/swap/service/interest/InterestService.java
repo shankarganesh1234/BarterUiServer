@@ -12,5 +12,6 @@ public interface InterestService {
 	InterestResponse getInterestById(Long id);
 	InterestsResponse getInterestsByInterestedUser(Long userId);
 	InterestsResponse getInterestedByOriginalUser(Long userId);
+	InterestsResponse getInterestsAndOffers(Long userId);
 	InterestsResponse getInterests(String userId, String itemId, boolean isOwner);
 }

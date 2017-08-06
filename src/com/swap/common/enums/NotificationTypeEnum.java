@@ -3,7 +3,7 @@ package com.swap.common.enums;
 import org.apache.commons.lang3.StringUtils;
 
 public enum NotificationTypeEnum {
-	MY_INTERESTS, MY_OFFERS;
+	INTEREST,CHAT;
 
 	/**
 	 * 

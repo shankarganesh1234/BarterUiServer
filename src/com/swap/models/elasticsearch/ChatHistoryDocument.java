@@ -10,6 +10,28 @@ public class ChatHistoryDocument {
 	private String senderName;
 	private String message;
 	private Date messageTimestamp;
+	private Long interestId;
+	private String receiverId;
+	private boolean isOnline;
+	
+	public boolean isOnline() {
+		return isOnline;
+	}
+	public void setOnline(boolean isOnline) {
+		this.isOnline = isOnline;
+	}
+	public String getReceiverId() {
+		return receiverId;
+	}
+	public void setReceiverId(String receiverId) {
+		this.receiverId = receiverId;
+	}
+	public Long getInterestId() {
+		return interestId;
+	}
+	public void setInterestId(Long interestId) {
+		this.interestId = interestId;
+	}
 	public String getChatChannelId() {
 		return chatChannelId;
 	}
@@ -48,11 +70,9 @@ public class ChatHistoryDocument {
 	}
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("ChatHistoryDocument [chatChannelId=").append(chatChannelId).append(", participants=")
-				.append(participants).append(", senderId=").append(senderId).append(", senderName=").append(senderName)
-				.append(", message=").append(message).append(", messageTimestamp=").append(messageTimestamp)
-				.append("]");
-		return builder.toString();
+		return "ChatHistoryDocument [chatChannelId=" + chatChannelId + ", participants=" + participants + ", senderId="
+				+ senderId + ", senderName=" + senderName + ", message=" + message + ", messageTimestamp="
+				+ messageTimestamp + ", interestId=" + interestId + ", receiverId=" + receiverId + ", isOnline="
+				+ isOnline + "]";
 	}
 }
